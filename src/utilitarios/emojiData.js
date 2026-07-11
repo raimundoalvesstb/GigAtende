@@ -1,3 +1,17 @@
+﻿/*
+ * Projeto: GigAtende
+ * Copyright (c) 2026 Raimundo Alves Santa Brigida
+ *
+ * Licensed under the PolyForm Noncommercial License 1.0.0.
+ *
+ * You may use, study, modify and redistribute this software.
+ *
+ * Commercial use, resale, sublicensing or inclusion in commercial
+ * products or services is prohibited.
+ *
+ * Full license:
+ * https://polyformproject.org/licenses/noncommercial/1.0.0/
+ */
 window.GigaEmojiData = [
   {
     id: 'smileys',
@@ -1066,3 +1080,4 @@ window.GigaEmojiData = [
     ]
   }
 ];
+

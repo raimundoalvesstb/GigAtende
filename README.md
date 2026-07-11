@@ -189,13 +189,23 @@ Exporte ou importe seus dados a qualquer momento pelos botões no topo da Admini
 
 ---
 
-## ⚖️ Licença de Uso
+## ⚖️ Licença
 
-Este projeto está sob uma **Licença MIT Modificada (Uso Não Comercial)**. 
+Este projeto é distribuído sob a PolyForm Noncommercial License 1.0.0.
 
-Você é livre para usar, copiar e modificar esta extensão para uso pessoal. No entanto, **é estritamente proibido o uso comercial, a venda ou a distribuição para fins lucrativos** desta extensão ou de partes de seu código sem autorização prévia.
+**Você pode:**
+- utilizar gratuitamente;
+- estudar o código;
+- modificar;
+- criar versões derivadas;
+- redistribuir mantendo esta licença.
 
-Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+**Você não pode:**
+- vender este software;
+- cobrar pelo seu uso;
+- utilizá-lo em atividades ou produtos comerciais;
+- incorporar total ou parcialmente este projeto em software comercial.
 
----
-*GigAtende - Todos os direitos reservados para uso comercial*
+Para uso comercial, é necessário obter autorização expressa do autor.
+
+Copyright © 2026 Raimundo A S Brigida.
