@@ -185,7 +185,17 @@ Exporte ou importe seus dados a qualquer momento pelos botões no topo da Admini
 
 **Projeto desenvolvido em Vibe Code por Raimundo A S Brigida**
 
-- **LinkedIn (Contato e Página do Projeto):** [https://www.linkedin.com/in/raimundoalvesstb/](https://www.linkedin.com/in/raimundoalvesstb/)
+- **LinkedIn:** [https://www.linkedin.com/in/raimundoalvesstb/](https://www.linkedin.com/in/raimundoalvesstb/)
 
 ---
-*GigAtende - Todos os direitos reservados*
+
+## ⚖️ Licença de Uso
+
+Este projeto está sob uma **Licença MIT Modificada (Uso Não Comercial)**. 
+
+Você é livre para usar, copiar e modificar esta extensão para uso pessoal. No entanto, **é estritamente proibido o uso comercial, a venda ou a distribuição para fins lucrativos** desta extensão ou de partes de seu código sem autorização prévia.
+
+Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+*GigAtende - Todos os direitos reservados para uso comercial*
