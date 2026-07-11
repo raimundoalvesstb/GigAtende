@@ -1,4 +1,4 @@
-# GigAtende
+# <img src="assets/icon48.png" width="48" align="center" alt="GigAtende Logo"> GigAtende
 
 Uma extensão para o navegador Google Chrome desenvolvida para **acelerar o seu atendimento** em plataformas baseadas na web. Com o GigAtende, você não precisa mais digitar a mesma resposta várias vezes. Salve mensagens prontas e insira nos campos de texto com apenas **2 cliques**!
 
