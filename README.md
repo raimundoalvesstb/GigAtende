@@ -30,6 +30,7 @@ Assista ao vídeo abaixo para ver o GigAtende em ação e aprender rapidamente c
 
 [![Tutorial em Vídeo GigAtende](https://img.youtube.com/vi/ald4k4QOzH8/maxresdefault.jpg)](https://www.youtube.com/watch?v=ald4k4QOzH8)
 
+Siga o canal: https://www.youtube.com/@gigatende
 ---
 
 ## 📖 Guia do Usuário / Passo a Passo
