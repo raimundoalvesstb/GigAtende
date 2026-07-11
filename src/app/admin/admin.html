@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GigAtende – Administração</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+
+<body data-theme="light">
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- TOP NAVIGATION BAR                                                    -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <header class="topnav" id="topnav">
+
+    <!-- Logo – canto esquerdo -->
+    <div class="topnav-logo">
+      <img src="../../../assets/icon128.png" class="topnav-logo-svg" alt="GigAtende Logo" />
+      <div class="topnav-brand-text">
+        <span class="topnav-brand-name">GigAtende</span>
+        <span class="topnav-brand-ver">v1.2.2</span>
+      </div>
+    </div>
+
+    <!-- Nav principal – centralizado -->
+    <nav class="topnav-nav" aria-label="Menu principal">
+
+      <!-- Dashboard -->
+      <button class="topnav-navbtn" data-tab="dashboard" title="Dashboard">
+        <svg viewBox="0 0 24 24" class="topnav-navicon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" fill="currentColor" />
+        </svg>
+        <span>Dashboard</span>
+      </button>
+
+      <!-- Mensagens -->
+      <button class="topnav-navbtn active" data-tab="messages" title="Mensagens / Modelos">
+        <svg viewBox="0 0 24 24" class="topnav-navicon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path
+            d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"
+            fill="currentColor" />
+        </svg>
+        <span>Mensagens</span>
+        <span class="topnav-badge" id="navBadgeMessages">0</span>
+      </button>
+
+      <!-- Categorias -->
+      <button class="topnav-navbtn" data-tab="categories" title="Categorias">
+        <svg viewBox="0 0 24 24" class="topnav-navicon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path
+            d="M12 2l-5.5 9h11zm0 3.84L13.93 9h-3.87zM17.5 13c-2.49 0-4.5 2.01-4.5 4.5S15.01 22 17.5 22s4.5-2.01 4.5-4.5S19.99 13 17.5 13zm0 7c-1.38 0-2.5-1.12-2.5-2.5S16.12 15 17.5 15s2.5 1.12 2.5 2.5S18.88 20 17.5 20zM3 21.5h8v-8H3v8zm2-6h4v4H5v-4z"
+            fill="currentColor" />
+        </svg>
+        <span>Categorias</span>
+        <span class="topnav-badge" id="navBadgeCategories">0</span>
+      </button>
+
+      <!-- Sites -->
+      <button class="topnav-navbtn" data-tab="sites" title="Sites Habilitados">
+        <svg viewBox="0 0 24 24" class="topnav-navicon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path
+            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"
+            fill="currentColor" />
+        </svg>
+        <span>Sites</span>
+      </button>
+
+      <!-- Configurações -->
+      <button class="topnav-navbtn" data-tab="settings" title="Configurações">
+        <svg viewBox="0 0 24 24" class="topnav-navicon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path
+            d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"
+            fill="currentColor" />
+        </svg>
+        <span>Configurações</span>
+      </button>
+
+      <!-- Instruções -->
+      <button class="topnav-navbtn" data-tab="instructions" title="Instruções de Uso">
+        <svg viewBox="0 0 24 24" class="topnav-navicon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+            fill="currentColor" />
+        </svg>
+        <span>Instruções</span>
+      </button>
+    </nav>
+
+    <!-- Ações – canto direito -->
+    <div class="topnav-actions">
+      <button class="topnav-action-btn" id="btnExport" title="Exportar dados">
+        <svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" fill="currentColor" />
+        </svg>
+        <span>Exportar</span>
+      </button>
+      <button class="topnav-action-btn" id="btnImport" title="Importar dados">
+        <svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path
+            d="M19 12v6H5v-6H3v6c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"
+            fill="currentColor" />
+        </svg>
+        <span>Importar</span>
+      </button>
+      <input type="file" id="importFile" accept=".json" style="display:none" />
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- MAIN CONTENT                                                           -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <main class="main-content">
+
+    <!-- ── DASHBOARD TAB ── -->
+    <section class="tab-panel" id="tabDashboard" style="display:none">
+      <div class="section-hdr" data-html2canvas-ignore="true">
+        <div class="section-hdr-row">
+          <div class="section-hdr-left">
+            <h1 class="section-title">Dashboard</h1>
+            <p class="section-sub">Estatísticas e desempenho do atendimento</p>
+          </div>
+          <div class="section-hdr-right" style="display:flex; gap:12px; align-items:center;">
+            <select class="form-input" id="dashDateFilter" style="width: auto; min-width: 140px; margin: 0;">
+              <option value="7">Últimos 7 dias</option>
+              <option value="15">Últimos 15 dias</option>
+              <option value="30" selected>Últimos 30 dias</option>
+              <option value="90">Últimos 90 dias</option>
+            </select>
+            <button class="btn-section-action" id="btnExportImage" title="Salvar dashboard como imagem">
+              <svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="currentColor" />
+              </svg>
+              Salvar Print
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section-body" id="dashboardContentToExport">
+        <div class="dash-summary-cards" id="dashSummaryCards">
+          <!-- Renderizado via JS -->
+        </div>
+
+        <div class="dash-grid-container">
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>Sites Mais Usados</h3>
+              <p>Onde o GigAtende foi mais ativado</p>
+            </div>
+            <div class="dash-card-body" id="dashSitesChart" style="flex: 1; display: flex; flex-direction: column;">
+              <!-- Renderizado via JS -->
+            </div>
+          </div>
+          
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>Mensagens Mais Usadas (Top 10)</h3>
+              <p>Modelos mais enviados no período</p>
+            </div>
+            <div class="dash-card-body" id="dashMessagesChart" style="flex: 1; display: flex; flex-direction: column;">
+              <!-- Renderizado via JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-grid-container" style="grid-template-columns: 1fr; margin-top: 20px;">
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>Fluxo de Atendimento (Horários de Pico)</h3>
+              <p>Distribuição das mensagens enviadas por horário do dia</p>
+            </div>
+            <div class="dash-card-body" id="dashHourlyChart" style="min-height: 180px;">
+              <!-- Renderizado via JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MESSAGES TAB ── -->
+    <section class="tab-panel" id="tabMessages">
+      <!-- Cabeçalho azul com busca e botão de ação -->
+      <div class="section-hdr">
+        <div class="section-hdr-row">
+          <div class="section-hdr-left">
+            <h1 class="section-title">Mensagens / Modelos</h1>
+            <p class="section-sub">Gerencie os modelos de resposta por categoria</p>
+          </div>
+          <div class="section-hdr-center">
+            <div class="search-box search-box-hdr">
+              <svg viewBox="0 0 24 24" class="icon-sm search-icon" xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true">
+                <path
+                  d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                  fill="currentColor" />
+              </svg>
+              <input type="text" class="search-input" id="msgSearch" placeholder="Buscar mensagens…"
+                aria-label="Buscar mensagens" />
+            </div>
+            <label class="checkbox-label-hdr">
+              <input type="checkbox" id="filterFavorites" /> ⭐ Favoritos
+            </label>
+          </div>
+          <div class="section-hdr-right">
+            <button class="btn-section-action" id="btnNewMessage">
+              <svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor" />
+              </svg>
+              Cadastrar mensagem
+            </button>
+          </div>
+        </div>
+
+        <!-- Cat Filter Bar - dentro do section-hdr -->
+        <div class="cat-filter-area" id="catFilterArea">
+          <button id="catFilterPrev" class="cat-nav-btn cat-nav-prev" style="display: none;"
+            title="Categorias Anteriores">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z" />
+            </svg>
+          </button>
+          <div class="cat-filter-viewport" id="catFilterViewport">
+            <div class="cat-filter-bar" id="catFilterBar"></div>
+          </div>
+          <button id="catFilterNext" class="cat-nav-btn cat-nav-next" style="display: none;"
+            title="Próximas Categorias">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Grade de mensagens (fundo claro) -->
+      <div class="section-body">
+        <div class="cards-grid" id="messagesGrid"></div>
+        <div class="empty-state" id="msgEmptyState" style="display:none">
+          <svg viewBox="0 0 24 24" class="empty-icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path
+              d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"
+              fill="currentColor" />
+          </svg>
+          <p>Nenhuma mensagem encontrada</p>
+          <button class="btn btn-outline" id="btnNewMessageEmpty">Criar primeira mensagem</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CATEGORIES TAB ── -->
+    <section class="tab-panel" id="tabCategories" style="display:none">
+      <div class="section-hdr">
+        <div class="section-hdr-row">
+          <div class="section-hdr-left">
+            <h1 class="section-title">Categorias</h1>
+            <p class="section-sub">Organize suas mensagens em grupos temáticos</p>
+          </div>
+          <div class="section-hdr-right">
+            <button class="btn-section-action" id="btnNewCategory">
+              <svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor" />
+              </svg>
+              Nova Categoria
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="cards-grid" id="categoriesGrid"></div>
+      </div>
+    </section>
+
+    <!-- ── SITES TAB ── -->
+    <section class="tab-panel" id="tabSites" style="display:none">
+      <div class="section-hdr">
+        <div class="section-hdr-row">
+          <div class="section-hdr-left">
+            <h1 class="section-title">Sites Habilitados</h1>
+            <p class="section-sub">Plataformas onde o GigAtende está ativo</p>
+          </div>
+          <div class="section-hdr-right">
+            <button class="btn-section-action" id="btnAddSite">
+              <svg viewBox="0 0 24 24" width="15" height="15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor" />
+              </svg>
+              Adicionar Site
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="cards-grid" id="sitesGrid">
+          <p class="hint-text">Habilite sites pelo popup da extensão (clique no ícone na barra do navegador).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SETTINGS TAB ── -->
+    <section class="tab-panel" id="tabSettings" style="display:none">
+      <div class="section-hdr">
+        <div class="section-hdr-row">
+          <div class="section-hdr-left">
+            <h1 class="section-title">Configurações</h1>
+            <p class="section-sub">Preferências visuais e de comportamento</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-body">
+        <div class="settings-grid">
+          <!-- Tema -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <svg viewBox="0 0 24 24" class="icon-md" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path
+                  d="M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6zm0-10c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"
+                  fill="currentColor" />
+              </svg>
+              <div>
+                <h3>Tema da Interface</h3>
+                <p>Escolha entre modo claro ou escuro</p>
+              </div>
+            </div>
+            <div class="theme-selector">
+              <!-- Claro -->
+              <div class="theme-option">
+                <svg viewBox="0 0 120 60" class="theme-preview" aria-hidden="true">
+                  <rect width="120" height="60" rx="4" fill="#F0F2F5" />
+                  <rect width="120" height="16" rx="4" fill="#1565C0" />
+                  <rect x="6" y="22" width="108" height="32" rx="4" fill="#FFFFFF" />
+                  <rect x="12" y="28" width="36" height="3" rx="1.5" fill="#DEE2E6" />
+                  <rect x="12" y="35" width="56" height="3" rx="1.5" fill="#DEE2E6" />
+                  <rect x="12" y="42" width="44" height="3" rx="1.5" fill="#DEE2E6" />
+                </svg>
+                <button class="theme-btn" id="btnThemeLight" data-theme="light">
+                  <svg viewBox="0 0 24 24" width="13" height="13" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6.76 4.84l-1.8-1.79-1.41 1.41 1.79 1.79 1.42-1.41zM4 10.5H1v2h3v-2zm9-9.95h-2V3.5h2V.55zm7.45 3.91l-1.41-1.41-1.79 1.79 1.41 1.41 1.79-1.79zm-3.21 13.7l1.79 1.8 1.41-1.41-1.8-1.79-1.4 1.4zM20 10.5v2h3v-2h-3zm-8-5c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm-1 16.95h2V19.5h-2v2.95zm-7.45-3.91l1.41 1.41 1.79-1.8-1.41-1.41-1.79 1.8z" fill="currentColor" /></svg>
+                  ☀ Claro
+                </button>
+              </div>
+              <!-- Escuro -->
+              <div class="theme-option">
+                <svg viewBox="0 0 120 60" class="theme-preview" aria-hidden="true">
+                  <rect width="120" height="60" rx="4" fill="#13131F" />
+                  <rect width="120" height="16" rx="4" fill="#0A1A3E" />
+                  <rect x="6" y="22" width="108" height="32" rx="4" fill="#1E1E2E" />
+                  <rect x="12" y="28" width="36" height="3" rx="1.5" fill="#2E2E42" />
+                  <rect x="12" y="35" width="56" height="3" rx="1.5" fill="#2E2E42" />
+                  <rect x="12" y="42" width="44" height="3" rx="1.5" fill="#2E2E42" />
+                </svg>
+                <button class="theme-btn" id="btnThemeDark" data-theme="dark">
+                  <svg viewBox="0 0 24 24" width="13" height="13" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z" fill="currentColor" /></svg>
+                  🌙 Escuro
+                </button>
+              </div>
+              <!-- Quente -->
+              <div class="theme-option">
+                <svg viewBox="0 0 120 60" class="theme-preview" aria-hidden="true">
+                  <rect width="120" height="60" rx="4" fill="#FDF6EE" />
+                  <rect width="120" height="16" rx="4" fill="#B5451B" />
+                  <rect x="6" y="22" width="108" height="32" rx="4" fill="#FFFAF4" />
+                  <rect x="12" y="28" width="36" height="3" rx="1.5" fill="#E8D5BC" />
+                  <rect x="12" y="35" width="56" height="3" rx="1.5" fill="#E8D5BC" />
+                  <rect x="12" y="42" width="44" height="3" rx="1.5" fill="#E8D5BC" />
+                </svg>
+                <button class="theme-btn" id="btnThemeWarm" data-theme="warm">
+                  <svg viewBox="0 0 24 24" width="13" height="13" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M17.66 11.2C17.43 10.9 17.15 10.64 16.89 10.38C16.22 9.78 15.46 9.35 14.82 8.72C13.33 7.26 13 4.85 13.95 3C13 3.23 12.17 3.75 11.46 4.32C8.87 6.4 7.85 10.07 9.07 13.22C9.11 13.32 9.15 13.42 9.15 13.55C9.15 13.77 9 13.97 8.8 14.05C8.57 14.15 8.33 14.09 8.14 13.93C8.08 13.88 8.04 13.83 8 13.76C6.87 12.33 6.69 10.28 7.45 8.64C5.78 10 4.87 12.3 5 14.47C5.06 14.97 5.12 15.47 5.29 15.97C5.43 16.57 5.7 17.17 6 17.7C7.08 19.43 8.95 20.67 10.96 20.92C13.1 21.19 15.39 20.8 17.03 19.32C18.86 17.66 19.5 15 18.56 12.72L18.43 12.46C18.22 12 17.66 11.2 17.66 11.2Z" fill="currentColor" /></svg>
+                  🔥 Quente
+                </button>
+              </div>
+              <!-- Alto Contraste -->
+              <div class="theme-option">
+                <svg viewBox="0 0 120 60" class="theme-preview" aria-hidden="true">
+                  <rect width="120" height="60" rx="4" fill="#000000" />
+                  <rect width="120" height="16" rx="4" fill="#111111" />
+                  <rect x="6" y="22" width="108" height="32" rx="4" fill="#0A0A0A" />
+                  <rect x="6" y="22" width="108" height="1" fill="#FFFF00" />
+                  <rect x="12" y="28" width="36" height="3" rx="1.5" fill="#FFFF00" />
+                  <rect x="12" y="35" width="56" height="3" rx="1.5" fill="#FFFFFF" />
+                  <rect x="12" y="42" width="44" height="3" rx="1.5" fill="#FFFF00" />
+                </svg>
+                <button class="theme-btn" id="btnThemeContrast" data-theme="contrast">
+                  <svg viewBox="0 0 24 24" width="13" height="13" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" fill="currentColor" /></svg>
+                  👁 Alto Contraste
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Marca -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <svg viewBox="0 0 24 24" class="icon-md" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 2L2 22h20L12 2zm0 3.8L18.4 19H5.6L12 5.8z" fill="currentColor"/>
+              </svg>
+              <div>
+                <h3>Marca</h3>
+                <p>Personalize a identidade da extensão</p>
+              </div>
+            </div>
+            <div class="brand-settings">
+              <div class="brand-field">
+                <label for="inputBrandName">Nome da Marca</label>
+                <input type="text" id="inputBrandName" placeholder="Ex: Minha Empresa" maxlength="30" />
+              </div>
+              <div class="brand-field">
+                <label>Logotipo Personalizado</label>
+                <div class="brand-logo-preview-container" id="brandDropZone" title="Clique ou arraste uma imagem para alterar o logotipo">
+                  <input type="file" id="inputBrandLogo" accept="image/png, image/jpeg" style="display:none;" />
+                  <img id="imgBrandPreview" class="brand-logo-preview empty" src="" alt="Preview" style="display:none;" />
+                  <div id="iconBrandEmpty" class="brand-logo-preview empty">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75 3.54-1.96-2.36L6.5 17h11l-3.54-4.71z"/></svg>
+                  </div>
+                  <div class="brand-logo-text">
+                    <div class="brand-upload-title">
+                      <svg viewBox="0 0 24 24" class="icon-sm" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" fill="currentColor"/></svg>
+                      Fazer Upload ou Arrastar
+                    </div>
+                    <span>Selecione uma imagem PNG ou JPG.</span><br>
+                    <span>Tamanho ideal: quadrada (máx 256x256).</span>
+                  </div>
+                </div>
+                <div class="brand-actions">
+                  <button class="botao botao-contorno botao-pequeno" id="btnBrandClear" style="display:none;">Remover Logotipo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Gestão de dados -->
+          <div class="settings-card">
+            <div class="settings-card-header">
+              <svg viewBox="0 0 24 24" class="icon-md" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path
+                  d="M20 6h-2.18c.07-.44.18-.87.18-1.33C18 2.1 15.9 0 13.33 0c-1.38 0-2.56.56-3.43 1.44L8 3.34 6.1 1.44A4.681 4.681 0 0 0 2.67 0C1.1 0 0 1.1 0 2.67c0 .46.11.89.18 1.33H0v14C0 19.1.9 20 2 20h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2z"
+                  fill="currentColor" />
+              </svg>
+              <div>
+                <h3>Gestão de Dados</h3>
+                <p>Exportar, importar ou redefinir configurações</p>
+              </div>
+            </div>
+            <div class="data-actions">
+              <button class="btn btn-outline" id="btnExportSettings">
+                <svg viewBox="0 0 24 24" class="icon-sm" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" fill="currentColor" />
+                </svg>
+                Exportar Backup
+              </button>
+              <button class="btn btn-outline" id="btnImportSettings">
+                <svg viewBox="0 0 24 24" class="icon-sm" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path
+                    d="M19 12v6H5v-6H3v6c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"
+                    fill="currentColor" />
+                </svg>
+                Importar Backup
+              </button>
+              <button class="btn btn-danger" id="btnResetData">
+                <svg viewBox="0 0 24 24" class="icon-sm" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path
+                    d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"
+                    fill="currentColor" />
+                </svg>
+                Redefinir Tudo
+              </button>
+            </div>
+            <input type="file" id="importFileSettings" accept=".json" style="display:none" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── INSTRUCTIONS TAB ── -->
+    <section class="tab-panel" id="tabInstructions" style="display:none">
+      <div class="section-hdr">
+        <div class="section-hdr-row">
+          <div class="section-hdr-left">
+            <h1 class="section-title">Instruções de Uso</h1>
+            <p class="section-sub">Guia rápido para operadores</p>
+          </div>
+          <div class="section-hdr-right">
+            <a href="instructions.html" target="_blank" class="instructions-open-btn" title="Abrir em nova aba">
+              <svg viewBox="0 0 24 24" width="14" height="14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path
+                  d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"
+                  fill="currentColor" />
+              </svg>
+              Abrir em nova aba
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="section-body" style="padding:0;overflow:hidden">
+        <iframe class="instructions-iframe" src="instructions.html" title="Instruções de Uso GigAtende"></iframe>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+  <!-- MODAIS                                                                 -->
+  <!-- ══════════════════════════════════════════════════════════════════════ -->
+
+  <!-- MODAL: Mensagem -->
+  <div class="modal-overlay" id="modalMessage" role="dialog" aria-modal="true" aria-labelledby="modalMsgTitle"
+    style="display:none">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modalMsgTitle">Nova Mensagem</h2>
+        <button class="btn-close" id="btnCloseMsgModal" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" class="icon-sm" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Título com picker de ícone e emoji -->
+        <div class="form-group">
+          <label class="form-label" for="msgTitle">Título <span class="required">*</span></label>
+          <div class="title-input-row">
+            <button type="button" class="btn-icon-sm" id="btnMsgIconPicker" title="Selecionar ícone para o título"
+              aria-label="Selecionar ícone" aria-expanded="false">
+              <svg id="adminSelectedIconSvg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20"
+                height="20" style="color:#757575">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor" />
+              </svg>
+            </button>
+            <input type="text" class="form-input" id="msgTitle" placeholder="Ex: Saudação Padrão" maxlength="120"
+              style="flex:1" />
+            <button type="button" class="btn-icon-sm emoji-btn-title" id="btnMsgTitleEmoji"
+              title="Inserir emoji no título" aria-label="Inserir emoji no título">😀</button>
+            <input type="hidden" id="msgIcon" value="" />
+          </div>
+          <!-- Painel de seleção de ícone da mensagem -->
+          <div id="adminIconPickerPanel"
+            style="display:none;margin-top:6px;border:1px solid #DEE2E6;border-radius:8px;padding:12px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.12)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.5px">
+                Selecionar Ícone e Cor</div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <label for="msgIconColorPicker" style="font-size:11px;color:#666;font-weight:600">Cor:</label>
+                <input type="color" id="msgIconColorPicker" value="#757575"
+                  style="width:24px;height:24px;border:none;padding:0;cursor:pointer;background:transparent" />
+                <input type="hidden" id="msgIconColor" value="" />
+              </div>
+            </div>
+            <div id="adminIconGrid" style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px"></div>
+          </div>
+        </div>
+        <!-- Categoria -->
+        <div class="form-group form-row">
+          <div class="form-col" style="flex:1;">
+            <label class="form-label" for="msgCategory">Categoria</label>
+            <select class="form-input" id="msgCategory"></select>
+          </div>
+        </div>
+        <!-- Tags -->
+        <div class="form-group">
+          <label class="form-label" for="msgTags">Tags <span class="hint">(separadas por vírgula)</span></label>
+          <input type="text" class="form-input" id="msgTags" placeholder="Ex: rma, defeito, troca" />
+        </div>
+        <!-- Editor -->
+        <div class="form-group">
+          <label class="form-label" for="msgEditor">Conteúdo <span class="required">*</span></label>
+          <div class="editor-toolbar" id="editorToolbar">
+            <button type="button" class="toolbar-btn" data-cmd="bold" title="Negrito"><svg viewBox="0 0 24 24"
+                class="icon-xs" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"
+                  fill="currentColor" />
+              </svg></button>
+            <button type="button" class="toolbar-btn" data-cmd="italic" title="Itálico"><svg viewBox="0 0 24 24"
+                class="icon-xs" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z" fill="currentColor" />
+              </svg></button>
+            <button type="button" class="toolbar-btn" data-cmd="underline" title="Sublinhado"><svg viewBox="0 0 24 24"
+                class="icon-xs" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"
+                  fill="currentColor" />
+              </svg></button>
+            <div class="toolbar-sep"></div>
+            <button type="button" class="toolbar-btn" data-cmd="insertUnorderedList" title="Lista"><svg
+                viewBox="0 0 24 24" class="icon-xs" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z"
+                  fill="currentColor" />
+              </svg></button>
+            <button type="button" class="toolbar-btn" data-cmd="insertOrderedList" title="Lista numerada"><svg
+                viewBox="0 0 24 24" class="icon-xs" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M2 17h2v.5H3v1h1v.5H2v1h3v-4H2v1zm1-9h1V4H2v1h1v3zm-1 3h1.8L2 13.1v.9h3v-1H3.2L5 10.9V10H2v1zm5-6v2h14V5H7zm0 14h14v-2H7v2zm0-6h14v-2H7v2z"
+                  fill="currentColor" />
+              </svg></button>
+            <div class="toolbar-sep"></div>
+            <button type="button" class="toolbar-btn" data-cmd="removeFormat" title="Limpar formatação"><svg
+                viewBox="0 0 24 24" class="icon-xs" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 16h4v2h-4zm0-8h7v2h-7zm0 4h6v2h-6zM3 18h6v-2H3zm0-4h8v-2H3zm0-4h8V8H3zM3 6v2h8V6H3z"
+                  fill="currentColor" />
+              </svg></button>
+            <div class="toolbar-sep"></div>
+            <button type="button" class="toolbar-btn" id="btnMsgEmoji" title="Inserir emoji"
+              style="font-size:16px;line-height:1">😀</button>
+            <div class="toolbar-sep"></div>
+            <div style="position:relative; display:inline-block;">
+              <button type="button" class="toolbar-btn" id="btnMsgPlaceholder" title="Inserir Placeholder"
+                style="display:inline-flex;align-items:center;justify-content:center;padding:0 4px;border:1px solid #ccc;border-radius:3px">
+                <svg class="svg-icon" style="width: 16px; height: 16px;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M513.448 310.749h253.47c63.89 0 115.87 51.98 115.87 115.871v170.91c0 63.892-51.98 115.872-115.87 115.872h-253.47c-15.999 0-28.967-12.969-28.967-28.968s12.968-28.968 28.967-28.968h253.47c31.945 0 57.935-25.99 57.935-57.936V426.62c0-31.946-25.99-57.936-57.936-57.936H513.448c-15.999 0-28.967-12.968-28.967-28.967s12.968-28.968 28.967-28.968zM257.083 713.402h26.07c16 0 28.969-12.969 28.969-28.968s-12.97-28.968-28.968-28.968h-26.071c-31.946 0-57.936-25.99-57.936-57.936V426.62c0-31.946 25.99-57.936 57.936-57.936h26.07c16 0 28.969-12.968 28.969-28.967s-12.97-28.968-28.968-28.968h-26.071c-63.892 0-115.872 51.98-115.872 115.871v170.91c0 63.893 51.98 115.872 115.872 115.872z m26.07-514.255c47.92 0 86.904 38.985 86.904 86.904v451.898c0 47.919-38.984 86.904-86.903 86.904-15.999 0-28.968 12.969-28.968 28.968s12.969 28.968 28.968 28.968c47.328 0 89.424-22.82 115.871-58.032 26.448 35.212 68.544 58.032 115.872 58.032 15.999 0 28.968-12.97 28.968-28.968s-12.97-28.968-28.968-28.968c-47.919 0-86.904-38.985-86.904-86.904V286.051c0-47.919 38.985-86.904 86.904-86.904 15.999 0 28.968-12.969 28.968-28.968s-12.97-28.968-28.968-28.968c-47.328 0-89.424 22.82-115.872 58.032-26.447-35.212-68.543-58.032-115.871-58.032-15.999 0-28.968 12.97-28.968 28.968s12.969 28.968 28.968 28.968z" /></svg>
+              </button>
+              <div id="placeholderPickerPanel" style="display:none; position:absolute; top:36px; right:0; width:220px; background:var(--c-surface); border:1px solid var(--c-border); border-radius:var(--radius); box-shadow:var(--shadow-lg); z-index:999; max-height:200px; overflow-y:auto; padding:4px;"></div>
+            </div>
+          </div>
+          <div class="rich-editor" id="msgEditor" contenteditable="true" spellcheck="true"
+            aria-label="Conteúdo da mensagem" role="textbox" aria-multiline="true"
+            placeholder="Digite o conteúdo da mensagem…"></div>
+        </div>
+        <!-- Favorito -->
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="msgFavorite" /> Marcar como favorito
+          </label>
+        </div>
+        <!-- Preview -->
+        <div class="form-group">
+          <label class="form-label">Prévia</label>
+          <div class="preview-box" id="msgPreview"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="btnCancelMsg">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveMsg">
+          <svg viewBox="0 0 24 24" class="icon-sm" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="currentColor" />
+          </svg>
+          Salvar Mensagem
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Categoria -->
+  <div class="modal-overlay" id="modalCategory" role="dialog" aria-modal="true" aria-labelledby="modalCatTitle"
+    style="display:none">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="modalCatTitle">Nova Categoria</h2>
+        <button class="btn-close" id="btnCloseCatModal" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" class="icon-sm" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Nome com picker de ícone -->
+        <div class="form-group">
+          <label class="form-label" for="catName">Nome <span class="required">*</span></label>
+          <div class="title-input-row">
+            <button type="button" class="btn-icon-sm" id="btnCatIconPicker" title="Selecionar ícone da categoria"
+              aria-label="Selecionar ícone da categoria" aria-expanded="false">
+              <svg id="catSelectedIconSvg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                style="color:#757575">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor" />
+              </svg>
+            </button>
+            <input type="text" class="form-input" id="catName" placeholder="Ex: RMA" maxlength="60" style="flex:1" />
+            <input type="hidden" id="catIconValue" value="" />
+          </div>
+          <!-- Painel de seleção de ícone da categoria -->
+          <div id="catIconPickerPanel"
+            style="display:none;margin-top:6px;border:1px solid #DEE2E6;border-radius:8px;padding:12px;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,0.12)">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+              <div style="font-size:10px;font-weight:700;color:#9E9E9E;text-transform:uppercase;letter-spacing:0.5px">
+                SELECIONAR ÍCONE</div>
+            </div>
+            <div id="catIconGrid" style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px"></div>
+          </div>
+        </div>
+
+        <!-- Cor -->
+        <div class="form-group">
+          <label class="form-label" for="catColor">Cor <span class="required">*</span></label>
+          <div class="color-picker-row">
+            <input type="color" class="color-input" id="catColorPicker" value="#2196F3" />
+            <input type="text" class="form-input" id="catColor" placeholder="#2196F3" maxlength="7" />
+            <div class="color-preview" id="catColorPreview" style="background:#2196F3"></div>
+          </div>
+          <div class="color-swatches" id="colorSwatches"></div>
+        </div>
+
+        <!-- Escopo -->
+        <div class="form-group">
+          <label class="form-label" for="catScope">Escopo (site)</label>
+          <input type="text" class="form-input" id="catScope" placeholder="Ex: kabum.com.br (opcional)" />
+        </div>
+        <!-- Ativa -->
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="catActive" checked /> Categoria ativa
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="btnCancelCat">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveCat">
+          <svg viewBox="0 0 24 24" class="icon-sm" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="currentColor" />
+          </svg>
+          Salvar Categoria
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Site -->
+  <div class="modal-overlay" id="modalSite" role="dialog" aria-modal="true" aria-labelledby="modalSiteTitle"
+    style="display:none">
+    <div class="modal-box modal-box-sm">
+      <div class="modal-header">
+        <h2 id="modalSiteTitle">Adicionar Site</h2>
+        <button class="btn-close" id="btnCloseSiteModal" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" class="icon-sm" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="siteDomain">Domínio <span class="required">*</span></label>
+          <input type="text" class="form-input" id="siteDomain" placeholder="Ex: mercadolivre.com.br" maxlength="200" />
+          <small style="color:var(--c-text-2);font-size:11px;margin-top:3px;display:block">Apenas o hostname, sem
+            http:// ou caminhos</small>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="siteLabel">Nome / Apelido</label>
+          <input type="text" class="form-input" id="siteLabel" placeholder="Ex: Mercado Livre" maxlength="80" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Seletores de Campo <span class="hint">(CSS, opcional)</span></label>
+          <div class="selectors-list" id="selectorsList"></div>
+          <button type="button" class="btn-add-selector" id="btnAddSelector">
+            <svg viewBox="0 0 24 24" width="14" height="14" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor" />
+            </svg>
+            Adicionar seletor
+          </button>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Placeholders <span class="hint">(variáveis do site)</span></label>
+          <div class="selectors-list" id="sitePlaceholdersList"></div>
+          <button type="button" class="btn-add-selector" id="btnAddSitePlaceholder">
+            <svg viewBox="0 0 24 24" width="14" height="14" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor" />
+            </svg>
+            Adicionar placeholder
+          </button>
+        </div>
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="siteEnabled" /> Ativar extensão neste site
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="btnCancelSite">Cancelar</button>
+        <button class="btn btn-primary" id="btnSaveSite">
+          <svg viewBox="0 0 24 24" class="icon-sm" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="currentColor" />
+          </svg>
+          Salvar Site
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Confirmar -->
+  <div class="modal-overlay" id="modalConfirm" role="dialog" aria-modal="true" style="display:none">
+    <div class="modal-box modal-box-sm">
+      <div class="modal-header">
+        <h2 id="confirmTitle">Confirmar ação</h2>
+      </div>
+      <div class="modal-body">
+        <p id="confirmText"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="btnConfirmCancel">Cancelar</button>
+        <button class="btn btn-danger" id="btnConfirmOk">Confirmar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Importar -->
+  <div class="modal-overlay" id="modalImport" role="dialog" aria-modal="true" style="display:none">
+    <div class="modal-box modal-box-sm">
+      <div class="modal-header">
+        <h2>Importar Dados</h2>
+        <button class="btn-close" id="btnCloseImportModal" aria-label="Fechar">
+          <svg viewBox="0 0 24 24" class="icon-sm" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+              fill="currentColor" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Arquivo: <strong id="importFileName"></strong></p>
+        <div class="import-options">
+          <label class="radio-label">
+            <input type="radio" name="importMode" value="replace" checked />
+            <span><strong>Substituir tudo</strong> — apaga dados atuais e importa o arquivo</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="importMode" value="merge" />
+            <span><strong>Mesclar</strong> — adiciona itens novos sem remover os existentes</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="btnCancelImport">Cancelar</button>
+        <button class="btn btn-primary" id="btnDoImport">Importar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="../../servicos/armazenamento.js"></script>
+  <script src="../../utilitarios/sanitizacao.js"></script>
+  <script src="../../utilitarios/validadores.js"></script>
+  <script src="../../utilitarios/emojiData.js"></script>
+  <script src="../../utilitarios/emojiPicker.js"></script>
+  <script src="html2canvas.min.js"></script>
+  <script src="adminIcons.js"></script>
+  <script src="adminEstado.js"></script>
+  <script src="adminUi.js"></script>
+  <script src="adminMensagens.js"></script>
+  <script src="adminCategorias.js"></script>
+  <script src="adminSites.js"></script>
+  <script src="adminDashboard.js"></script>
+  <script src="adminApp.js"></script>
+</body>
+
+</html>

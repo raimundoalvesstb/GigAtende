@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "GigAtende",
+  "version": "1.2.2",
+  "description": "O GigAtende foi criado para facilitar e agilizar o dia a dia de quem trabalha no atendimento de pré-venda, pós-venda e RMA (Garantia). Com ele, você não precisará mais digitar as mesmas mensagens repetidas vezes. Você pode salvar textos padrões, organizar suas mensagens por categoria (ex: Trocas, Dúvidas Técnicas, Logística) e inserir as respostas em qualquer sistema de chat ou e-mail baseados na web com apenas alguns cliques, de forma fácil e padronizada.",
+  "action": {
+    "default_popup": "src/app/popup/popup.html",
+    "default_icon": {
+      "16": "assets/icon16.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    },
+    "default_title": "GigAtende"
+  },
+  "options_page": "src/app/admin/admin.html",
+  "background": {
+    "service_worker": "src/servicos/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "src/utilitarios/validadores.js",
+        "src/utilitarios/sanitizacao.js",
+        "src/servicos/armazenamento.js",
+        "src/utilitarios/emojiData.js",
+        "src/utilitarios/emojiPicker.js",
+        "src/app/admin/adminIcons.js",
+        "src/app/content/injetor.js"
+      ],
+      "css": [
+        "src/app/content/injetor.css"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs"
+  ],
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "assets/*",
+        "src/app/content/injetor.css"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

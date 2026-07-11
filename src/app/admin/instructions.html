@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GigAtende – Manual de Uso</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+      font-size: 14px;
+      background: #F0F2F5;
+      color: #212121;
+      line-height: 1.7;
+      padding: 0;
+    }
+
+    .footer {
+      display: flex;
+    }
+
+    .footer.hidden {
+      display: none !important;
+    }
+
+    .page-container {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .sidebar {
+      width: 30%;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: sticky;
+      top: 24px;
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+    }
+
+    /* Estilização suave da barra de rolagem da sidebar */
+    .sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar::-webkit-scrollbar-thumb {
+      background: #c1c1c1;
+      border-radius: 4px;
+    }
+
+    .sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      padding: 28px 32px;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1565C0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card h2 .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1565C0, #1976D2);
+      color: #fff;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      margin: 16px 0 8px;
+    }
+
+    .card h3:first-of-type {
+      margin-top: 0;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 10px;
+    }
+
+    .card ul,
+    .card ol {
+      margin: 8px 0 12px 22px;
+    }
+
+    .card li {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+
+    .card li strong {
+      color: #212121;
+    }
+
+    .card .tag {
+      display: inline-block;
+      background: #E3F2FD;
+      color: #1565C0;
+      padding: 1px 8px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .callout {
+      background: #E3F2FD;
+      border: 1px solid #BBDEFB;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 12px 0;
+      font-size: 13px;
+      color: #1565C0;
+    }
+
+    .callout strong {
+      color: #0D47A1;
+    }
+
+    .callout-warn {
+      background: #FFF3E0;
+      border: 1px solid #FFE0B2;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 12px 0;
+      font-size: 13px;
+      color: #E65100;
+    }
+
+    .callout-warn strong {
+      color: #BF360C;
+    }
+
+    .callout-success {
+      background: #E8F5E9;
+      border: 1px solid #C8E6C9;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin: 12px 0;
+      font-size: 13px;
+      color: #2E7D32;
+    }
+
+    .divider {
+      height: 1px;
+      background: #DEE2E6;
+      margin: 16px 0;
+    }
+
+    /* Video container */
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+      margin: 16px 0;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 12px;
+    }
+
+    /* Thumbnail clicável (substitui iframe bloqueado em extensões Chrome) */
+    .video-thumb-link {
+      display: block;
+      text-decoration: none;
+      margin: 16px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .video-thumb-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .video-thumb-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      border-radius: 12px;
+      transition: opacity 0.3s ease;
+    }
+
+    .video-thumb-link:hover .video-thumb-img {
+      opacity: 0.85;
+    }
+
+    .video-play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
+      transition: transform 0.2s ease;
+    }
+
+    .video-thumb-link:hover .video-play-btn {
+      transform: translate(-50%, -50%) scale(1.12);
+    }
+
+    .video-thumb-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+      color: #fff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 24px 18px 14px;
+      border-radius: 0 0 12px 12px;
+      letter-spacing: 0.3px;
+    }
+
+
+    /* Training section specific styles */
+    .training-section {
+      margin-top: 0;
+    }
+
+    .training-section .step-block {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      padding: 28px 32px;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+      margin-bottom: 20px;
+    }
+
+    .training-section .step-block h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1565C0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .training-section .step-block h2 .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #1565C0, #1976D2);
+      color: #fff;
+      font-size: 15px;
+      flex-shrink: 0;
+    }
+
+    .training-section .step-block p {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 10px;
+      line-height: 1.7;
+    }
+
+    .training-section .step-block ol {
+      margin: 8px 0 12px 22px;
+    }
+
+    .training-section .step-block ol li {
+      font-size: 14px;
+      color: #444;
+      margin-bottom: 6px;
+      line-height: 1.6;
+    }
+
+    .training-section .step-block ol li strong {
+      color: #212121;
+    }
+
+    .training-section .step-block img.training-img {
+      max-width: 100%;
+      border-radius: 10px;
+      border: 2px solid #DEE2E6;
+      margin: 14px 0;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+      display: block;
+    }
+
+    .training-section .step-block .img-caption {
+      font-size: 12px;
+      color: #757575;
+      font-style: italic;
+      text-align: center;
+      margin: -6px 0 16px 0;
+    }
+
+    .footer {
+      text-align: center;
+      color: #9E9E9E;
+      font-size: 12px;
+      padding: 24px 16px;
+    }
+
+    @media (max-width: 900px) {
+      .page-container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        position: static;
+      }
+
+      .card {
+        padding: 18px 16px;
+      }
+
+      .training-section .step-block {
+        padding: 18px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="page-container">
+    <div class="main-content">
+
+      <!-- 0: INTRODUÇÃO / BOAS-VINDAS -->
+      <div class="card" id="intro">
+        <h2><span class="num">&#128075;</span> Boas-vindas!</h2>
+        <p>O <strong>GigAtende</strong> é uma extensão para o navegador que foi feita para <strong>acelerar o seu
+            atendimento</strong> em plataformas de atendimento baseados na web. Com ele, você não precisa mais digitar a
+          mesma resposta várias vezes.</p>
+        <p>Você <strong>salva mensagens prontas</strong> e as insere nos campos de texto com apenas <strong>2
+            cliques</strong>. As mensagens podem ter o nome do cliente, produto e outras informações <strong>preenchidas
+            automaticamente</strong>!</p>
+        <div class="callout-success">
+          <strong>Privacidade total:</strong> Todas as suas mensagens e configurações ficam salvas <strong>apenas no seu
+            computador</strong>. Ninguém tem acesso a elas — nem os desenvolvedores, nem a internet.
+        </div>
+      </div>
+
+      <!-- VÍDEO TUTORIAL -->
+      <div class="card" id="video-tutorial">
+        <h2><span class="num">&#127909;</span> Tutorial em Vídeo</h2>
+        <p>Assista ao vídeo abaixo para ver o GigAtende em ação e aprender rapidamente como usar todos os recursos:</p>
+        <a href="https://www.youtube.com/watch?v=ald4k4QOzH8" target="_blank" class="video-thumb-link"
+          title="Assistir no YouTube">
+          <div class="video-thumb-wrapper">
+            <img src="https://img.youtube.com/vi/ald4k4QOzH8/maxresdefault.jpg"
+              onerror="this.src='https://img.youtube.com/vi/ald4k4QOzH8/hqdefault.jpg'"
+              alt="GigAtende - Treinamento básico" class="video-thumb-img">
+            <div class="video-play-btn">
+              <svg viewBox="0 0 68 48" width="68" height="48">
+                <path
+                  d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z"
+                  fill="#f00" />
+                <path d="M45 24 27 14v20" fill="#fff" />
+              </svg>
+            </div>
+            <div class="video-thumb-label">▶ Clique para assistir no YouTube</div>
+          </div>
+        </a>
+      </div>
+
+      <!-- ============================================================ -->
+      <!-- CONTEÚDO DO TREINAMENTO (Treinamento_GigAtende.docx)          -->
+      <!-- ============================================================ -->
+      <div class="training-section">
+
+        <!-- PASSO 1 -->
+        <div class="step-block" id="treino-passo1">
+          <h2><span class="num">1</span> Instalando e Fixando a Extensão no Navegador</h2>
+          <p>Para que a mágica aconteça, o primeiro passo é colocar o GigAtende no nosso navegador Chrome.</p>
+          <ol>
+            <li>Para instalar a extensão é necessário baixar o arquivo .zip e extrair em um local de seu computador.
+            </li>
+            <li>Depois de extrair, vá em "<strong>Gerenciar extensões</strong>" que pode ser acessado clicando nos 3
+              pontinhos ao lado da imagem do usuário no navegador.</li>
+            <li>Ou no canto superior direito da tela do Google Chrome, bem ao lado de onde digitamos o endereço do site
+              no ícone que parece uma <strong>peça de quebra-cabeça</strong> (é o botão de Extensões).</li>
+            <li>Habilite a função "<strong>Modo do desenvolvedor</strong>".</li>
+            <li>Clique no botão "Carregar sem compactação", navegue até a pasta da extensão, aquela mesma que foi
+              extraída do arquivo .zip.</li>
+            <li>Depois de escolher a pasta da <strong>GigAtende</strong>, clique em "<strong>Selecionar pasta</strong>"
+              e a extensão já vai instalar e habilitar.</li>
+          </ol>
+          <img class="training-img" src="img_treinamento/treinamento_img_01.png" alt="Instalação da extensão GigAtende">
+          <div class="img-caption">[ FIGURA 1 - INSTALAÇÃO ]</div>
+
+          <ol start="7">
+            <li>Depois de instalarem a extensão, deem uma olhada no canto superior direito da tela do Google Chrome, bem
+              ao lado de onde digitamos o endereço do site.</li>
+            <li>Lá, vocês vão ver um ícone que parece uma <strong>peça de quebra-cabeça</strong>. Podem clicar nele.
+            </li>
+            <li>Vai abrir uma listinha. Procurem o <strong>GigAtende</strong> nessa lista e cliquem no desenho de um
+              <strong>Alfinete</strong> que fica do lado dele. O alfinete vai ficar azul.
+            </li>
+            <li>Prontinho! Reparem que agora o logotipo do GigAtende ficou visível o tempo todo lá em cima. Assim, ele
+              fica sempre à mão quando precisarmos.</li>
+          </ol>
+          <img class="training-img" src="img_treinamento/treinamento_img_02.png"
+            alt="Fixando a extensão na barra do navegador">
+          <div class="img-caption">[ FIGURA 2 - FIXANDO A EXTENSÃO ]</div>
+        </div>
+
+        <!-- PASSO 2 -->
+        <div class="step-block" id="treino-passo2">
+          <h2><span class="num">2</span> Criando Categorias (Deixando tudo organizado)</h2>
+          <p>Agora, vamos arrumar a nossa casa. Como teremos várias mensagens, é super importante separá-las em
+            pastinhas, que nós chamamos de <strong>Categorias</strong>.</p>
+          <p>Para abrir o nosso painel de controle, abram a extensão lá no topo e cliquem no botão <strong>Abrir
+              Administração</strong>.</p>
+          <img class="training-img" src="img_treinamento/treinamento_img_03.png" alt="Abrindo a administração">
+          <div class="img-caption">[ FIGURA 3 - ABRINDO A ADMINISTRAÇÃO ]</div>
+
+          <p>1. Olhem no menu superior e cliquem em <strong>Categorias</strong>.</p>
+          <p>2. Agora, cliquem no botão escrito <strong>Nova Categoria</strong>.</p>
+          <p>3. <strong>Nome da categoria:</strong> Vamos dar um nome para a nossa pasta. Podem digitar algo como
+            'Dúvidas Técnicas', 'Saudações' ou 'Devoluções'.</p>
+          <p>4. <strong>Ícone e Cor:</strong> Escolham um desenho (ícone). Isso ajuda muito a bater o olho e já saber
+            sobre o que se trata.</p>
+          <p>5. <strong>Opcionais:</strong> Logo abaixo, temos a opção 'Escopo (site)' (para identificar o uso em um
+            site específico) e a chavinha de 'Categoria ativa'. Deixem ela ligadinha (azul) para a categoria funcionar.
+          </p>
+          <p>6. Por fim, cliquem em Salvar. Ah, e se escreverem algo errado, não tem problema: é só clicar no ícone de
+            lápis na caixinha da categoria para <strong>editar</strong>.</p>
+          <img class="training-img" src="img_treinamento/treinamento_img_04.png" alt="Criando uma categoria">
+          <div class="img-caption">[ FIGURA 4 - CRIANDO UMA CATEGORIA ]</div>
+        </div>
+
+        <!-- PASSO 3 -->
+        <div class="step-block" id="treino-passo3">
+          <h2><span class="num">3</span> Criando a sua Primeira Mensagem (O Modelo)</h2>
+          <p>Com a nossa pastinha pronta, vamos colocar os nossos textos lá dentro!</p>
+          <p>1. No menu lá em cima, cliquem agora em <strong>Mensagens</strong>. Depois, cliquem no botão
+            <strong>Cadastrar mensagem</strong>.
+          </p>
+          <p>2. <strong>Título da mensagem:</strong> Escolham um nome bem claro. Por exemplo: 'Saudação Inicial'.</p>
+          <p>3. <strong>Ícone e Categoria:</strong> Escolham um desenho que combine com a mensagem e selecionem a
+            categoria que acabamos de criar.</p>
+          <p>4. <strong>Tags:</strong> Aqui, vocês podem digitar palavras-chave separadas por vírgula (exemplo: <em>rma,
+              cumprimento, inicio</em>). Pensem nisso como atalhos para achar a mensagem bem mais rápido depois.</p>
+          <p>5. <strong>Conteúdo *:</strong> Nesta caixa maior, vocês vão digitar o texto com muito carinho, exatamente
+            como querem enviar para o cliente.</p>
+          <p>6. <strong>Prévia:</strong> Vejam que legal: enquanto vocês digitam, a extensão mostra na parte de 'Prévia'
+            (logo abaixo ou ao lado) como o texto vai ficar na tela.</p>
+          <p>7. Cliquem em Salvar. E, como sempre, o botão de lápis serve para <strong>editar</strong> a mensagem caso
+            precisem mudar alguma vírgula depois.</p>
+          <img class="training-img" src="img_treinamento/treinamento_img_05.png" alt="Cadastrando uma mensagem">
+          <div class="img-caption">[ FIGURA 5 - CADASTRANDO MENSAGEM ]</div>
+        </div>
+
+        <!-- PASSO 4 -->
+        <div class="step-block" id="treino-passo4">
+          <h2><span class="num">4</span> Ativando o GigAtende no Site de Atendimento</h2>
+          <p>Chegou a parte mais esperada: usar as mensagens na vida real! Abram o site ou sistema que vocês usam todos
+            os dias para falar com os clientes (como na Kabum ou no Mercado Livre, por exemplo).</p>
+          <p>1. Lá no topo do Chrome, cliquem na extensão do GigAtende.</p>
+          <p>2. Vai descer a janelinha da extensão. Procurem e habilitem o recurso <strong>Ativar neste site</strong>.
+          </p>
+          <p>3. Reparem que agora um <strong>botão flutuante com a logo do GigAtende</strong> apareceu no cantinho da
+            tela do navegador de vocês.</p>
+          <div class="callout-warn">
+            <strong>Dica de Ouro (Isso é muito, muito importante!):</strong> Para que o texto vá direitinho para o
+            cliente, o cursor de digitação precisa estar 'piscando' dentro da caixa de resposta do site. Ou seja,
+            <strong>clique primeiro dentro do campo onde você digitaria a resposta manualmente</strong>, e só depois
+            clique no botão flutuante do GigAtende e escolha a sua mensagem. Feito isso, o texto pula para o campo como
+            um passe de mágica!
+          </div>
+          <img class="training-img" src="img_treinamento/treinamento_img_06.png" alt="Habilitando um site">
+          <div class="img-caption">[ FIGURA 6 - HABILITANDO UM SITE ]</div>
+        </div>
+
+        <!-- PASSO 5 -->
+        <div class="step-block" id="treino-passo5">
+          <h2><span class="num">5</span> Favoritando Mensagens Rápidas</h2>
+          <p>Tem aquelas mensagens que a gente usa o dia inteiro, não é verdade? Vamos deixá-las a apenas um clique de
+            distância.</p>
+          <p>1. Voltemos lá para a tela de <strong>Mensagens</strong> na Administração. Reparem que existe uma
+            estrelinha ao lado de cada mensagem na lista.</p>
+          <p>2. Se você clicar nessa estrela, ela fica amarelinha e a mensagem vira uma <strong>Favorita</strong>.</p>
+          <p>3. E o que ganhamos com isso? Quando você abrir o botão flutuante no seu atendimento, essas mensagens
+            favoritas vão aparecer logo de cara, na parte de 'Mensagens Rápidas', mostrando <strong>apenas o
+              ícone</strong> delas logo abaixo do logotipo do botão flutuante.</p>
+          <p>4. Você pode escolher <strong>até 21 mensagens</strong> para colocar ali. Então, a dica é: escolham com
+            bastante cuidado um ícone diferente para cada uma, para facilitar a memória visual!</p>
+          <p>5. Se por acaso bater um esquecimento sobre o que um ícone significa, fiquem tranquilos: basta
+            <strong>pousar o cursor do mouse</strong> (sem clicar) em cima do ícone, que aparecerá uma pequena caixinha
+            de texto (legenda) com o título da mensagem.
+          </p>
+          <img class="training-img" src="img_treinamento/treinamento_img_07.png" alt="Mensagens favoritas">
+          <div class="img-caption">[ FIGURA 7 - MENSAGENS FAVORITAS ]</div>
+          <p>Na seção mensagens, na parte de baixo da caixa com a mensagem, vocês encontram funções para deletar,
+            editar, duplicar, copiar e mover a posição da mensagem (ao mover a caixinha com a mensagem, a mesma ordem é
+            exibida na parte de mensagens rápidas).</p>
+        </div>
+
+        <!-- PASSO 6 -->
+        <div class="step-block" id="treino-passo6">
+          <h2><span class="num">6</span> Placeholders: A Mágica de Preencher o Nome Sozinho</h2>
+          <p>E a mágica de preencher o nome do cliente sozinho, como funciona? Nós só precisamos dar uma ajudinha
+            amorosa para a extensão e 'mostrar' para ela onde o nome fica escrito na tela. Nós chamamos isso de
+            <em>Placeholder</em> (um espacinho reservado).
+          </p>
+          <p>1. No seu site de atendimento (já habilitado), com a tela de um atendimento aberta, clique no ícone do
+            GigAtende lá no topo do Chrome.</p>
+          <p>2. Clique no botão azul escrito <strong>Selecionar informações</strong>.</p>
+          <p>3. Leve o mouse suavemente até onde o nome do cliente está escrito na tela (vai aparecer um retângulo
+            azulzinho ao redor da informação que deve ser capturada) e <strong>dê um clique com o botão esquerdo do
+              mouse bem em cima do nome</strong>.</p>
+          <p>4. Vai aparecer um menuzinho perguntando o que é aquilo que você clicou. Selecione a opção <strong>Nome do
+              cliente</strong> (que tem o código [cliente]).</p>
+          <p>5. Perfeito! A extensão já aprendeu onde está o nome do cliente dentro do site/plataforma de atendimento.
+            Vocês podem fazer exatamente a mesma coisa para ensinar onde fica o Pedido <strong>[venda_pedido]</strong> e
+            o Produto <strong>[produto]</strong> no site.</p>
+          <p>6. É importante saber que cada site tem seu local exato onde ficam essas informações e, é preciso
+            configurar cada site, mas essa configuração é feita apenas uma vez para cada site/plataforma.</p>
+          <img class="training-img" src="img_treinamento/treinamento_img_08.png" alt="Mapeando informações da tela">
+          <div class="img-caption">[ FIGURA 8 - MAPEANDO INFORMAÇÕES ]</div>
+        </div>
+
+        <!-- PASSO 7 -->
+        <div class="step-block" id="treino-passo7">
+          <h2><span class="num">7</span> Usando Placeholders nas Mensagens</h2>
+          <p>Agora que a extensão já sabe ler a tela do seu sistema, vamos colocar essa facilidade dentro dos nossos
+            textos.</p>
+          <p>1. Quando vocês estiverem criando ou editando uma mensagem na Administração, olhem na caixa de 'Conteúdo'.
+            Tem um botãozinho especial para <strong>Variáveis/Placeholders</strong> (ao lado dos emojis).</p>
+          <p>2. Em vez de digitar 'Olá Fulano', você clica nesse botão e seleciona [cliente]. Seu texto vai ficar assim:
+            <em>'Olá [cliente], como posso ajudar hoje?'</em>
+          </p>
+          <p>3. <strong>Um detalhe muito bacana:</strong> Os placeholders [cliente], [venda_pedido] e [produto] são de
+            <strong>uso global</strong>, mas devem ser configurado para cada site/plataforma. Isso quer dizer que eles
+            vêm como padrão. Se você ensinar onde eles ficam no Sistema A em todos os atendimentos do Sistema A irão
+            recuperar o nome do cliente, e para um Sistema B, deve ser feito a mesma coisa!
+          </p>
+          <p>4. E se vocês precisarem puxar uma informação diferente? Fiquem à vontade para criar placeholders
+            personalizados para um site específico, eles também poderão ser usados nas suas mensagens sempre que
+            estiverem naquele site.</p>
+          <img class="training-img" src="img_treinamento/treinamento_img_09.png"
+            alt="Inserindo variáveis nas mensagens">
+          <div class="img-caption">[ FIGURA 9 - INSERINDO VARIÁVEIS ]</div>
+        </div>
+
+        <!-- PASSO 8 -->
+        <div class="step-block" id="treino-passo8">
+          <h2><span class="num">8</span> Gerenciando os Sites na Administração</h2>
+          <p>Na aba <strong>Sites</strong>, lá no painel de administração, vocês encontram a lista de todos os sites que
+            já habilitaram e ensinaram à extensão.</p>
+          <p>1. Ali vocês têm os controles para adicionar, editar ou até deletar os sites.</p>
+          <p>2. Caso precisem cadastrar um site novo direto por esse painel (através do botão <strong>Adicionar
+              Site</strong>), prestem muita atenção a este detalhe: digitem <strong>apenas o domínio</strong> do site.
+            Por exemplo: <em>atendimento.empresa.com.br</em>. Não precisam colocar http:// nem www (observação: não é
+            possível editar o domínio, pois a extensão precisa dele para funcionar corretamente).</p>
+          <p>3. Ao clicar para editar um site, existe uma seção chamada <strong>'Placeholders (variáveis do
+              site)'</strong>. É lá que vocês podem criar placeholders novos digitando manualmente, caso o site tenha
+            alguma informação muito específica que vocês queiram puxar automaticamente para o texto (observação: não é
+            possível editar os placeholders padrão).</p>
+          <img class="training-img" src="img_treinamento/treinamento_img_10.png" alt="Gerenciamento de sites">
+          <div class="img-caption">[ FIGURA 10 - GERENCIAMENTO DE SITES ]</div>
+        </div>
+
+        <!-- PASSO 9 -->
+        <div class="step-block" id="treino-passo9">
+          <h2><span class="num">9</span> Configurações, Tema e o Precioso "Backup"</h2>
+          <p>Indo para a aba <strong>Configurações</strong>, vocês podem deixar o GigAtende com a carinha de vocês,
+            mudando o tema (escolhendo cores mais claras ou mais escuras para relaxar a visão, por exemplo).</p>
+          <p>E olhem aqui um dos recursos mais valiosos de todos que são os botões de <strong>Exportar Backup</strong> e
+            <strong>Importar Backup</strong>.
+          </p>
+          <img class="training-img" src="img_treinamento/treinamento_img_11.png" alt="Tela de configurações">
+          <div class="img-caption">[ FIGURA 11 - TELA DE CONFIGURAÇÕES ]</div>
+        </div>
+
+        <!-- PASSO 10 -->
+        <div class="step-block" id="treino-passo10">
+          <h2><span class="num">10</span> Backup: A Salvação e o Compartilhamento</h2>
+          <p>Para facilitar a nossa vida, esses dois botões de 'Exportar' e 'Importar' Backup ficam visíveis o tempo
+            todo no <strong>topo da página</strong> de administração, lado a lado. Eles servem para salvar todo o seu
+            carinho e trabalho (suas categorias, mensagens e configurações) em um pequeno arquivo no seu computador (com
+            o formato .json).</p>
+
+          <h3>Situações onde o Backup é o seu melhor amigo:</h3>
+          <p>• <strong>Ganhou um computador novo ou trocou de estação? Ou o PC da empresa precisou ser
+              formatado?</strong> Não se preocupe! Basta ir no computador antigo, clicar em 'Exportar Backup'. Depois,
+            instale a extensão no computador novo, clique em 'Importar Backup' com aquele arquivo que você exportou e
+            pronto! Tudo volta a ser exatamente como era em segundos.</p>
+          <p>• <strong>Trabalho em Equipe Campeão:</strong> Você criou um rig de mensagens perfeitas, super acolhedoras
+            e sem erros ortográficos? Exporte o seu backup e mande o arquivo para os seus colegas de equipe. Eles
+            importam o arquivo nos computadores deles e pronto: a equipe toda passa a usar as mesmas mensagens
+            padronizadas, elevando a qualidade do atendimento de todo mundo!</p>
+
+          <img class="training-img" src="img_treinamento/treinamento_img_12.png"
+            alt="Exportando e importando mensagens">
+          <div class="img-caption">[ FIGURA 12 - EXPORTANDO E IMPORTANDO MENSAGENS ]</div>
+
+          <p>A extensão salva o arquivo .json, por padrão, com o nome gigatende-backup-ano-mês-dia.json.</p>
+
+          <div class="callout-warn">
+            <strong>Importante:</strong> É importante sempre manter suas mensagens e configurações (backup) atualizadas
+            e salvas em local de fácil, mas seguro, acesso como o Google Drive.
+          </div>
+
+          <div class="callout-warn">
+            <strong>Atenção:</strong> O arquivo .json nunca deve ser editado fora da extensão. Esse é um arquivo
+            sensível e pode apresentar problemas de faltar algum caractere que ele usa para organização.
+          </div>
+        </div>
+
+      </div><!-- /training-section -->
+
+      <!-- PRIVACIDADE -->
+      <div
+        style="background:#E8F5E9;border:1px solid #C8E6C9;border-radius:12px;padding:16px 20px;display:flex;align-items:flex-start;gap:14px">
+        <svg viewBox="0 0 24 24" width="20" height="20" style="flex-shrink:0;color:#388E3C;margin-top:2px">
+          <path
+            d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"
+            fill="currentColor" />
+        </svg>
+        <div>
+          <p style="font-size:14px;color:#2E7D32"><strong>Privacidade dos seus dados</strong></p>
+          <p style="font-size:13px;color:#2E7D32;line-height:1.6">Todas as suas informações (mensagens, categorias,
+            configurações e mapeamentos) ficam salvas <strong>apenas no seu navegador</strong> — dentro do seu
+            computador. Nada é enviado para a internet, nenhum servidor, nenhuma empresa. Seus dados são seus!</p>
+        </div>
+      </div>
+
+    </div> <!-- Fim da main-content -->
+
+    <aside class="sidebar">
+      <div class="card" style="padding: 24px;">
+        <h3 style="margin-top:0; color:#1565C0; font-size:16px; border-bottom:1px solid #E3F2FD; padding-bottom:10px;">
+          Informações da Extensão</h3>
+
+        <div style="font-size:13px; color:#444; margin-top:14px;">
+          <p><strong>Versão Oficial:</strong> 1.2.2</p>
+
+          <div
+            style="margin-top: 14px; padding: 12px; background: #F8F9FA; border-radius: 6px; font-size: 12px; color: #333;">
+            <p style="margin:0 0 6px 0;">Desenvolvido em Vibe Code por <strong>Raimundo A S Brigida</strong></p>
+            <a href="https://www.linkedin.com/in/raimundoalvesstb/" target="_blank"
+              style="display:inline-flex; align-items:center; color:#0A66C2; text-decoration:none; font-weight:500;">
+              <svg viewBox="0 0 24 24" width="16" height="16" style="margin-right:4px; fill:currentColor">
+                <path
+                  d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
+              </svg>
+              https://www.linkedin.com/in/raimundoalvesstb/
+            </a>
+          </div>
+
+          <div class="divider" style="margin: 14px 0;"></div>
+
+          <p style="font-weight:700; color:#1565C0; margin-bottom:6px;">Passo a Passo do Treinamento</p>
+          <ul style="margin: 0 0 0 16px; font-size:12.5px; line-height:1.7;">
+            <li><a href="#treino-passo1" style="color:#1976D2; text-decoration:none; font-weight:500;">1. Instalando e
+                Fixando</a></li>
+            <li><a href="#treino-passo2" style="color:#1976D2; text-decoration:none; font-weight:500;">2. Criando
+                Categorias</a></li>
+            <li><a href="#treino-passo3" style="color:#1976D2; text-decoration:none; font-weight:500;">3. Criando
+                Mensagens</a></li>
+            <li><a href="#treino-passo4" style="color:#1976D2; text-decoration:none; font-weight:500;">4. Ativando no
+                Site</a></li>
+            <li><a href="#treino-passo5" style="color:#1976D2; text-decoration:none; font-weight:500;">5. Favoritos
+                Rápidos</a></li>
+            <li><a href="#treino-passo6" style="color:#1976D2; text-decoration:none; font-weight:500;">6.
+                Placeholders</a></li>
+            <li><a href="#treino-passo7" style="color:#1976D2; text-decoration:none; font-weight:500;">7. Usando
+                Variáveis</a></li>
+            <li><a href="#treino-passo8" style="color:#1976D2; text-decoration:none; font-weight:500;">8. Gerenciando
+                Sites</a></li>
+            <li><a href="#treino-passo9" style="color:#1976D2; text-decoration:none; font-weight:500;">9. Configurações
+                e Tema</a></li>
+            <li><a href="#treino-passo10" style="color:#1976D2; text-decoration:none; font-weight:500;">10. Backup</a>
+            </li>
+          </ul>
+
+          <div class="divider" style="margin: 14px 0;"></div>
+
+          <p style="font-weight:700; color:#1565C0; margin-bottom:6px;">Notas de Versão</p>
+          <ul style="margin: 0 0 0 16px; font-size:12px; color:#555;">
+            <li><strong>v1.2.0:</strong> Personalização de Marca Global (upload de logotipo customizado).</li>
+            <li><strong>v1.1.0:</strong> 4 esquemas de cores (Claro, Escuro, Quente, Alto Contraste).</li>
+            <li>Mapeamento avançado de iframe.</li>
+            <li>Prevenção de quebra de layout de plataformas em textos longos.</li>
+            <li>Desempenho de detecção O(1) no content-script.</li>
+          </ul>
+
+          <div class="divider" style="margin: 14px 0;"></div>
+
+          <p style="font-weight:700; color:#1565C0; margin-bottom:6px;">Segurança &amp; Privacidade</p>
+          <p style="font-size:12px; line-height:1.5;">O processamento de dados é <strong>100% local</strong> (Local
+            Storage). Não há coleta de dados, rastreamento analítico ou comunicação com servidores em nuvem. Suas
+            mensagens e padrões ficam exclusivamente no seu computador.</p>
+
+          <div class="divider" style="margin: 14px 0;"></div>
+
+          <p style="font-weight:700; color:#1565C0; margin-bottom:6px;">Permissões Necessárias</p>
+          <ul style="margin: 0 0 0 16px; font-size:12px; color:#555;">
+            <li><strong>storage:</strong> Para gravar mensagens no navegador.</li>
+            <li><strong>activeTab / tabs:</strong> Para injetar a bolha do botão GA no site que você habilitar.</li>
+          </ul>
+
+          <div class="divider" style="margin: 14px 0;"></div>
+
+          <p style="font-weight:700; color:#1565C0; margin-bottom:6px;">Info Técnica (TI)</p>
+          <p style="font-size:11.5px; line-height:1.5; color:#555;">Extensão Vanilla JS sem frameworks. A injeção ocorre
+            via API Range para contenteditable ou seleção nativa de textarea. Mitigação contra XSS implementada através
+            de parser DOM local e sanitização manual. Não utiliza MutationObserver em todo documento, garantindo zero
+            impacto de renderização (FPS) nas páginas.</p>
+        </div>
+      </div>
+    </aside>
+
+
+  </div>
+
+  <div class="footer" id="footer">
+    GigAtende v1.2.2 &middot; <strong>Raimundo A S Brigida</strong> - <a
+      href="https://www.linkedin.com/in/raimundoalvesstb/" target="_blank"
+      style="display:inline-flex; align-items:center; color:#0A66C2; text-decoration:none; font-weight:500;">
+      <svg viewBox="0 0 24 24" width="16" height="16" style="margin-right:4px; fill:currentColor">
+        <path
+          d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z">
+        </path>
+      </svg>
+      https://www.linkedin.com/in/raimundoalvesstb/
+    </a> | &middot; Todos os direitos reservados
+  </div>
+
+</body>
+
+</html>
