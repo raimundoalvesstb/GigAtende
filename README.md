@@ -44,9 +44,11 @@ Para que a mágica aconteça, o primeiro passo é colocar o GigAtende no nosso n
 5. Para facilitar o acesso, clique no ícone de quebra-cabeça e depois no ícone de **Alfinete** ao lado do GigAtende para fixá-lo na barra.
 
 ![Instalação da extensão GigAtende](src/app/admin/img_treinamento/treinamento_img_01.png)
+
 *Figura 1 - Instalação*
 
 ![Fixando a extensão na barra do navegador](src/app/admin/img_treinamento/treinamento_img_02.png)
+
 *Figura 2 - Fixando a Extensão*
 
 ---
@@ -56,6 +58,7 @@ Como teremos várias mensagens, é super importante separá-las em pastas (Categ
 Para acessar o painel de controle, clique no ícone da extensão no topo e depois em **Abrir Administração**.
 
 ![Abrindo a administração](src/app/admin/img_treinamento/treinamento_img_03.png)
+
 *Figura 3 - Abrindo a Administração*
 
 1. No menu superior da Administração, clique em **Categorias**.
@@ -65,6 +68,7 @@ Para acessar o painel de controle, clique no ícone da extensão no topo e depoi
 5. Deixe a chave 'Categoria ativa' ligada e clique em Salvar.
 
 ![Criando uma categoria](src/app/admin/img_treinamento/treinamento_img_04.png)
+
 *Figura 4 - Criando uma Categoria*
 
 ---
@@ -80,6 +84,7 @@ Com a pasta pronta, vamos cadastrar os textos.
 6. Clique em Salvar.
 
 ![Cadastrando uma mensagem](src/app/admin/img_treinamento/treinamento_img_05.png)
+
 *Figura 5 - Cadastrando Mensagem*
 
 ---
@@ -94,6 +99,7 @@ Abra o site ou sistema que você usa para falar com os clientes.
 > ⚠️ **Dica de Ouro:** Clique primeiro dentro do campo onde você digitaria a resposta, e só depois clique no botão flutuante do GigAtende e escolha sua mensagem.
 
 ![Habilitando um site](src/app/admin/img_treinamento/treinamento_img_06.png)
+
 *Figura 6 - Habilitando um Site*
 
 ---
@@ -106,6 +112,7 @@ Deixe as mensagens mais usadas a um clique de distância.
 3. Você pode escolher até 21 mensagens para este atalho rápido! Pouse o mouse sobre o ícone para ver a legenda.
 
 ![Mensagens favoritas](src/app/admin/img_treinamento/treinamento_img_07.png)
+
 *Figura 7 - Mensagens Favoritas*
 
 ---
@@ -120,6 +127,7 @@ A extensão preenche o nome do cliente sozinho, você só precisa "mostrar" onde
 5. Pronto! Você pode repetir o processo para mapear o Pedido (`[venda_pedido]`) e o Produto (`[produto]`). *Esta configuração é feita apenas uma vez por site!*
 
 ![Mapeando informações da tela](src/app/admin/img_treinamento/treinamento_img_08.png)
+
 *Figura 8 - Mapeando Informações*
 
 ---
@@ -132,6 +140,7 @@ Com a extensão lendo os dados, coloque as variáveis nos seus textos.
 3. Se precisar, você pode criar placeholders personalizados específicos para cada site!
 
 ![Inserindo variáveis nas mensagens](src/app/admin/img_treinamento/treinamento_img_09.png)
+
 *Figura 9 - Inserindo Variáveis*
 
 ---
@@ -144,6 +153,7 @@ Na aba **Sites** da Administração, você visualiza os domínios mapeados.
 3. Na seção de edição, você pode criar placeholders personalizados manualmente.
 
 ![Gerenciamento de sites](src/app/admin/img_treinamento/treinamento_img_10.png)
+
 *Figura 10 - Gerenciamento de Sites*
 
 ---
@@ -152,6 +162,7 @@ Na aba **Sites** da Administração, você visualiza os domínios mapeados.
 Na aba **Configurações**, mude o tema da extensão e faça backup das suas configurações.
 
 ![Tela de configurações](src/app/admin/img_treinamento/treinamento_img_11.png)
+
 *Figura 11 - Tela de Configurações*
 
 ---
@@ -165,6 +176,7 @@ Exporte ou importe seus dados a qualquer momento pelos botões no topo da Admini
 > ⚠️ **Atenção:** O arquivo `.json` exportado nunca deve ser editado fora da extensão para evitar corrompimento de dados. Mantenha seus backups atualizados em local seguro (como Google Drive).
 
 ![Exportando e importando mensagens](src/app/admin/img_treinamento/treinamento_img_12.png)
+
 *Figura 12 - Exportando e Importando Mensagens*
 
 ---
