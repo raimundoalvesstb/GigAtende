@@ -41,6 +41,8 @@ body {
   max-width: 320px;
   color: var(--cor-texto-primario);
   font-size: 13px;
+  border-radius: var(--raio);
+  overflow: hidden;
 }
 
 .popup-raiz {
