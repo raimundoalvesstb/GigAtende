@@ -196,7 +196,7 @@ Exporte ou importe seus dados a qualquer momento pelos botões no topo da Admini
 
 ## 🤝 Contato e Projeto
 
-**Projeto desenvolvido em Vibe Code por Raimundo A S Brigida**
+**Projeto desenvolvido em Vibe coding por Raimundo A S Brigida**
 
 - **LinkedIn:** [https://www.linkedin.com/in/raimundoalvesstb/](https://www.linkedin.com/in/raimundoalvesstb/)
 
