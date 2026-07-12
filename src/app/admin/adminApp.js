@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Projeto: GigAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
@@ -408,5 +408,26 @@
 
   // Ponto de entrada final
   await inicializar();
+
+  /* ── Verificação de Atualização ────────────────────────────────────────── */
+  /**
+   * Lê o status de atualização armazenado pelo background.js e exibe o aviso
+   * discreto no logotipo da topnav se houver uma versão mais nova disponível.
+   */
+  (async function verificarAvisoAtualizacao() {
+    try {
+      const resultado = await chrome.storage.local.get('gigaAtende_update');
+      const info = resultado?.gigaAtende_update;
+      if (info?.updateAvailable && info?.latestVersion) {
+        const el = document.getElementById('avisoAtualizacaoAdmin');
+        if (el) {
+          el.textContent = `Atualização disponível (v${info.latestVersion})`;
+          el.style.display = '';
+        }
+      }
+    } catch (e) {
+      // Falha silenciosa
+    }
+  })();
 })();
 

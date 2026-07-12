@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Projeto: GigAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
@@ -176,4 +176,103 @@ function extrairDominio(url) {
     return null;
   }
 }
+
+/* ══════════════════════════════════════════════════════════════════════════ */
+/* VERIFICAÇÃO DE ATUALIZAÇÃO VIA GITHUB                                    */
+/* ══════════════════════════════════════════════════════════════════════════ */
+
+/** @constant {string} URL da API pública do GitHub para a última release */
+const GITHUB_RELEASES_URL = 'https://api.github.com/repos/raimundoalvesstb/GigAtende/releases/latest';
+
+/** @constant {string} Chave usada no chrome.storage.local para armazenar o status de atualização */
+const CHAVE_ATUALIZACAO = 'gigaAtende_update';
+
+/** @constant {string} Nome do alarme periódico de verificação */
+const ALARME_ATUALIZACAO = 'verificarAtualizacao';
+
+/** @constant {number} Intervalo de verificação em minutos (6 horas) */
+const INTERVALO_VERIFICACAO_MINUTOS = 360;
+
+/**
+ * Compara duas strings de versão semântica (ex: "1.3.0" vs "1.2.2").
+ * @param {string} versaoLocal - Versão instalada localmente.
+ * @param {string} versaoRemota - Versão disponível no GitHub.
+ * @returns {boolean} true se versaoRemota for maior que versaoLocal.
+ */
+function versaoRemotaMaior(versaoLocal, versaoRemota) {
+  const partesLocal = versaoLocal.split('.').map(Number);
+  const partesRemota = versaoRemota.split('.').map(Number);
+  const tamanho = Math.max(partesLocal.length, partesRemota.length);
+
+  for (let i = 0; i < tamanho; i++) {
+    const l = partesLocal[i] || 0;
+    const r = partesRemota[i] || 0;
+    if (r > l) return true;
+    if (r < l) return false;
+  }
+  return false;
+}
+
+/**
+ * Consulta a API do GitHub para verificar se existe uma versão mais recente da extensão.
+ * Armazena o resultado (updateAvailable + latestVersion) em chrome.storage.local.
+ * @async
+ */
+async function verificarAtualizacaoGitHub() {
+  try {
+    const resposta = await fetch(GITHUB_RELEASES_URL, {
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    });
+
+    if (!resposta.ok) return; // Falha silenciosa (rate limit, rede, etc.)
+
+    const dados = await resposta.json();
+    const tagName = dados.tag_name || '';
+
+    // Remove o prefixo "v" se existir (ex: "v1.3.0" → "1.3.0")
+    const versaoRemota = tagName.replace(/^v/i, '');
+    const versaoLocal = chrome.runtime.getManifest().version;
+
+    const atualizacaoDisponivel = versaoRemotaMaior(versaoLocal, versaoRemota);
+
+    await chrome.storage.local.set({
+      [CHAVE_ATUALIZACAO]: {
+        updateAvailable: atualizacaoDisponivel,
+        latestVersion: versaoRemota,
+        checkedAt: Date.now()
+      }
+    });
+  } catch (e) {
+    // Falha silenciosa: sem internet ou erro de rede
+  }
+}
+
+/**
+ * Cria (ou recria) o alarme periódico de verificação de atualização.
+ * Executa também uma verificação imediata na primeira vez.
+ */
+async function agendarVerificacaoAtualizacao() {
+  // Cria o alarme periódico (a cada 6 horas)
+  chrome.alarms.create(ALARME_ATUALIZACAO, {
+    delayInMinutes: 1, // Primeira verificação 1 minuto após a extensão carregar
+    periodInMinutes: INTERVALO_VERIFICACAO_MINUTOS
+  });
+}
+
+/** Listener para o alarme de verificação de atualização */
+chrome.alarms.onAlarm.addListener((alarme) => {
+  if (alarme.name === ALARME_ATUALIZACAO) {
+    verificarAtualizacaoGitHub();
+  }
+});
+
+/** Ao instalar ou atualizar a extensão, agendar a verificação */
+chrome.runtime.onInstalled.addListener(() => {
+  agendarVerificacaoAtualizacao();
+});
+
+/** Ao iniciar o service worker, garantir que o alarme existe */
+chrome.runtime.onStartup.addListener(() => {
+  agendarVerificacaoAtualizacao();
+});
 

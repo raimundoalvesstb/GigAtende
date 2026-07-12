@@ -183,7 +183,7 @@ Exporte ou importe seus dados a qualquer momento pelos botões no topo da Admini
 ---
 
 ## 🛠 Info Técnica
-- **Versão:** 1.2.2
+- **Versão:** 1.3.0
 - Extensão em Vanilla JS sem frameworks.
 - Injeção ocorre via API Range para contenteditable ou seleção nativa de textarea.
 - Mitigação contra XSS através de parser DOM local e sanitização manual.

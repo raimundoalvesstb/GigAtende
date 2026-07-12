@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Projeto: GigAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
@@ -350,6 +350,16 @@ input:checked + .deslizador::before { transform: translateX(20px); }
   font-size: 10px;
   color: var(--cor-texto-secundario);
   margin-top: auto;
+}
+
+/* ── Aviso de Atualização ── */
+.aviso-atualizacao {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  color: #D32F2F;
+  margin-top: 2px;
+  letter-spacing: 0.2px;
 }
 
 /* ── Estado Desativado ── */
