@@ -170,6 +170,12 @@ body {
   margin-top: 1px;
   letter-spacing: 0.2px;
   line-height: 1;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.topnav-brand-text .aviso-atualizacao:hover {
+  color: #FF8A8A;
+  text-decoration: underline;
 }
 
 /* Nav central */

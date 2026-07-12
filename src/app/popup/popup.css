@@ -34,6 +34,11 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  border-radius: var(--raio);
+  overflow: hidden;
+}
+
 body {
   font-family: 'Segoe UI', Roboto, Arial, sans-serif;
   background: var(--cor-fundo);
@@ -356,12 +361,18 @@ input:checked + .deslizador::before { transform: translateX(20px); }
 
 /* ── Aviso de Atualização ── */
 .aviso-atualizacao {
-  display: block;
+  display: inline-block;
   font-size: 10px;
   font-weight: 600;
   color: #D32F2F;
   margin-top: 2px;
   letter-spacing: 0.2px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.aviso-atualizacao:hover {
+  color: #B71C1C;
+  text-decoration: underline;
 }
 
 /* ── Estado Desativado ── */
