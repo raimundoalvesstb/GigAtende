@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Projeto: GigAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
@@ -123,7 +123,7 @@ window.AdminDashboard = (function () {
     const colors = ['#2196F3', '#4CAF50', '#FF9800', '#9C27B0', '#F44336', '#00BCD4', '#FFC107', '#3F51B5', '#E91E63', '#009688'];
     const totalSoma = array.reduce((sum, item) => sum + item.total, 0);
 
-    let svg = '<svg viewBox="-1.1 -1.1 2.2 2.2" style="transform: rotate(-90deg); width: 180px; height: 180px; overflow: visible; flex-shrink: 0;">';
+    let svg = '<svg viewBox="-1.1 -1.1 2.2 2.2" style="transform: rotate(-90deg); width: 234px; height: 234px; overflow: visible; flex-shrink: 0;">';
     let cumulativePercent = 0;
     let legendHtml = '<div style="display:flex; flex-direction:column; gap:8px; justify-content:space-evenly; flex:1; font-size:14px; margin-left: 24px;">';
 

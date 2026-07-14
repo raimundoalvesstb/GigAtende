@@ -184,14 +184,16 @@ Exporte ou importe seus dados a qualquer momento pelos botões no topo da Admini
 
 ## ⚠️ Casos de Mau Funcionamento
 
-- **Múltiplas plataformas no mesmo domínio:** Em CRMs que usam o mesmo domínio (ex: *xyz.com*) para várias plataformas como WhatsApp e E-mail, o sistema de recuperação de nomes (Placeholders) não atua normalmente, pois os placeholders são recuperados apenas de um local específico.
+
 - **Deformação do botão:** Em alguns casos o recurso de arrastar o botão flutuante pode deformar.
 - **Inconsistências visuais:** Sempre que o sistema apresentar inconsistências visuais, apenas atualize (**F5**) a página de atendimento.
 
 ---
 
 ## 🛠 Info Técnica
-- **Versão:** 1.3.2
+- **Nome:** GigAtende
+- **Versão:** 1.4.1
+- **Permissões:** `<all_urls>`, `storage`, `activeTab`, `scripting`, `alarms`.
 - Extensão em Vanilla JS sem frameworks.
 - Injeção ocorre via API Range para contenteditable ou seleção nativa de textarea.
 - Mitigação contra XSS através de parser DOM local e sanitização manual.

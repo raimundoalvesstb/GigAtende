@@ -530,6 +530,11 @@
           </div>
           <img class="training-img" src="img_treinamento/treinamento_img_06.png" alt="Habilitando um site">
           <div class="img-caption">[ FIGURA 6 - HABILITANDO UM SITE ]</div>
+          <div class="callout-warn">
+            <strong>Observação:</strong> O domínio poderá ser alterado para um caminho (URL, por exemplo: xyz.com/chat),
+            mas que isso deve ser feito na aba "Sites" na administração. Tenha muito cuidado ao fazer isso, pois a
+            extensão pode parar de funcionar se configurado incorretamente.
+          </div>
         </div>
 
         <!-- PASSO 5 -->
@@ -607,13 +612,13 @@
         <div class="step-block" id="treino-passo8">
           <h2><span class="num">8</span> Gerenciando os Sites na Administração</h2>
           <p>Na aba <strong>Sites</strong>, lá no painel de administração, vocês encontram a lista de todos os sites que
-            já habilitaram e ensinaram à extensão.</p>
-          <p>1. Ali vocês têm os controles para adicionar, editar ou até deletar os sites.</p>
-          <p>2. Caso precisem cadastrar um site novo direto por esse painel (através do botão <strong>Adicionar
-              Site</strong>), prestem muita atenção a este detalhe: digitem <strong>apenas o domínio</strong> do site.
-            Por exemplo: <em>atendimento.empresa.com.br</em>. Não precisam colocar http:// nem www (observação: não é
-            possível editar o domínio, pois a extensão precisa dele para funcionar corretamente).</p>
-          <p>3. Ao clicar para editar um site, existe uma seção chamada <strong>'Placeholders (variáveis do
+            já habilitaram e ensinaram à extensão. Ali vocês têm os controles para adicionar, editar ou até deletar os
+            sites.
+          </p>
+          <p>1. Caso precisem cadastrar um site novo direto por esse painel (através do botão <strong>Adicionar
+              Site</strong>), prestem muita atenção a este detalhe: digitem <strong>apenas o domínio ou o caminho específico</strong>.
+            Por exemplo: <em>atendimento.empresa.com.br</em> ou até mesmo endereços com porta e caminhos, como <em>xyz.com.br:4200/caminho/chat</em>. Não precisam colocar http:// (observação: a extensão ativará corretamente no local exato e em seus sub-caminhos, portanto, muito cuidado ao adicionar/editar o endereço para que ela funcione como desejado).</p>
+          <p>2. Ao clicar para editar um site, existe uma seção chamada <strong>'Placeholders (variáveis do
               site)'</strong>. É lá que vocês podem criar placeholders novos digitando manualmente, caso o site tenha
             alguma informação muito específica que vocês queiram puxar automaticamente para o texto (observação: não é
             possível editar os placeholders padrão).</p>
@@ -694,7 +699,7 @@
           Informações da Extensão</h3>
 
         <div style="font-size:13px; color:#444; margin-top:14px;">
-          <p><strong>Versão Oficial:</strong> 1.3.2</p>
+          <p><strong>Versão Oficial:</strong> 1.4.1</p>
 
           <div
             style="margin-top: 14px; padding: 12px; background: #F8F9FA; border-radius: 6px; font-size: 12px; color: #333;">
@@ -710,7 +715,8 @@
             <a href="https://github.com/raimundoalvesstb/GigAtende" target="_blank"
               style="display:inline-flex; align-items:center; color:#333; text-decoration:none; font-weight:500; margin-bottom: 8px;">
               <svg viewBox="0 0 24 24" width="16" height="16" style="margin-right:4px; fill:currentColor">
-                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.379.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                <path
+                  d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.379.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
               </svg>
               https://github.com/raimundoalvesstb/GigAtende
             </a><br>
@@ -754,14 +760,10 @@
 
           <p style="font-weight:700; color:#1565C0; margin-bottom:6px;">Notas de Versão</p>
           <ul style="margin: 0 0 0 16px; font-size:12px; color:#555;">
-            <li><strong>v1.3.2:</strong> Aviso de atualização agora é um link clicável e popup com bordas arredondadas.</li>
-            <li><strong>v1.3.1:</strong> Melhorias de UI no popup e inserção de link do Github nas instruções.</li>
+            <li><strong>v1.4.1:</strong> Suporte aprimorado para mapeamentos de sites contendo portas e caminhos específicos, com atualização automática em plataformas (SPA) sem recarregar a página.</li>
+            <li><strong>v1.3.2:</strong> Aviso de atualização agora é um link clicável, popup com bordas arredondadas, melhorias de UI no popup e inserção de link do Github nas instruções.</li>
             <li><strong>v1.3.0:</strong> Verificação automática de atualização via GitHub.</li>
-            <li><strong>v1.2.2:</strong> Personalização de Marca Global (upload de logotipo customizado).</li>
-            <li><strong>v1.1.0:</strong> 4 esquemas de cores (Claro, Escuro, Quente, Alto Contraste).</li>
-            <li>Mapeamento avançado de iframe.</li>
-            <li>Prevenção de quebra de layout de plataformas em textos longos.</li>
-            <li>Desempenho de detecção O(1) no content-script.</li>
+            <li><strong>v1.2.2:</strong> Personalização de Marca Global (logotipo), 4 esquemas de cores (Claro, Escuro, Quente, Alto Contraste), mapeamento avançado de iframe, prevenção de quebra de layout e desempenho de detecção O(1).</li>
           </ul>
 
           <div class="divider" style="margin: 14px 0;"></div>
@@ -794,7 +796,7 @@
   </div>
 
   <div class="footer" id="footer">
-    GigAtende v1.3.2 &middot; <strong>Raimundo A S Brigida</strong> - <a
+    GigAtende v1.4.1 &middot; <strong>Raimundo A S Brigida</strong> - <a
       href="https://www.linkedin.com/in/raimundoalvesstb/" target="_blank"
       style="display:inline-flex; align-items:center; color:#0A66C2; text-decoration:none; font-weight:500;">
       <svg viewBox="0 0 24 24" width="16" height="16" style="margin-right:4px; fill:currentColor">

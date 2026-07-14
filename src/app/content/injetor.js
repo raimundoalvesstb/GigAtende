@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Projeto: GigAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
@@ -39,7 +39,7 @@
   let miniMenu       = null;    // Mini menu de ações
   let overlay        = null;    // Overlay principal (inserção ou nova msg)
   let selectBanner   = null;    // Banner do modo de seleção
-  let currentDomain  = location.hostname;  // Domínio atual (hostname apenas)
+  let currentDomain  = null;    // Domínio ou caminho mapeado ativo (definido no init)
   let siteProfile    = null;    // Perfil do site carregado do storage
   let globalBrandLogo = null;   // Logo personalizado
   let globalBrandName = null;   // Nome da marca personalizado
@@ -118,20 +118,41 @@
 
 
   /* ── Inicialização ─────────────────────────────────────────────────────── */
-  /**
-   * Ponto de entrada do script injetado.
-   * Carrega as configurações do armazenamento e ativa o monitoramento se permitido.
-   * @async
-   */
-  async function init() {
+  let lastHref = location.href;
+
+  async function evaluateSiteProfile() {
     try {
       const dados = await window.GigaArmazenamento.obterDados();
       if (dados.settings) {
         globalBrandLogo = dados.settings.brandLogo || null;
         globalBrandName = dados.settings.brandName || null;
       }
-      /* Carrega perfil do site pelo hostname – independente da URL completa */
-      siteProfile = dados.siteProfiles?.find(p => p.domain === currentDomain) || null;
+      
+      const host = location.host;
+      let pathname = location.pathname;
+      if (pathname === '/') {
+        pathname = '';
+      } else if (pathname.endsWith('/')) {
+        pathname = pathname.slice(0, -1);
+      }
+      const fullPath = host + pathname;
+
+      let perfis = dados.siteProfiles || [];
+      let melhorMatch = null;
+      let maxLen = 0;
+
+      for (const perfil of perfis) {
+        const d = perfil.domain;
+        if (fullPath === d || fullPath.startsWith(d + '/')) {
+          if (d.length > maxLen) {
+            melhorMatch = d;
+            maxLen = d.length;
+          }
+        }
+      }
+
+      currentDomain = melhorMatch || host;
+      siteProfile = perfis.find(p => p.domain === currentDomain) || null;
 
       if (siteProfile?.active) {
         /* Recupera posição salva do botão */
@@ -145,7 +166,33 @@
 
         /* Cria o botão GA (oculto até que um campo ganhe foco) */
         createFloatingButton();
+      } else {
+        deactivateFocusTracking();
+        if (typeof removeFloatingButton === 'function') removeFloatingButton();
+        if (typeof closeOverlay === 'function') closeOverlay();
+        activeField = null;
       }
+    } catch (e) {
+      console.warn('[GigAtende] Erro ao avaliar URL:', e);
+    }
+  }
+
+  /**
+   * Ponto de entrada do script injetado.
+   * Carrega as configurações do armazenamento e ativa o monitoramento se permitido.
+   * @async
+   */
+  async function init() {
+    try {
+      await evaluateSiteProfile();
+      
+      setInterval(() => {
+        if (lastHref !== location.href) {
+          lastHref = location.href;
+          evaluateSiteProfile();
+          try { chrome.runtime.sendMessage({ tipo: 'ATUALIZAR_ICONE' }); } catch(e) {}
+        }
+      }, 1000);
     } catch (e) {
       console.warn('[GigAtende] Erro na inicialização:', e);
     }
@@ -893,7 +940,7 @@
     const data       = await window.GigaArmazenamento.obterDados();
     const categories = data.categories || [];
     const messages   = data.messages   || [];
-    const domain     = location.hostname;
+    const domain     = location.host;
 
     /* Separar categorias especiais de saudação e assinatura */
     const greetingMsgs = messages.filter(m => (m.categoryIds || []).includes('cat-greeting'));
@@ -1239,7 +1286,7 @@
     const iconInput    = document.getElementById('giga-new-icon');
 
     /* Pré-seleciona categoria com base no domínio */
-    const domainCat = cats.find(c => c.siteScope && location.hostname.includes(c.siteScope));
+    const domainCat = cats.find(c => c.siteScope && location.host.includes(c.siteScope));
     if (domainCat) catSelect.value = domainCat.id;
 
     titleInput.focus();

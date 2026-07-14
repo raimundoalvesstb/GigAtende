@@ -27,16 +27,19 @@ const CHAVE_ARMAZENAMENTO = 'gigaAtende_data';
  * Verifica se o domínio atual está na lista de perfis ativos.
  * @async
  * @param {number} idAba - ID da aba do Chrome.
- * @param {string} dominio - Domínio (hostname) do site atual.
+ * @param {string} url - URL completa da página.
  */
-async function atualizarIconeAba(idAba, dominio) {
+async function atualizarIconeAba(idAba, url) {
   try {
     const resultado = await chrome.storage.local.get(CHAVE_ARMAZENAMENTO);
     const dados = resultado[CHAVE_ARMAZENAMENTO] || {};
     
     // Suporte ao nome legado para garantir que não haja erros (perfisSites vs siteProfiles)
     const perfis = dados.siteProfiles || dados.perfisSites || [];
-    const perfil = perfis.find(p => p.domain === dominio);
+    const dominioMatch = encontrarMelhorDominio(url, perfis);
+    if (!dominioMatch) return;
+
+    const perfil = perfis.find(p => p.domain === dominioMatch);
     const ativo = perfil?.active === true;
 
     if (ativo) {
@@ -44,7 +47,7 @@ async function atualizarIconeAba(idAba, dominio) {
         tabId: idAba,
         path: { 16: 'assets/icon16.png', 48: 'assets/icon48.png', 128: 'assets/icon128.png' }
       });
-      await chrome.action.setTitle({ tabId: idAba, title: `GigAtende – Ativo em ${dominio}` });
+      await chrome.action.setTitle({ tabId: idAba, title: `GigAtende – Ativo em ${dominioMatch}` });
     } else {
       await chrome.action.setIcon({
         tabId: idAba,
@@ -64,8 +67,7 @@ chrome.tabs.onActivated.addListener(async ({ tabId }) => {
   try {
     const aba = await chrome.tabs.get(tabId);
     if (aba.url) {
-      const dominio = extrairDominio(aba.url);
-      if (dominio) await atualizarIconeAba(tabId, dominio);
+      await atualizarIconeAba(tabId, aba.url);
     }
   } catch (e) {}
 });
@@ -75,8 +77,7 @@ chrome.tabs.onActivated.addListener(async ({ tabId }) => {
  */
 chrome.tabs.onUpdated.addListener(async (tabId, informacaoMudanca, aba) => {
   if (informacaoMudanca.status === 'complete' && aba.url) {
-    const dominio = extrairDominio(aba.url);
-    if (dominio) await atualizarIconeAba(tabId, dominio);
+    await atualizarIconeAba(tabId, aba.url);
   }
 });
 
@@ -92,9 +93,8 @@ chrome.runtime.onMessage.addListener((mensagem, remetente, enviarResposta) => {
         /** Atualiza o ícone da extensão forçadamente para a aba atual */
         case 'ATUALIZAR_ICONE': {
           const abas = await chrome.tabs.query({ active: true, currentWindow: true });
-          if (abas[0]) {
-            const dominio = extrairDominio(abas[0].url);
-            if (dominio) await atualizarIconeAba(abas[0].id, dominio);
+          if (abas[0]?.url) {
+            await atualizarIconeAba(abas[0].id, abas[0].url);
           }
           enviarResposta({ sucesso: true });
           break;
@@ -131,8 +131,14 @@ chrome.runtime.onMessage.addListener((mensagem, remetente, enviarResposta) => {
         /** Retorna o domínio da aba que está ativa no momento */
         case 'OBTER_DOMINIO_ATUAL': {
           const abas = await chrome.tabs.query({ active: true, currentWindow: true });
-          const dominio = abas[0]?.url ? extrairDominio(abas[0].url) : null;
-          enviarResposta({ dominio });
+          if (abas[0]?.url) {
+            const resultado = await chrome.storage.local.get(CHAVE_ARMAZENAMENTO);
+            const perfis = resultado[CHAVE_ARMAZENAMENTO]?.siteProfiles || [];
+            const dominio = encontrarMelhorDominio(abas[0].url, perfis);
+            enviarResposta({ dominio });
+          } else {
+            enviarResposta({ dominio: null });
+          }
           break;
         }
 
@@ -144,9 +150,8 @@ chrome.runtime.onMessage.addListener((mensagem, remetente, enviarResposta) => {
               await chrome.tabs.sendMessage(abas[0].id, { tipo: 'STATUS_SITE_ALTERADO', active: mensagem.active });
             } catch (e) {}
           }
-          if (abas[0]) {
-            const dominio = extrairDominio(abas[0].url);
-            if (dominio) await atualizarIconeAba(abas[0].id, dominio);
+          if (abas[0]?.url) {
+            await atualizarIconeAba(abas[0].id, abas[0].url);
           }
           enviarResposta({ sucesso: true });
           break;
@@ -165,13 +170,42 @@ chrome.runtime.onMessage.addListener((mensagem, remetente, enviarResposta) => {
 });
 
 /**
- * Função utilitária para extrair apenas o Hostname (ex: www.google.com) de uma URL completa.
- * @param {string} url - A URL completa
- * @returns {string|null} - Hostname extraído ou null se a URL for inválida
+ * Função utilitária para extrair o melhor domínio ou caminho correspondente para uma URL.
+ * @param {string} urlString - A URL completa
+ * @param {Array} perfis - Lista de perfis de sites configurados
+ * @returns {string|null} - Domínio/caminho correspondente ou hostname raiz se não houver perfil.
  */
-function extrairDominio(url) {
+function encontrarMelhorDominio(urlString, perfis = []) {
   try {
-    return new URL(url).hostname;
+    const url = new URL(urlString);
+    const host = url.host;
+    let pathname = url.pathname;
+    
+    if (pathname === '/') {
+      pathname = '';
+    } else if (pathname.endsWith('/')) {
+      pathname = pathname.slice(0, -1);
+    }
+    const fullPath = host + pathname;
+
+    let melhorMatch = null;
+    let maxLen = 0;
+
+    for (const perfil of perfis) {
+      const dominioConfig = perfil.domain;
+      if (fullPath === dominioConfig || fullPath.startsWith(dominioConfig + '/')) {
+        if (dominioConfig.length > maxLen) {
+          melhorMatch = dominioConfig;
+          maxLen = dominioConfig.length;
+        }
+      }
+    }
+
+    if (melhorMatch) {
+      return melhorMatch;
+    }
+
+    return host;
   } catch {
     return null;
   }

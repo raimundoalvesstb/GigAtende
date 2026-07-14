@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Projeto: GigAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
@@ -394,9 +394,9 @@ window.AdminSites = {
     this.placeholdersTemp = tempPlaceholders;
     this.renderizarPlaceholdersSite();
     
-    // O domínio primário é chave primária e não pode ser editado depois de criado
-    domainEl.readOnly = !!perfil;
-    domainEl.style.opacity = perfil ? '0.6' : '1';
+    // O domínio/caminho agora pode ser editado para permitir migração de URL
+    domainEl.readOnly = false;
+    domainEl.style.opacity = '1';
 
     // Montar as linhas de seletores
     listEl.innerHTML = '';
@@ -436,19 +436,20 @@ window.AdminSites = {
    * @async
    */
   salvarSite: async function() {
-    const domain = document.getElementById('siteDomain').value.trim().toLowerCase();
+    let domain = document.getElementById('siteDomain').value.trim().toLowerCase();
+    if (domain.endsWith('/')) domain = domain.slice(0, -1);
     const label = document.getElementById('siteLabel').value.trim();
     const enabled = document.getElementById('siteEnabled').checked;
     const list = document.getElementById('selectorsList');
     const isNew = !this.dominioAtual;
 
     if (!domain) { 
-      window.AdminUI.toast('Domínio obrigatório.', 'error'); 
+      window.AdminUI.toast('Endereço obrigatório.', 'error'); 
       document.getElementById('siteDomain').focus(); 
       return; 
     }
     if (/https?:\/\//.test(domain)) { 
-      window.AdminUI.toast('Use apenas o hostname (sem http:// ou https://).', 'error'); 
+      window.AdminUI.toast('Não inclua http:// ou https://.', 'error'); 
       return; 
     }
 
@@ -479,13 +480,23 @@ window.AdminSites = {
       newPlaceholdersMap[p.id] = p.selector;
     });
 
-    await window.GigaArmazenamento.atualizarPerfilSite(domain, { 
+    let perfilAtual = null;
+    if (!isNew && this.dominioAtual !== domain) {
+      perfilAtual = window.AdminEstado.siteProfiles.find(p => p.domain === this.dominioAtual);
+      await window.GigaArmazenamento.excluirPerfilSite(this.dominioAtual);
+    }
+
+    const atualizacoes = { 
+      ...(perfilAtual || {}),
+      domain: domain,
       label: label || domain, 
       active: enabled, 
       selectors: selectors,
       placeholders: placeholders,
       placeholdersMap: newPlaceholdersMap
-    });
+    };
+
+    await window.GigaArmazenamento.atualizarPerfilSite(domain, atualizacoes);
     
     await window.AdminEstado.carregarTudo();
     this.renderizarSites();
