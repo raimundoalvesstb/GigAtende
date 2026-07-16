@@ -192,7 +192,7 @@ Exporte ou importe seus dados a qualquer momento pelos botões no topo da Admini
 
 ## 🛠 Info Técnica
 - **Nome:** GoAtende
-- **Versão:** 1.4.2
+- **Versão:** 1.4.3
 - **Permissões:** `<all_urls>`, `storage`, `activeTab`, `scripting`, `alarms`.
 - Extensão em Vanilla JS sem frameworks.
 - Injeção ocorre via API Range para contenteditable ou seleção nativa de textarea.

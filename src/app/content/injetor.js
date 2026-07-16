@@ -808,8 +808,8 @@
     try {
       const data = await window.GoArmazenamento.obterDados();
       const messages = data.messages || [];
-      // Filtra as favoritas e limita a no máximo 21 botões
-      const favoritos = messages.filter(m => m.favorite).slice(0, 21);
+      // Filtra as favoritas e não limita a quantidade
+      const favoritos = messages.filter(m => m.favorite);
 
       if (favoritos.length === 0) {
         flashContainer.style.setProperty('display', 'none', 'important');

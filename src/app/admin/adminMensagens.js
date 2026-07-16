@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
@@ -309,8 +309,17 @@ window.AdminMensagens = {
       // Alterna o status do favorito e salva diretamente
       if (!msg.favorite) {
         const totalFavoritos = window.AdminEstado.messages.filter(m => m.favorite).length;
-        if (totalFavoritos >= 21) {
-          window.AdminUI.toast('Atenção: Você atingiu 21 favoritos. Esta mensagem não aparecerá nas mensagens rápidas do botão flutuante.', 'warning');
+        if (totalFavoritos === 21) {
+          window.AdminUI.mostrarConfirmacao(
+            'Atenção',
+            'O excesso de mensagens favoritas pode prejudicar a usabilidade da extensão. Deseja mesmo continuar?',
+            async () => {
+              const atualizada = { ...msg, favorite: true };
+              await window.GoArmazenamento.salvarMensagem(atualizada);
+              await this.recarregarMensagens();
+            }
+          );
+          return;
         }
       }
       const atualizada = { ...msg, favorite: !msg.favorite };
@@ -436,8 +445,18 @@ window.AdminMensagens = {
     const wasFavorite = this.msgAtualId ? (window.AdminEstado.messages.find(m => m.id === this.msgAtualId)?.favorite || false) : false;
     if (isFavoriteNow && !wasFavorite) {
       const totalFavoritos = window.AdminEstado.messages.filter(m => m.favorite).length;
-      if (totalFavoritos >= 21) {
-        window.AdminUI.toast('Atenção: Você atingiu 21 favoritos. Esta mensagem não aparecerá nas mensagens rápidas do botão flutuante.', 'warning');
+      if (totalFavoritos === 21) {
+        window.AdminUI.mostrarConfirmacao(
+          'Atenção',
+          'O excesso de mensagens favoritas pode prejudicar a usabilidade da extensão. Deseja mesmo continuar?',
+          async () => {
+            await window.GoArmazenamento.salvarMensagem(msgObj);
+            await this.recarregarMensagens();
+            this.fecharModalMensagem();
+            window.AdminUI.toast(this.msgAtualId ? 'Mensagem atualizada!' : 'Mensagem criada!', 'success');
+          }
+        );
+        return;
       }
     }
 
