@@ -1,5 +1,5 @@
 ﻿/*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -15,14 +15,14 @@
 /**
  * @file src/servicos/armazenamento.js
  * @description Serviço de Armazenamento Central.
- * Expõe window.GigaArmazenamento para content, popup e admin.
+ * Expõe window.GoArmazenamento para content, popup e admin.
  * Interage diretamente com a API do chrome.storage.local.
  */
 (function () {
   'use strict';
 
   const VERSAO_ESQUEMA = '1.1';
-  const CHAVE_ARMAZENAMENTO = 'gigaAtende_data';
+  const CHAVE_ARMAZENAMENTO = 'goAtende_data';
 
   /** @type {Object} Estado inicial/padrão que é injetado na primeira instalação ou falha na leitura. */
   const DADOS_PADRAO = {
@@ -418,8 +418,8 @@
 
   function gerarId(prefixo = 'id') { return `${prefixo}-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`; }
 
-  // Expõe a API globalmente (Namespace GigaArmazenamento)
-  window.GigaArmazenamento = {
+  // Expõe a API globalmente (Namespace GoArmazenamento)
+  window.GoArmazenamento = {
     obterDados, definirDados,
     obterPerfilSite, atualizarPerfilSite, excluirPerfilSite, salvarPosicaoBotao,
     obterCategorias, salvarCategoria, excluirCategoria, moverCategoria,

@@ -1,5 +1,5 @@
 ﻿/*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -61,7 +61,7 @@ window.AdminCategorias = {
       card.innerHTML = `
         <div class="cat-color-bar" style="background:${cat.color || '#2196F3'}"></div>
         <div class="cat-info">
-          <div class="cat-name">${window.GigaSanitize.escapeHtml(cat.name)} ${badgeFixoHtml}</div>
+          <div class="cat-name">${window.GoSanitize.escapeHtml(cat.name)} ${badgeFixoHtml}</div>
           <div class="cat-meta">${qtdMsgs} mensagem${qtdMsgs !== 1 ? 's' : ''}${cat.siteScope ? ' · ' + cat.siteScope : ''}</div>
         </div>
         <span class="cat-status-chip ${cat.active ? 'active' : 'inactive'}">${cat.active ? 'Ativa' : 'Inativa'}</span>
@@ -98,7 +98,7 @@ window.AdminCategorias = {
             'Excluir categoria',
             `Excluir a categoria "${cat.name}"? As mensagens vinculadas serão mantidas sem categoria.`,
             async () => {
-              const ok = await window.GigaArmazenamento.excluirCategoria(cat.id);
+              const ok = await window.GoArmazenamento.excluirCategoria(cat.id);
               if (ok) {
                 await this.recarregarCategorias();
                 window.AdminUI.toast('Categoria excluída.', 'success');
@@ -109,7 +109,7 @@ window.AdminCategorias = {
           );
         } else if (action === 'move-prev' || action === 'move-next') {
           const dir = action === 'move-prev' ? 'prev' : 'next';
-          window.GigaArmazenamento.moverCategoria(cat.id, dir).then(moved => {
+          window.GoArmazenamento.moverCategoria(cat.id, dir).then(moved => {
             if (moved) this.recarregarCategorias();
           });
         }
@@ -309,7 +309,7 @@ window.AdminCategorias = {
     }
 
     const catObj = {
-      id: this.catAtualId || window.GigaArmazenamento.gerarId('cat'),
+      id: this.catAtualId || window.GoArmazenamento.gerarId('cat'),
       name: nome,
       color: cor,
       icon: icon || null,
@@ -318,7 +318,7 @@ window.AdminCategorias = {
       order: this.catAtualId ? (window.AdminEstado.categories.find(c => c.id === this.catAtualId)?.order || 99) : window.AdminEstado.categories.length
     };
 
-    await window.GigaArmazenamento.salvarCategoria(catObj);
+    await window.GoArmazenamento.salvarCategoria(catObj);
     await this.recarregarCategorias();
     this.fecharModalCategoria();
     window.AdminUI.toast(this.catAtualId ? 'Categoria atualizada!' : 'Categoria criada!', 'success');

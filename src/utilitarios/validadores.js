@@ -1,5 +1,5 @@
 ﻿/*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -12,8 +12,8 @@
  * Full license:
  * https://polyformproject.org/licenses/noncommercial/1.0.0/
  */
-/* src/utilitarios/validadores.js â€“ Validadores de Dados do GigAtende
- * Exposto globalmente como window.GigaValidator.
+/* src/utilitarios/validadores.js â€“ Validadores de Dados do GoAtende
+ * Exposto globalmente como window.GoValidator.
  */
 (function () {
   'use strict';
@@ -70,7 +70,7 @@
     return /^#[0-9A-Fa-f]{6}$/.test(cor);
   }
 
-  window.GigaValidator = {
+  window.GoValidator = {
     validateCategory,
     validateMessage,
     validateImportData,

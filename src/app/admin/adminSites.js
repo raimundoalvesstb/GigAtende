@@ -1,5 +1,5 @@
 /*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -66,7 +66,7 @@ window.AdminSites = {
 
       el.innerHTML = `
         <div class="placeholder-info">
-          <div class="placeholder-name">${window.GigaSanitize.escapeHtml(p.name)}</div>
+          <div class="placeholder-name">${window.GoSanitize.escapeHtml(p.name)}</div>
           <div class="placeholder-id">[${p.id}]</div>
         </div>
         <div style="display:flex; gap: 4px;">
@@ -88,7 +88,7 @@ window.AdminSites = {
 
         el.querySelector('[data-action="delete-placeholder"]').addEventListener('click', async () => {
           window.AdminUI.mostrarConfirmacao('Remover Placeholder', `Tem certeza que deseja remover "${p.name}"?`, async () => {
-            await window.GigaArmazenamento.deletarPlaceholder(p.id);
+            await window.GoArmazenamento.deletarPlaceholder(p.id);
             await window.AdminEstado.carregarTudo();
             this.renderizarPlaceholders();
             window.AdminUI.toast('Placeholder removido.', 'success');
@@ -120,7 +120,7 @@ window.AdminSites = {
 
       const seletores = Array.isArray(sp.selectors) ? sp.selectors : (sp.selector ? [sp.selector] : []);
       const seletoresHtml = seletores.length
-        ? seletores.map(s => `<code style="font-size:10px;background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">${window.GigaSanitize.escapeHtml(s)}</code>`).join(' <span style="color:#9E9E9E">·</span> ')
+        ? seletores.map(s => `<code style="font-size:10px;background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px">${window.GoSanitize.escapeHtml(s)}</code>`).join(' <span style="color:#9E9E9E">·</span> ')
         : '<span style="font-size:11px;color:var(--c-text-2)">Campo detectado automaticamente por foco</span>';
         
       // Mesclar placeholders e placeholdersMap para exibição backward compatible
@@ -149,16 +149,16 @@ window.AdminSites = {
             if (sp.active) {
               return `<div style="display:flex; flex-direction:column; font-size:11px; background:var(--c-bg-subtle, rgba(0,0,0,0.04)); padding:6px 8px; border-radius:4px; border:1px solid var(--c-border); margin-bottom:6px;">
                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                  <span style="font-weight:600; color:var(--c-text);">${window.GigaSanitize.escapeHtml(p.name)}</span>
-                  <span style="color:var(--c-text-2);">[${window.GigaSanitize.escapeHtml(p.id)}]</span>
+                  <span style="font-weight:600; color:var(--c-text);">${window.GoSanitize.escapeHtml(p.name)}</span>
+                  <span style="color:var(--c-text-2);">[${window.GoSanitize.escapeHtml(p.id)}]</span>
                 </div>
-                ${p.selector ? `<div style="font-family:monospace; font-size:10.5px; color:var(--c-text-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; background:rgba(0,0,0,0.03); padding:2px 4px; border-radius:3px;" title="${window.GigaSanitize.escapeHtml(p.selector)}">${window.GigaSanitize.escapeHtml(p.selector)}</div>` : '<div style="font-size:10px; color:var(--c-text-3); font-style:italic;">Sem seletor</div>'}
+                ${p.selector ? `<div style="font-family:monospace; font-size:10.5px; color:var(--c-text-2); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; background:rgba(0,0,0,0.03); padding:2px 4px; border-radius:3px;" title="${window.GoSanitize.escapeHtml(p.selector)}">${window.GoSanitize.escapeHtml(p.selector)}</div>` : '<div style="font-size:10px; color:var(--c-text-3); font-style:italic;">Sem seletor</div>'}
               </div>`;
             } else {
-              const selectorCode = p.selector ? `<code style="font-size:10px;background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;margin-left:4px;color:var(--c-text);">${window.GigaSanitize.escapeHtml(p.selector)}</code>` : '';
+              const selectorCode = p.selector ? `<code style="font-size:10px;background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:3px;margin-left:4px;color:var(--c-text);">${window.GoSanitize.escapeHtml(p.selector)}</code>` : '';
               return `<div style="display:inline-flex; align-items:center; gap:4px; font-size:11px; background:var(--c-bg-subtle, rgba(0,0,0,0.04)); padding:2px 6px; border-radius:4px; border:1px solid var(--c-border); margin-right:4px; margin-bottom:4px;">
-                <span style="font-weight:600; color:var(--c-text);">${window.GigaSanitize.escapeHtml(p.name)}</span>
-                <span style="color:var(--c-text-2);">[${window.GigaSanitize.escapeHtml(p.id)}]</span>${selectorCode}
+                <span style="font-weight:600; color:var(--c-text);">${window.GoSanitize.escapeHtml(p.name)}</span>
+                <span style="color:var(--c-text-2);">[${window.GoSanitize.escapeHtml(p.id)}]</span>${selectorCode}
               </div>`;
             }
           }).join('')
@@ -175,15 +175,15 @@ window.AdminSites = {
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" fill="currentColor"/>
             </svg>
             <div style="flex:1; display:flex; flex-direction:column; gap:4px; min-width:0;">
-              <div class="site-domain">${window.GigaSanitize.escapeHtml(sp.label || sp.domain)}</div>
+              <div class="site-domain">${window.GoSanitize.escapeHtml(sp.label || sp.domain)}</div>
               <div style="display:flex; justify-content:space-between; align-items:center; width:100%; gap:12px;">
                 <div class="site-selector" style="flex:1;">${seletoresHtml}</div>
                 <div style="display:flex;align-items:center;gap:6px; flex-shrink:0;">
                   <span class="cat-status-chip ${sp.active ? 'active' : 'inactive'}">${sp.active ? 'Ativo' : 'Inativo'}</span>
-                  <button class="btn-action edit" data-action="edit-site" data-domain="${window.GigaSanitize.escapeHtml(sp.domain)}" title="Editar configuração do site" aria-label="Editar site">
+                  <button class="btn-action edit" data-action="edit-site" data-domain="${window.GoSanitize.escapeHtml(sp.domain)}" title="Editar configuração do site" aria-label="Editar site">
                     <svg viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="currentColor"/></svg>
                   </button>
-                  <button class="btn-action danger" data-action="delete-site" data-domain="${window.GigaSanitize.escapeHtml(sp.domain)}" title="Remover site" aria-label="Remover site">
+                  <button class="btn-action danger" data-action="delete-site" data-domain="${window.GoSanitize.escapeHtml(sp.domain)}" title="Remover site" aria-label="Remover site">
                     <svg viewBox="0 0 24 24" width="16" height="16" xmlns="http://www.w3.org/2000/svg"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z" fill="currentColor"/></svg>
                   </button>
                 </div>
@@ -207,7 +207,7 @@ window.AdminSites = {
       card.querySelector('[data-action="delete-site"]').addEventListener('click', async e => {
         const domain = e.currentTarget.dataset.domain;
         window.AdminUI.mostrarConfirmacao('Remover site', `Remover o perfil de "${domain}"?`, async () => {
-          await window.GigaArmazenamento.excluirPerfilSite(domain);
+          await window.GoArmazenamento.excluirPerfilSite(domain);
           await window.AdminEstado.carregarTudo();
           this.renderizarSites();
           window.AdminUI.toast('Site removido.', 'success');
@@ -292,9 +292,9 @@ window.AdminSites = {
     const idPlaceholder = isFixed ? '' : 'ID (ex: cpf)';
 
     row.innerHTML = `
-      <input type="text" class="form-input ph-name" placeholder="${namePlaceholder}" value="${window.GigaSanitize.escapeHtml(nome)}" ${disabledAttr} style="flex:1" title="Nome do placeholder" />
-      <input type="text" class="form-input ph-id" placeholder="${idPlaceholder}" value="${window.GigaSanitize.escapeHtml(id)}" ${disabledAttr} style="flex:0.8; font-family:monospace;" title="ID interno" />
-      <input type="text" class="form-input ph-selector" placeholder="Seletor CSS (ex: .nome, #cli)" value="${window.GigaSanitize.escapeHtml(seletor)}" style="flex:1.5" title="Para recuperar o valor em mais de um local, separe os seletores com vírgula" />
+      <input type="text" class="form-input ph-name" placeholder="${namePlaceholder}" value="${window.GoSanitize.escapeHtml(nome)}" ${disabledAttr} style="flex:1" title="Nome do placeholder" />
+      <input type="text" class="form-input ph-id" placeholder="${idPlaceholder}" value="${window.GoSanitize.escapeHtml(id)}" ${disabledAttr} style="flex:0.8; font-family:monospace;" title="ID interno" />
+      <input type="text" class="form-input ph-selector" placeholder="Seletor CSS (ex: .nome, #cli)" value="${window.GoSanitize.escapeHtml(seletor)}" style="flex:1.5" title="Para recuperar o valor em mais de um local, separe os seletores com vírgula" />
       <button type="button" class="selector-remove" title="Remover placeholder" aria-label="Remover placeholder">&times;</button>
     `;
 
@@ -422,7 +422,7 @@ window.AdminSites = {
     const row = document.createElement('div');
     row.className = 'selector-row';
     row.innerHTML = `
-      <input type="text" class="form-input" placeholder="Ex: #reply-editor, textarea[name='body']" value="${window.GigaSanitize.escapeHtml(valor)}"/>
+      <input type="text" class="form-input" placeholder="Ex: #reply-editor, textarea[name='body']" value="${window.GoSanitize.escapeHtml(valor)}"/>
       <button type="button" class="selector-remove" title="Remover seletor" aria-label="Remover seletor">&times;</button>`;
       
     // Botão remover a linha específica
@@ -436,8 +436,13 @@ window.AdminSites = {
    * @async
    */
   salvarSite: async function() {
-    let domain = document.getElementById('siteDomain').value.trim().toLowerCase();
+    let domainInput = document.getElementById('siteDomain');
+    let domain = domainInput.value.trim().toLowerCase();
+    
+    domain = domain.replace(/https?:\/\//g, '');
     if (domain.endsWith('/')) domain = domain.slice(0, -1);
+    domainInput.value = domain;
+
     const label = document.getElementById('siteLabel').value.trim();
     const enabled = document.getElementById('siteEnabled').checked;
     const list = document.getElementById('selectorsList');
@@ -445,11 +450,7 @@ window.AdminSites = {
 
     if (!domain) { 
       window.AdminUI.toast('Endereço obrigatório.', 'error'); 
-      document.getElementById('siteDomain').focus(); 
-      return; 
-    }
-    if (/https?:\/\//.test(domain)) { 
-      window.AdminUI.toast('Não inclua http:// ou https://.', 'error'); 
+      domainInput.focus(); 
       return; 
     }
 
@@ -483,7 +484,7 @@ window.AdminSites = {
     let perfilAtual = null;
     if (!isNew && this.dominioAtual !== domain) {
       perfilAtual = window.AdminEstado.siteProfiles.find(p => p.domain === this.dominioAtual);
-      await window.GigaArmazenamento.excluirPerfilSite(this.dominioAtual);
+      await window.GoArmazenamento.excluirPerfilSite(this.dominioAtual);
     }
 
     const atualizacoes = { 
@@ -496,7 +497,7 @@ window.AdminSites = {
       placeholdersMap: newPlaceholdersMap
     };
 
-    await window.GigaArmazenamento.atualizarPerfilSite(domain, atualizacoes);
+    await window.GoArmazenamento.atualizarPerfilSite(domain, atualizacoes);
     
     await window.AdminEstado.carregarTudo();
     this.renderizarSites();

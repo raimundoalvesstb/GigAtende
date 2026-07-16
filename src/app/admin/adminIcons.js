@@ -1,5 +1,5 @@
 ﻿/*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.

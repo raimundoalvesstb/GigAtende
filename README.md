@@ -1,6 +1,6 @@
-# <img src="assets/icon48.png" width="48" align="center" alt="GigAtende Logo"> GigAtende
+# <img src="assets/icon48.png" width="48" align="center" alt="GoAtende Logo"> GoAtende
 
-Uma extensão para o navegador Google Chrome desenvolvida para **acelerar o seu atendimento** em plataformas baseadas na web. Com o GigAtende, você não precisa mais digitar a mesma resposta várias vezes. Salve mensagens prontas e insira nos campos de texto com apenas **2 cliques**!
+Uma extensão para o navegador Google Chrome desenvolvida para **acelerar o seu atendimento** em plataformas baseadas na web. Com o GoAtende, você não precisa mais digitar a mesma resposta várias vezes. Salve mensagens prontas e insira nos campos de texto com apenas **2 cliques**!
 
 ---
 
@@ -26,25 +26,25 @@ Todas as suas mensagens, configurações e categorias ficam salvas **apenas no s
 
 ## 🎬 Tutorial em Vídeo
 
-Assista ao vídeo abaixo para ver o GigAtende em ação e aprender rapidamente como usar todos os recursos:
+Assista ao vídeo abaixo para ver o GoAtende em ação e aprender rapidamente como usar todos os recursos:
 
-[![Tutorial em Vídeo GigAtende](https://img.youtube.com/vi/ald4k4QOzH8/maxresdefault.jpg)](https://www.youtube.com/watch?v=ald4k4QOzH8)
+[![Tutorial em Vídeo GoAtende](https://img.youtube.com/vi/ald4k4QOzH8/maxresdefault.jpg)](https://www.youtube.com/watch?v=ald4k4QOzH8)
 
-📺 **Gostou? Inscreva-se no canal para mais novidades:** [https://www.youtube.com/@gigatende](https://www.youtube.com/@gigatende)
+📺 **Gostou? Inscreva-se no canal para mais novidades:** [https://www.youtube.com/@goatende](https://www.youtube.com/@goatende)
 ---
 
 ## 📖 Guia do Usuário / Passo a Passo
 
 ### 1. Instalando e Fixando a Extensão no Navegador
-Para que a mágica aconteça, o primeiro passo é colocar o GigAtende no nosso navegador Chrome.
+Para que a mágica aconteça, o primeiro passo é colocar o GoAtende no nosso navegador Chrome.
 
 1. Baixe o arquivo `.zip` da extensão e extraia em um local do seu computador.
 2. No Chrome, acesse **Gerenciar extensões** (clicando nos 3 pontinhos ou no ícone de quebra-cabeça).
 3. Habilite a função **"Modo do desenvolvedor"** no canto superior direito.
 4. Clique no botão **"Carregar sem compactação"**, navegue até a pasta extraída da extensão e clique em **"Selecionar pasta"**.
-5. Para facilitar o acesso, clique no ícone de quebra-cabeça e depois no ícone de **Alfinete** ao lado do GigAtende para fixá-lo na barra.
+5. Para facilitar o acesso, clique no ícone de quebra-cabeça e depois no ícone de **Alfinete** ao lado do GoAtende para fixá-lo na barra.
 
-![Instalação da extensão GigAtende](src/app/admin/img_treinamento/treinamento_img_01.png)
+![Instalação da extensão GoAtende](src/app/admin/img_treinamento/treinamento_img_01.png)
 
 *Figura 1 - Instalação*
 
@@ -90,14 +90,14 @@ Com a pasta pronta, vamos cadastrar os textos.
 
 ---
 
-### 4. Ativando o GigAtende no Site de Atendimento
+### 4. Ativando o GoAtende no Site de Atendimento
 Abra o site ou sistema que você usa para falar com os clientes.
 
-1. Clique no ícone do GigAtende no topo do Chrome.
+1. Clique no ícone do GoAtende no topo do Chrome.
 2. Habilite o recurso **Ativar neste site**.
 3. Um botão flutuante aparecerá no canto da tela.
 
-> ⚠️ **Dica de Ouro:** Clique primeiro dentro do campo onde você digitaria a resposta, e só depois clique no botão flutuante do GigAtende e escolha sua mensagem.
+> ⚠️ **Dica de Ouro:** Clique primeiro dentro do campo onde você digitaria a resposta, e só depois clique no botão flutuante do GoAtende e escolha sua mensagem.
 
 ![Habilitando um site](src/app/admin/img_treinamento/treinamento_img_06.png)
 
@@ -121,7 +121,7 @@ Deixe as mensagens mais usadas a um clique de distância.
 ### 6. Placeholders: A Mágica de Preencher o Nome Sozinho
 A extensão preenche o nome do cliente sozinho, você só precisa "mostrar" onde essa informação fica no site.
 
-1. No site de atendimento (com a extensão ativada), clique no ícone do GigAtende no topo.
+1. No site de atendimento (com a extensão ativada), clique no ícone do GoAtende no topo.
 2. Clique no botão azul **Selecionar informações**.
 3. Leve o mouse até o nome do cliente na tela (um retângulo azul aparecerá) e clique.
 4. Selecione a opção **Nome do cliente** (código `[cliente]`).
@@ -191,8 +191,8 @@ Exporte ou importe seus dados a qualquer momento pelos botões no topo da Admini
 ---
 
 ## 🛠 Info Técnica
-- **Nome:** GigAtende
-- **Versão:** 1.4.1
+- **Nome:** GoAtende
+- **Versão:** 1.4.2
 - **Permissões:** `<all_urls>`, `storage`, `activeTab`, `scripting`, `alarms`.
 - Extensão em Vanilla JS sem frameworks.
 - Injeção ocorre via API Range para contenteditable ou seleção nativa de textarea.

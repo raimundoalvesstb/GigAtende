@@ -1,5 +1,5 @@
 /*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -14,7 +14,7 @@
  */
 /**
  * @file src/app/popup/popup.js
- * @description Lógica do Popup da Extensão GigAtende.
+ * @description Lógica do Popup da Extensão GoAtende.
  * Gerencia o estado do popup: ativa/desativa o site atual, aciona o modo
  * de seleção de campo e exibe o status atual da extensão no domínio aberto.
  */
@@ -54,12 +54,12 @@
     }
 
     textoDominio.textContent = dominioAtual;
-    const dados = await window.GigaArmazenamento.obterDados();
+    const dados = await window.GoArmazenamento.obterDados();
     siteProfile = dados.siteProfiles?.find(p => p.domain === dominioAtual) || null;
     const settings = dados.settings || {};
     
     if (settings.brandName) {
-      document.querySelector('.marca-nome').textContent = settings.brandName + ' - GigAtende';
+      document.querySelector('.marca-nome').textContent = settings.brandName + ' - GoAtende';
     }
     if (settings.brandLogo) {
       document.querySelector('.icone-svg').src = settings.brandLogo;
@@ -106,7 +106,7 @@
   /* ── Alternar ativação do site ─────────────────────────────────────────── */
   alternarSite.addEventListener('change', async () => {
     const ativo = alternarSite.checked;
-    siteProfile = await window.GigaArmazenamento.atualizarPerfilSite(dominioAtual, { active: ativo });
+    siteProfile = await window.GoArmazenamento.atualizarPerfilSite(dominioAtual, { active: ativo });
     renderizarStatus();
     await enviarBg({ tipo: 'RECARREGAR_INJETOR', active: ativo });
   });
@@ -185,8 +185,8 @@
    */
   (async function verificarAvisoAtualizacao() {
     try {
-      const resultado = await chrome.storage.local.get('gigaAtende_update');
-      const info = resultado?.gigaAtende_update;
+      const resultado = await chrome.storage.local.get('goAtende_update');
+      const info = resultado?.goAtende_update;
       if (info?.updateAvailable && info?.latestVersion) {
         const el = document.getElementById('avisoAtualizacao');
         if (el) {

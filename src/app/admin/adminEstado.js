@@ -1,5 +1,5 @@
 ﻿/*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -35,11 +35,11 @@ window.AdminEstado = {
   siteProfiles: [],
   
   /**
-   * Lê todos os dados atuais do banco de dados (GigaArmazenamento) e os carrega na memória.
+   * Lê todos os dados atuais do banco de dados (GoArmazenamento) e os carrega na memória.
    * @async
    */
   carregarTudo: async function() {
-    const data = await window.GigaArmazenamento.obterDados();
+    const data = await window.GoArmazenamento.obterDados();
     this.categories = data.categories || [];
     this.messages = data.messages || [];
     this.settings = data.settings || { theme: 'light' };

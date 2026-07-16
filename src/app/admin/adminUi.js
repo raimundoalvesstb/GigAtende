@@ -1,5 +1,5 @@
 ﻿/*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -48,7 +48,7 @@ window.AdminUI = {
   swatches: ['#F44336','#E91E63','#9C27B0','#673AB7','#3F51B5','#2196F3','#03A9F4','#00BCD4','#009688','#4CAF50','#76B82A','#8BC34A','#CDDC39','#FFC107','#FF9800','#FF5722','#795548','#9E9E9E'],
   
   /**
-   * Logo padrão (GigAtende) utilizando PNG com máscara CSS para manter efeitos de cor.
+   * Logo padrão (GoAtende) utilizando PNG com máscara CSS para manter efeitos de cor.
    * @param {string} color - Cor a ser aplicada no logo
    * @returns {string} HTML do logo
    */

@@ -1,5 +1,5 @@
 /*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -14,7 +14,7 @@
  */
 /**
  * @file src/app/content/injetor.js
- * @description GigAtende Content Script Principal.
+ * @description GoAtende Content Script Principal.
  * Responsável por:
  *  - Rastrear o campo de digitação ativo (abordagem por foco – focus-driven)
  *  - Exibir o botão flutuante GA perto do campo focado
@@ -28,8 +28,8 @@
 
 (function () {
   /* Evita inicialização duplicada em caso de reload do script */
-  if (window.__gigaAtendLoaded) return;
-  window.__gigaAtendLoaded = true;
+  if (window.__goAtendLoaded) return;
+  window.__goAtendLoaded = true;
 
   /* ── Estado Global ──────────────────────────────────────────────────────── */
   let isSelecting    = false;   // Modo de seleção de campo ativo
@@ -122,7 +122,7 @@
 
   async function evaluateSiteProfile() {
     try {
-      const dados = await window.GigaArmazenamento.obterDados();
+      const dados = await window.GoArmazenamento.obterDados();
       if (dados.settings) {
         globalBrandLogo = dados.settings.brandLogo || null;
         globalBrandName = dados.settings.brandName || null;
@@ -173,7 +173,7 @@
         activeField = null;
       }
     } catch (e) {
-      console.warn('[GigAtende] Erro ao avaliar URL:', e);
+      console.warn('[GoAtende] Erro ao avaliar URL:', e);
     }
   }
 
@@ -194,7 +194,7 @@
         }
       }, 1000);
     } catch (e) {
-      console.warn('[GigAtende] Erro na inicialização:', e);
+      console.warn('[GoAtende] Erro na inicialização:', e);
     }
   }
 
@@ -251,7 +251,7 @@
     const el = e.target;
 
     /* Ignora foco em elementos da própria extensão */
-    if (isGigaElement(el)) return;
+    if (isGoElement(el)) return;
     if (!isInputElement(el)) return;
 
     /* Atualiza campo ativo */
@@ -272,7 +272,7 @@
        o próprio botão ou overlay (permitindo clique no botão) */
     setTimeout(() => {
       const focused = document.activeElement;
-      if (!focused || isGigaElement(focused) || !isInputElement(focused)) {
+      if (!focused || isGoElement(focused) || !isInputElement(focused)) {
         /* Se nenhum campo de digitação tem foco e o overlay está fechado, mantém o botão */
         if (!overlay && !miniMenu && floatBtn) {
           /* Mantém visível – usuário pode querer clicar no botão */
@@ -286,16 +286,16 @@
    * @param {HTMLElement} el
    * @returns {boolean}
    */
-  function isGigaElement(el) {
+  function isGoElement(el) {
     if (!el) return false;
     return (
-      el.id?.startsWith('giga-') ||
-      el.closest?.('#giga-overlay') ||
-      el.closest?.('#giga-mini-menu') ||
-      el.closest?.('#giga-float-btn') ||
-      el.closest?.('#giga-select-banner') ||
-      el.closest?.('#giga-emoji-picker') ||
-      el.closest?.('#giga-icon-picker-panel')
+      el.id?.startsWith('go-') ||
+      el.closest?.('#go-overlay') ||
+      el.closest?.('#go-mini-menu') ||
+      el.closest?.('#go-float-btn') ||
+      el.closest?.('#go-select-banner') ||
+      el.closest?.('#go-emoji-picker') ||
+      el.closest?.('#go-icon-picker-panel')
     );
   }
 
@@ -331,7 +331,7 @@
             deactivateFocusTracking();
             activeField = null;
           } else {
-            window.GigaArmazenamento.obterPerfilSite(currentDomain).then(p => {
+            window.GoArmazenamento.obterPerfilSite(currentDomain).then(p => {
               siteProfile = p;
               savedBtnPos = p?.buttonPosition || null;
               
@@ -368,7 +368,7 @@
 
   // Escuta as alterações no armazenamento para atualizar as mensagens rápidas instantaneamente
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'local' && changes['gigaAtende_data']) {
+    if (area === 'local' && changes['goAtende_data']) {
       if (typeof renderFlashMessages === 'function') {
         renderFlashMessages();
       }
@@ -382,7 +382,7 @@
   function enterSelectionMode() {
     if (isSelecting) return;
     isSelecting = true;
-    document.body.classList.add('giga-selecting');
+    document.body.classList.add('go-selecting');
 
 
 
@@ -395,8 +395,8 @@
   function exitSelectionMode() {
     if (!isSelecting) return;
     isSelecting = false;
-    document.body.classList.remove('giga-selecting');
-    if (hoveredEl) { hoveredEl.classList.remove('giga-highlight'); hoveredEl = null; }
+    document.body.classList.remove('go-selecting');
+    if (hoveredEl) { hoveredEl.classList.remove('go-highlight'); hoveredEl = null; }
 
     document.removeEventListener('mouseover', onHover, true);
     document.removeEventListener('mouseout',  onMouseOut, true);
@@ -406,21 +406,21 @@
 
   function onHover(e) {
     const el = e.target;
-    if (!el || isGigaElement(el)) return;
-    if (hoveredEl) hoveredEl.classList.remove('giga-highlight');
+    if (!el || isGoElement(el)) return;
+    if (hoveredEl) hoveredEl.classList.remove('go-highlight');
     // Agora destaca qualquer elemento, não apenas inputs
-    el.classList.add('giga-highlight');
+    el.classList.add('go-highlight');
     hoveredEl = el;
   }
 
   function onMouseOut(e) {
-    if (e.target?.classList) e.target.classList.remove('giga-highlight');
+    if (e.target?.classList) e.target.classList.remove('go-highlight');
   }
 
   /** Clique em campo durante o modo de seleção – abre modal inline para escolher o placeholder */
   async function onFieldClick(e) {
     const el = e.target;
-    if (!el || isGigaElement(el)) return;
+    if (!el || isGoElement(el)) return;
 
     e.preventDefault();
     e.stopPropagation();
@@ -448,7 +448,7 @@
     const placeholders = [...defaultPlaceholders, ...sitePlaceholders];
     
     const modal = document.createElement('div');
-    modal.id = 'giga-info-selector-modal';
+    modal.id = 'go-info-selector-modal';
     
     // Posiciona perto do clique, garantindo que não saia da tela
     modal.style.left = clamp(x, 10, window.innerWidth - 300) + 'px';
@@ -460,8 +460,8 @@
     let listHtml = placeholders.map(p => {
       const isMapped = Object.entries(map).some(([key, sel]) => key === p.id && sel === selector);
       return `
-        <button class="giga-info-selector-btn ${isMapped ? 'mapped' : ''}" data-ph="${p.id}">
-          <span>${window.GigaSanitize.escapeHtml(p.name)}</span>
+        <button class="go-info-selector-btn ${isMapped ? 'mapped' : ''}" data-ph="${p.id}">
+          <span>${window.GoSanitize.escapeHtml(p.name)}</span>
           ${isMapped ? '<span>✓</span>' : ''}
         </button>
       `;
@@ -469,27 +469,27 @@
 
     modal.innerHTML = `
       <h3>O que esta área representa?</h3>
-      <div class="giga-info-selector-list" id="giga-placeholder-list">
+      <div class="go-info-selector-list" id="go-placeholder-list">
         ${listHtml}
       </div>
       
-      <div id="giga-new-placeholder-container" style="display:none; margin-top: 10px; border-top: 1px solid var(--c-border); padding-top: 10px;">
-        <input type="text" id="giga-new-placeholder-name" placeholder="Nome do novo placeholder..." style="width:100%; padding: 6px; border: 1px solid var(--c-border); border-radius: 4px; font-size: 13px; margin-bottom: 6px; box-sizing: border-box; background: var(--c-surface); color: var(--c-text);">
+      <div id="go-new-placeholder-container" style="display:none; margin-top: 10px; border-top: 1px solid var(--c-border); padding-top: 10px;">
+        <input type="text" id="go-new-placeholder-name" placeholder="Nome do novo placeholder..." style="width:100%; padding: 6px; border: 1px solid var(--c-border); border-radius: 4px; font-size: 13px; margin-bottom: 6px; box-sizing: border-box; background: var(--c-surface); color: var(--c-text);">
         <div style="display:flex; gap: 8px;">
-          <button id="giga-btn-save-new" style="flex:1; padding:6px; background:#1976d2; color:#fff; border:none; border-radius:4px; font-size:12px; cursor:pointer;">Salvar</button>
-          <button id="giga-btn-cancel-new" style="flex:1; padding:6px; background:transparent; color:var(--c-text-2); border:1px solid var(--c-border); border-radius:4px; font-size:12px; cursor:pointer;">Cancelar</button>
+          <button id="go-btn-save-new" style="flex:1; padding:6px; background:#1976d2; color:#fff; border:none; border-radius:4px; font-size:12px; cursor:pointer;">Salvar</button>
+          <button id="go-btn-cancel-new" style="flex:1; padding:6px; background:transparent; color:var(--c-text-2); border:1px solid var(--c-border); border-radius:4px; font-size:12px; cursor:pointer;">Cancelar</button>
         </div>
       </div>
       
-      <div class="giga-info-selector-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-        <button class="giga-btn-cancel" id="giga-info-cancel">Fechar</button>
-        <button id="giga-btn-add-new" style="background:none; border:none; color:#1976d2; font-size:12px; font-weight:600; cursor:pointer; padding:0;">+ Novo Placeholder</button>
+      <div class="go-info-selector-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+        <button class="go-btn-cancel" id="go-info-cancel">Fechar</button>
+        <button id="go-btn-add-new" style="background:none; border:none; color:#1976d2; font-size:12px; font-weight:600; cursor:pointer; padding:0;">+ Novo Placeholder</button>
       </div>
     `;
 
     document.body.appendChild(modal);
 
-    const btnCancel = modal.querySelector('#giga-info-cancel');
+    const btnCancel = modal.querySelector('#go-info-cancel');
     if (btnCancel) {
       btnCancel.addEventListener('click', () => {
         modal.remove();
@@ -497,11 +497,11 @@
       });
     }
 
-    const btnAddNew = modal.querySelector('#giga-btn-add-new');
-    const containerNew = modal.querySelector('#giga-new-placeholder-container');
-    const inputNew = modal.querySelector('#giga-new-placeholder-name');
-    const btnSaveNew = modal.querySelector('#giga-btn-save-new');
-    const btnCancelNew = modal.querySelector('#giga-btn-cancel-new');
+    const btnAddNew = modal.querySelector('#go-btn-add-new');
+    const containerNew = modal.querySelector('#go-new-placeholder-container');
+    const inputNew = modal.querySelector('#go-new-placeholder-name');
+    const btnSaveNew = modal.querySelector('#go-btn-save-new');
+    const btnCancelNew = modal.querySelector('#go-btn-cancel-new');
     
     if (btnAddNew) {
       btnAddNew.addEventListener('click', () => {
@@ -543,7 +543,7 @@
         let newMap = { ...(siteProfile?.placeholdersMap || {}) };
         newMap[id] = selector;
         
-        siteProfile = await window.GigaArmazenamento.atualizarPerfilSite(currentDomain, {
+        siteProfile = await window.GoArmazenamento.atualizarPerfilSite(currentDomain, {
           placeholders: currentPlaceholders,
           placeholdersMap: newMap
         });
@@ -554,7 +554,7 @@
       });
     }
 
-    const btns = modal.querySelectorAll('.giga-info-selector-btn');
+    const btns = modal.querySelectorAll('.go-info-selector-btn');
     btns.forEach(b => {
       b.addEventListener('click', async () => {
         const pId = b.dataset.ph;
@@ -579,7 +579,7 @@
           newMap[pId] = selector;
         }
 
-        siteProfile = await window.GigaArmazenamento.atualizarPerfilSite(currentDomain, {
+        siteProfile = await window.GoArmazenamento.atualizarPerfilSite(currentDomain, {
           placeholdersMap: newMap
         });
 
@@ -654,7 +654,7 @@
       return false;
     };
 
-    if (el.id && !el.id.startsWith('giga-') && !isDynamicId(el.id)) {
+    if (el.id && !el.id.startsWith('go-') && !isDynamicId(el.id)) {
       return '#' + CSS.escape(el.id);
     }
 
@@ -672,7 +672,7 @@
       // Try classes
       if (node.className && typeof node.className === 'string') {
         const classes = node.className.split(/\s+/)
-          .filter(c => c && !c.startsWith('giga-') && !/^\d/.test(c) && c.length > 2)
+          .filter(c => c && !c.startsWith('go-') && !/^\d/.test(c) && c.length > 2)
           .map(c => '.' + CSS.escape(c));
         if (classes.length > 0) {
           sel += classes.slice(0, 3).join('');
@@ -731,11 +731,11 @@
     if (floatBtn) return;
 
     floatBtn = document.createElement('div');
-    floatBtn.id = 'giga-float-widget';
+    floatBtn.id = 'go-float-widget';
     floatBtn.innerHTML = `
       <!-- Base do widget: logo + drag handle -->
-      <div id="giga-float-base">
-        <button id="giga-float-logo-btn" title="${globalBrandName ? globalBrandName + ' - GigAtende' : 'GigAtende'} – Selecionar Mensagem" aria-label="${globalBrandName ? globalBrandName + ' - GigAtende' : 'GigAtende'} – Selecionar Mensagem">
+      <div id="go-float-base">
+        <button id="go-float-logo-btn" title="${globalBrandName ? globalBrandName + ' - GoAtende' : 'GoAtende'} – Selecionar Mensagem" aria-label="${globalBrandName ? globalBrandName + ' - GoAtende' : 'GoAtende'} – Selecionar Mensagem">
           ${globalBrandLogo 
             ? `<img src="${globalBrandLogo}" style="width:100%; height:100%; object-fit:contain; border-radius:50%;" />`
             : `<svg viewBox="0 0 12800 12800" xmlns="http://www.w3.org/2000/svg">
@@ -751,15 +751,15 @@
           </svg>`
           }
         </button>
-        <div id="giga-float-drag-handle" title="Arraste para mover" aria-label="Arraste para mover">
+        <div id="go-float-drag-handle" title="Arraste para mover" aria-label="Arraste para mover">
           <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z" fill="white"/></svg>
         </div>
       </div>
 
       <!-- Container de Mensagens Rápidas (Flash Messages) -->
-      <div id="giga-float-flash-container">
-        <div id="giga-float-flash-divider"></div>
-        <div id="giga-float-flash-grid"></div>
+      <div id="go-float-flash-container">
+        <div id="go-float-flash-divider"></div>
+        <div id="go-float-flash-grid"></div>
       </div>
     `;
 
@@ -801,12 +801,12 @@
   }
 
   async function renderFlashMessages() {
-    const flashContainer = document.getElementById('giga-float-flash-container');
-    const flashGrid = document.getElementById('giga-float-flash-grid');
+    const flashContainer = document.getElementById('go-float-flash-container');
+    const flashGrid = document.getElementById('go-float-flash-grid');
     if (!flashContainer || !flashGrid) return;
 
     try {
-      const data = await window.GigaArmazenamento.obterDados();
+      const data = await window.GoArmazenamento.obterDados();
       const messages = data.messages || [];
       // Filtra as favoritas e limita a no máximo 21 botões
       const favoritos = messages.filter(m => m.favorite).slice(0, 21);
@@ -825,7 +825,7 @@
         const iconSvg = iconDef ? iconDef.svg : '<path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" fill="currentColor"/>';
 
         const btn = document.createElement('button');
-        btn.className = 'giga-flash-btn';
+        btn.className = 'go-flash-btn';
         btn.title = msg.title; // Exibe o título no tooltip (texto ALT)
         btn.setAttribute('aria-label', msg.title);
         btn.innerHTML = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">${iconSvg}</svg>`;
@@ -838,14 +838,14 @@
           // Aqui não passamos saudação/assinatura por ser a flash message
           const finalContent = msg.contentText || stripHtml(msg.contentHtml || '');
           await insertMessageIntoField(activeField, finalContent);
-          await window.GigaArmazenamento.adicionarHistorico(msg.id, currentDomain);
+          await window.GoArmazenamento.adicionarHistorico(msg.id, currentDomain);
           showPageToast('Mensagem rápida inserida!', 2000);
         });
 
         flashGrid.appendChild(btn);
       });
     } catch (e) {
-      console.error('GigAtende: Erro ao carregar flash messages', e);
+      console.error('GoAtende: Erro ao carregar flash messages', e);
     }
   }
 
@@ -863,8 +863,8 @@
   function setupButtonDrag() {
     if (!floatBtn) return;
     
-    const dragHandle = document.getElementById('giga-float-drag-handle');
-    const logoBtn = document.getElementById('giga-float-logo-btn');
+    const dragHandle = document.getElementById('go-float-drag-handle');
+    const logoBtn = document.getElementById('go-float-logo-btn');
     
     if (dragHandle) dragHandle.addEventListener('mousedown', onDragStart);
     if (logoBtn) logoBtn.addEventListener('click', (e) => {
@@ -882,7 +882,7 @@
     dragOffset.x = e.clientX - rect.left;
     dragOffset.y = e.clientY - rect.top;
 
-    floatBtn.classList.add('giga-dragging');
+    floatBtn.classList.add('go-dragging');
 
     document.addEventListener('mousemove', onDragMove, { passive: true });
     document.addEventListener('mouseup',   onDragEnd);
@@ -904,13 +904,13 @@
     document.removeEventListener('mousemove', onDragMove);
     document.removeEventListener('mouseup',   onDragEnd);
 
-    floatBtn.classList.remove('giga-dragging');
+    floatBtn.classList.remove('go-dragging');
 
     if (dragMoved) {
       const x = parseFloat(floatBtn.style.left);
       const y = parseFloat(floatBtn.style.top);
       savedBtnPos = { x, y };
-      await window.GigaArmazenamento.salvarPosicaoBotao(currentDomain, savedBtnPos);
+      await window.GoArmazenamento.salvarPosicaoBotao(currentDomain, savedBtnPos);
     }
     isDragging = false;
     dragMoved = false; // Garante que a flag de movimento seja resetada
@@ -937,7 +937,7 @@
       } catch (e) {}
     }
 
-    const data       = await window.GigaArmazenamento.obterDados();
+    const data       = await window.GoArmazenamento.obterDados();
     const categories = data.categories || [];
     const messages   = data.messages   || [];
     const domain     = location.host;
@@ -950,7 +950,7 @@
     const filterCats = categories.filter(c => c.active && c.id !== 'cat-greeting' && c.id !== 'cat-signature');
 
     overlay = document.createElement('div');
-    overlay.id = 'giga-overlay';
+    overlay.id = 'go-overlay';
 
     /* Opções de saudação para o dropdown */
     const greetingOpts = greetingMsgs.map(m =>
@@ -962,57 +962,57 @@
     ).join('');
 
     overlay.innerHTML = `
-      <div id="giga-panel">
-        <div id="giga-panel-header">
-          <div id="giga-panel-title">
+      <div id="go-panel">
+        <div id="go-panel-header">
+          <div id="go-panel-title">
             <svg viewBox="0 0 24 24" width="18" height="18"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" fill="white"/></svg>
             Selecionar Mensagem
           </div>
-          <button id="giga-panel-close" title="Fechar (Esc)" aria-label="Fechar overlay">
+          <button id="go-panel-close" title="Fechar (Esc)" aria-label="Fechar overlay">
             <svg viewBox="0 0 24 24" width="16" height="16"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="white"/></svg>
           </button>
         </div>
 
         <!-- Barra de Saudação e Assinatura -->
-        <div id="giga-greet-sig-bar">
-          <div class="giga-greet-sig-block">
-            <input type="checkbox" id="giga-chk-greeting" aria-label="Incluir saudação"/>
-            <label for="giga-chk-greeting">Saudação</label>
-            <select class="giga-greet-sig-select" id="giga-sel-greeting" aria-label="Selecionar saudação">
+        <div id="go-greet-sig-bar">
+          <div class="go-greet-sig-block">
+            <input type="checkbox" id="go-chk-greeting" aria-label="Incluir saudação"/>
+            <label for="go-chk-greeting">Saudação</label>
+            <select class="go-greet-sig-select" id="go-sel-greeting" aria-label="Selecionar saudação">
               ${greetingMsgs.length ? greetingOpts : '<option value="">Nenhuma saudação cadastrada</option>'}
             </select>
           </div>
-          <div class="giga-greet-sig-block">
-            <input type="checkbox" id="giga-chk-signature" aria-label="Incluir assinatura"/>
-            <label for="giga-chk-signature">Assinatura</label>
-            <select class="giga-greet-sig-select" id="giga-sel-signature" aria-label="Selecionar assinatura">
+          <div class="go-greet-sig-block">
+            <input type="checkbox" id="go-chk-signature" aria-label="Incluir assinatura"/>
+            <label for="go-chk-signature">Assinatura</label>
+            <select class="go-greet-sig-select" id="go-sel-signature" aria-label="Selecionar assinatura">
               ${signatureMsgs.length ? signatureOpts : '<option value="">Nenhuma assinatura cadastrada</option>'}
             </select>
           </div>
         </div>
 
         <!-- Barra de busca e filtro de categorias -->
-        <div id="giga-panel-toolbar">
-          <input id="giga-search" type="text" placeholder="Buscar mensagens…" aria-label="Buscar mensagens"/>
-          <div id="giga-cat-filter"></div>
+        <div id="go-panel-toolbar">
+          <input id="go-search" type="text" placeholder="Buscar mensagens…" aria-label="Buscar mensagens"/>
+          <div id="go-cat-filter"></div>
         </div>
 
         <!-- Lista de mensagens em grid 2 colunas -->
-        <div id="giga-msg-list" role="list"></div>
+        <div id="go-msg-list" role="list"></div>
       </div>`;
 
     document.body.appendChild(overlay);
 
     /* Fecha ao clicar no fundo escuro */
     overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
-    document.getElementById('giga-panel-close').addEventListener('click', closeOverlay);
+    document.getElementById('go-panel-close').addEventListener('click', closeOverlay);
 
     /* Previne que interações com o overlay roubem o foco do campo ativo, 
        a menos que o usuário explicitamente clique no campo de busca */
     overlay.addEventListener('mousedown', e => {
       const tag = e.target.tagName.toLowerCase();
       // Permite o foco no campo de busca
-      if (tag === 'input' && e.target.id === 'giga-search') return;
+      if (tag === 'input' && e.target.id === 'go-search') return;
       
       // Permite o fluxo normal para labels e checkboxes
       if (tag === 'label' || (tag === 'input' && e.target.type === 'checkbox')) return;
@@ -1027,10 +1027,10 @@
     });
 
     /* Lógica dos checkboxes de Saudação / Assinatura */
-    const chkGreeting  = document.getElementById('giga-chk-greeting');
-    const selGreeting  = document.getElementById('giga-sel-greeting');
-    const chkSignature = document.getElementById('giga-chk-signature');
-    const selSignature = document.getElementById('giga-sel-signature');
+    const chkGreeting  = document.getElementById('go-chk-greeting');
+    const selGreeting  = document.getElementById('go-sel-greeting');
+    const chkSignature = document.getElementById('go-chk-signature');
+    const selSignature = document.getElementById('go-sel-signature');
 
     chkGreeting.addEventListener('change', () => {
       selGreeting.style.display = chkGreeting.checked ? 'block' : 'none';
@@ -1040,18 +1040,18 @@
     });
 
     /* Renderiza chips de filtro de categorias */
-    const catFilter = document.getElementById('giga-cat-filter');
+    const catFilter = document.getElementById('go-cat-filter');
     let activeFilter = '';
 
     const allChip = document.createElement('button');
-    allChip.className = 'giga-chip active';
+    allChip.className = 'go-chip active';
     allChip.textContent = 'Todas';
     allChip.dataset.cat = '';
     catFilter.appendChild(allChip);
 
     filterCats.forEach(cat => {
       const chip = document.createElement('button');
-      chip.className = 'giga-chip';
+      chip.className = 'go-chip';
       chip.textContent = cat.name;
       chip.dataset.cat = cat.id;
       catFilter.appendChild(chip);
@@ -1061,14 +1061,14 @@
       const chip = e.target.closest('[data-cat]');
       if (!chip) return;
       activeFilter = chip.dataset.cat;
-      catFilter.querySelectorAll('.giga-chip').forEach(c => {
+      catFilter.querySelectorAll('.go-chip').forEach(c => {
         c.classList.toggle('active', c.dataset.cat === activeFilter);
       });
       renderMsgList();
     });
 
     /* Inicializa Busca Dinâmica */
-    const searchEl = document.getElementById('giga-search');
+    const searchEl = document.getElementById('go-search');
     searchEl.addEventListener('input', renderMsgList);
     // REMOVIDO: searchEl.focus() - O foco DEVE permanecer no campo ativo (activeField)
     // para não quebrar plataformas que exigem o cursor contínuo no campo.
@@ -1076,7 +1076,7 @@
     /* ── Renderização da lista de mensagens ── */
     function renderMsgList() {
       const q       = searchEl.value.toLowerCase();
-      const msgList = document.getElementById('giga-msg-list');
+      const msgList = document.getElementById('go-msg-list');
       msgList.innerHTML = '';
 
       /* Filtra excluindo saudações e assinaturas (mostradas no topo separadamente) */
@@ -1101,41 +1101,41 @@
 
       // A ordem manual do array é absoluta, portanto não ordenamos por favoritos.
       if (filtered.length === 0) {
-        msgList.innerHTML = `<div class="giga-empty"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" fill="currentColor"/></svg><p>Nenhuma mensagem encontrada</p></div>`;
+        msgList.innerHTML = `<div class="go-empty"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" fill="currentColor"/></svg><p>Nenhuma mensagem encontrada</p></div>`;
         return;
       }
 
       filtered.forEach(msg => {
         const cats = (msg.categoryIds || []).map(cid => categories.find(c => c.id === cid)).filter(Boolean);
-        const badgesHtml = cats.map(c => `<span class="giga-badge" style="background:${c.color}">${escHtml(c.name)}</span>`).join('');
+        const badgesHtml = cats.map(c => `<span class="go-badge" style="background:${c.color}">${escHtml(c.name)}</span>`).join('');
         const preview    = msg.contentText || stripHtml(msg.contentHtml || '');
 
         /* Ícone do título (se houver) */
         const icon = msg.icon ? ICONS.find(i => i.id === msg.icon) : null;
         const iconHtml = icon
-          ? `<svg class="giga-msg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">${icon.svg}</svg>`
+          ? `<svg class="go-msg-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">${icon.svg}</svg>`
           : '';
 
         const card = document.createElement('div');
-        card.className = 'giga-msg-card';
+        card.className = 'go-msg-card';
         card.setAttribute('role', 'listitem');
         card.innerHTML = `
-          <div class="giga-msg-top">
-            <span class="giga-msg-title">${msg.favorite ? '⭐ ' : ''}${iconHtml}${escHtml(msg.title)}</span>
-            <button class="giga-insert-btn" data-msgid="${escHtml(msg.id)}" aria-label="Inserir mensagem: ${escHtml(msg.title)}">
+          <div class="go-msg-top">
+            <span class="go-msg-title">${msg.favorite ? '⭐ ' : ''}${iconHtml}${escHtml(msg.title)}</span>
+            <button class="go-insert-btn" data-msgid="${escHtml(msg.id)}" aria-label="Inserir mensagem: ${escHtml(msg.title)}">
               <svg viewBox="0 0 24 24" width="13" height="13"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" fill="white"/></svg>
               Inserir
             </button>
           </div>
-          ${badgesHtml ? `<div class="giga-msg-badges">${badgesHtml}</div>` : ''}
-          <div class="giga-msg-preview">${escHtml(preview)}</div>`;
+          ${badgesHtml ? `<div class="go-msg-badges">${badgesHtml}</div>` : ''}
+          <div class="go-msg-preview">${escHtml(preview)}</div>`;
 
         // Botão de inserção no cartão
-        card.querySelector('.giga-insert-btn').addEventListener('click', async () => {
+        card.querySelector('.go-insert-btn').addEventListener('click', async () => {
           /* Monta texto final com saudação e/ou assinatura */
           const finalContent = buildFinalContent(msg, messages, chkGreeting, selGreeting, chkSignature, selSignature);
           await insertMessageIntoField(activeField, finalContent);
-          await window.GigaArmazenamento.adicionarHistorico(msg.id, domain);
+          await window.GoArmazenamento.adicionarHistorico(msg.id, domain);
           closeOverlay();
           showPageToast('Mensagem inserida!', 2000);
         });
@@ -1190,12 +1190,12 @@
   async function openNewMsgOverlay() {
     closeOverlay();
     
-    const data = await window.GigaArmazenamento.obterDados();
+    const data = await window.GoArmazenamento.obterDados();
     const cats = data.categories || [];
-    const recentEmojis = await window.GigaArmazenamento.obterEmojisRecentes();
+    const recentEmojis = await window.GoArmazenamento.obterEmojisRecentes();
 
     overlay = document.createElement('div');
-    overlay.id = 'giga-overlay';
+    overlay.id = 'go-overlay';
 
     const catOptions = cats.filter(c => c.active).map(c =>
       `<option value="${escHtml(c.id)}">${escHtml(c.name)}</option>`
@@ -1203,48 +1203,48 @@
 
     /* Constrói o HTML dos ícones SVG disponíveis */
     const iconPickerHtml = ICONS.map(icon => `
-      <div class="giga-icon-item" data-icon-id="${icon.id}" role="button" tabindex="0">
+      <div class="go-icon-item" data-icon-id="${icon.id}" role="button" tabindex="0">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">${icon.svg}</svg>
       </div>`).join('');
 
     overlay.innerHTML = `
-      <div id="giga-panel" style="max-width:520px">
-        <div id="giga-panel-header">
-          <div id="giga-panel-title">
+      <div id="go-panel" style="max-width:520px">
+        <div id="go-panel-header">
+          <div id="go-panel-title">
             <svg viewBox="0 0 24 24" width="18" height="18"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="white"/></svg>
             Nova Mensagem Rápida
           </div>
-          <button id="giga-panel-close" title="Fechar" aria-label="Fechar">
+          <button id="go-panel-close" title="Fechar" aria-label="Fechar">
             <svg viewBox="0 0 24 24" width="16" height="16"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="white"/></svg>
           </button>
         </div>
-        <div id="giga-new-form">
+        <div id="go-new-form">
 
           <!-- Campo de Título com seletor de ícone e emoji -->
           <div>
-            <label class="giga-form-label" for="giga-new-title">Título *</label>
-            <div id="giga-title-row">
-              <button type="button" id="giga-icon-picker-btn" title="Selecionar ícone" aria-label="Selecionar ícone para o título" aria-expanded="false">
-                <svg id="giga-selected-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="color:#757575">
+            <label class="go-form-label" for="go-new-title">Título *</label>
+            <div id="go-title-row">
+              <button type="button" id="go-icon-picker-btn" title="Selecionar ícone" aria-label="Selecionar ícone para o título" aria-expanded="false">
+                <svg id="go-selected-icon-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="color:#757575">
                   <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>
                 </svg>
               </button>
-              <input type="text" class="giga-form-input" id="giga-new-title" placeholder="Ex: Resposta de RMA" maxlength="120" style="flex:1"/>
-              <button type="button" id="giga-title-emoji-btn" title="Inserir emoji no título" aria-label="Inserir emoji no título">😀</button>
-              <input type="hidden" id="giga-new-icon" value=""/>
+              <input type="text" class="go-form-input" id="go-new-title" placeholder="Ex: Resposta de RMA" maxlength="120" style="flex:1"/>
+              <button type="button" id="go-title-emoji-btn" title="Inserir emoji no título" aria-label="Inserir emoji no título">😀</button>
+              <input type="hidden" id="go-new-icon" value=""/>
             </div>
             <!-- Painel do seletor de ícone (oculto por padrão) -->
-            <div id="giga-icon-picker-panel" style="display:none;margin-top:6px">
+            <div id="go-icon-picker-panel" style="display:none;margin-top:6px">
               <div style="font-size:10px;font-weight:700;color:#757575;text-transform:uppercase;margin-bottom:6px">Selecionar Ícone</div>
-              <div class="giga-icon-grid">${iconPickerHtml}</div>
-              <div class="giga-icon-label"></div>
+              <div class="go-icon-grid">${iconPickerHtml}</div>
+              <div class="go-icon-label"></div>
             </div>
           </div>
 
           <!-- Categoria -->
           <div>
-            <label class="giga-form-label" for="giga-new-cat">Categoria</label>
-            <select class="giga-form-input giga-form-select" id="giga-new-cat">
+            <label class="go-form-label" for="go-new-cat">Categoria</label>
+            <select class="go-form-input go-form-select" id="go-new-cat">
               <option value="">— Sem categoria —</option>
               ${catOptions}
             </select>
@@ -1252,23 +1252,23 @@
 
           <!-- Conteúdo com toolbar (negrito, itálico, emoji) -->
           <div>
-            <label class="giga-form-label" for="giga-new-content">Conteúdo *</label>
-            <div class="giga-new-toolbar">
-              <button type="button" class="giga-toolbar-btn" data-cmd="bold"      title="Negrito"><b>B</b></button>
-              <button type="button" class="giga-toolbar-btn" data-cmd="italic"    title="Itálico"><i>I</i></button>
-              <button type="button" class="giga-toolbar-btn" data-cmd="underline" title="Sublinhado"><u>U</u></button>
-              <div class="giga-toolbar-sep"></div>
-              <button type="button" class="giga-toolbar-btn" id="giga-emoji-btn" title="Inserir emoji" aria-label="Inserir emoji">😀</button>
+            <label class="go-form-label" for="go-new-content">Conteúdo *</label>
+            <div class="go-new-toolbar">
+              <button type="button" class="go-toolbar-btn" data-cmd="bold"      title="Negrito"><b>B</b></button>
+              <button type="button" class="go-toolbar-btn" data-cmd="italic"    title="Itálico"><i>I</i></button>
+              <button type="button" class="go-toolbar-btn" data-cmd="underline" title="Sublinhado"><u>U</u></button>
+              <div class="go-toolbar-sep"></div>
+              <button type="button" class="go-toolbar-btn" id="go-emoji-btn" title="Inserir emoji" aria-label="Inserir emoji">😀</button>
             </div>
-            <textarea class="giga-form-input giga-form-textarea" id="giga-new-content"
+            <textarea class="go-form-input go-form-textarea" id="go-new-content"
                       placeholder="Digite o conteúdo da mensagem…" rows="5"
                       aria-label="Conteúdo da mensagem"></textarea>
           </div>
 
           <!-- Botões de ação -->
-          <div class="giga-form-actions">
-            <button class="giga-btn-cancel" id="giga-new-cancel">Cancelar</button>
-            <button class="giga-btn-save"   id="giga-new-save">💾 Salvar Mensagem</button>
+          <div class="go-form-actions">
+            <button class="go-btn-cancel" id="go-new-cancel">Cancelar</button>
+            <button class="go-btn-save"   id="go-new-save">💾 Salvar Mensagem</button>
           </div>
         </div>
       </div>`;
@@ -1277,13 +1277,13 @@
     
     // Conecta botões básicos de fechar
     overlay.addEventListener('click', e => { if (e.target === overlay) closeOverlay(); });
-    document.getElementById('giga-panel-close').addEventListener('click', closeOverlay);
-    document.getElementById('giga-new-cancel').addEventListener('click', closeOverlay);
+    document.getElementById('go-panel-close').addEventListener('click', closeOverlay);
+    document.getElementById('go-new-cancel').addEventListener('click', closeOverlay);
 
-    const titleInput   = document.getElementById('giga-new-title');
-    const catSelect    = document.getElementById('giga-new-cat');
-    const contentInput = document.getElementById('giga-new-content');
-    const iconInput    = document.getElementById('giga-new-icon');
+    const titleInput   = document.getElementById('go-new-title');
+    const catSelect    = document.getElementById('go-new-cat');
+    const contentInput = document.getElementById('go-new-content');
+    const iconInput    = document.getElementById('go-new-icon');
 
     /* Pré-seleciona categoria com base no domínio */
     const domainCat = cats.find(c => c.siteScope && location.host.includes(c.siteScope));
@@ -1292,8 +1292,8 @@
     titleInput.focus();
 
     /* ── Seletor de ícone ── */
-    const iconPickerBtn   = document.getElementById('giga-icon-picker-btn');
-    const iconPickerPanel = document.getElementById('giga-icon-picker-panel');
+    const iconPickerBtn   = document.getElementById('go-icon-picker-btn');
+    const iconPickerPanel = document.getElementById('go-icon-picker-panel');
 
     iconPickerBtn.addEventListener('click', () => {
       const open = iconPickerPanel.style.display !== 'none';
@@ -1302,24 +1302,24 @@
     });
 
     iconPickerPanel.addEventListener('click', e => {
-      const item = e.target.closest('.giga-icon-item');
+      const item = e.target.closest('.go-icon-item');
       if (!item) return;
       
       const iconId = item.dataset.iconId;
 
       /* Desmarca todos e marca o selecionado */
-      iconPickerPanel.querySelectorAll('.giga-icon-item').forEach(el => el.classList.remove('selected'));
+      iconPickerPanel.querySelectorAll('.go-icon-item').forEach(el => el.classList.remove('selected'));
 
       if (iconInput.value === iconId) {
         /* Clique no mesmo ícone = desselecionar */
         iconInput.value = '';
-        document.getElementById('giga-selected-icon-svg').innerHTML =
+        document.getElementById('go-selected-icon-svg').innerHTML =
           '<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/>';
       } else {
         item.classList.add('selected');
         iconInput.value = iconId;
         const icon = ICONS.find(i => i.id === iconId);
-        document.getElementById('giga-selected-icon-svg').innerHTML = icon?.svg || '';
+        document.getElementById('go-selected-icon-svg').innerHTML = icon?.svg || '';
         
         iconPickerPanel.style.display = 'none';
         iconPickerBtn.setAttribute('aria-expanded', 'false');
@@ -1327,37 +1327,37 @@
     });
 
     /* ── Emoji Picker (conteúdo) ── */
-    document.getElementById('giga-emoji-btn').addEventListener('click', async (e) => {
+    document.getElementById('go-emoji-btn').addEventListener('click', async (e) => {
       e.stopPropagation();
-      const pickerExistente = document.getElementById('giga-whatsapp-emoji-picker');
-      if (pickerExistente && emojiTarget === contentInput) { window.GigaEmojiPicker.fechar(); return; }
-      window.GigaEmojiPicker.fechar();
+      const pickerExistente = document.getElementById('go-whatsapp-emoji-picker');
+      if (pickerExistente && emojiTarget === contentInput) { window.GoEmojiPicker.fechar(); return; }
+      window.GoEmojiPicker.fechar();
       emojiTarget = contentInput;
-      const emojisRecentes = await window.GigaArmazenamento.obterEmojisRecentes();
-      window.GigaEmojiPicker.abrir(e.currentTarget, emojisRecentes, async (emoji) => {
+      const emojisRecentes = await window.GoArmazenamento.obterEmojisRecentes();
+      window.GoEmojiPicker.abrir(e.currentTarget, emojisRecentes, async (emoji) => {
         insertEmojiIntoField(emojiTarget, emoji);
-        await window.GigaArmazenamento.adicionarEmojiRecente(emoji);
-        window.GigaEmojiPicker.fechar();
+        await window.GoArmazenamento.adicionarEmojiRecente(emoji);
+        window.GoEmojiPicker.fechar();
       });
     });
 
     /* ── Emoji Picker (título) ── */
-    document.getElementById('giga-title-emoji-btn').addEventListener('click', async (e) => {
+    document.getElementById('go-title-emoji-btn').addEventListener('click', async (e) => {
       e.stopPropagation();
-      const pickerExistente = document.getElementById('giga-whatsapp-emoji-picker');
-      if (pickerExistente && emojiTarget === titleInput) { window.GigaEmojiPicker.fechar(); return; }
-      window.GigaEmojiPicker.fechar();
+      const pickerExistente = document.getElementById('go-whatsapp-emoji-picker');
+      if (pickerExistente && emojiTarget === titleInput) { window.GoEmojiPicker.fechar(); return; }
+      window.GoEmojiPicker.fechar();
       emojiTarget = titleInput;
-      const emojisRecentes = await window.GigaArmazenamento.obterEmojisRecentes();
-      window.GigaEmojiPicker.abrir(e.currentTarget, emojisRecentes, async (emoji) => {
+      const emojisRecentes = await window.GoArmazenamento.obterEmojisRecentes();
+      window.GoEmojiPicker.abrir(e.currentTarget, emojisRecentes, async (emoji) => {
         insertEmojiIntoField(emojiTarget, emoji);
-        await window.GigaArmazenamento.adicionarEmojiRecente(emoji);
-        window.GigaEmojiPicker.fechar();
+        await window.GoArmazenamento.adicionarEmojiRecente(emoji);
+        window.GoEmojiPicker.fechar();
       });
     });
 
     /* ── Salvar Mensagem ── */
-    document.getElementById('giga-new-save').addEventListener('click', async () => {
+    document.getElementById('go-new-save').addEventListener('click', async () => {
       const title   = titleInput.value.trim();
       const content = contentInput.value.trim();
       
@@ -1365,7 +1365,7 @@
       if (!content) { contentInput.focus(); showPageToast('Informe o conteúdo.', 2000); return; }
 
       const msg = {
-        id: window.GigaArmazenamento.gerarId('msg'),
+        id: window.GoArmazenamento.gerarId('msg'),
         title,
         icon: iconInput.value || null,
         contentHtml: '<p>' + escHtml(content).replace(/\n/g, '</p><p>') + '</p>',
@@ -1376,7 +1376,7 @@
         updatedAt: new Date().toISOString()
       };
 
-      await window.GigaArmazenamento.salvarMensagem(msg);
+      await window.GoArmazenamento.salvarMensagem(msg);
       closeOverlay();
       showPageToast('Mensagem salva com sucesso!', 2500);
     });
@@ -1420,7 +1420,7 @@
 
   function closeOverlay() {
     if (overlay) { overlay.remove(); overlay = null; }
-    if (window.GigaEmojiPicker) window.GigaEmojiPicker.fechar();
+    if (window.GoEmojiPicker) window.GoEmojiPicker.fechar();
     if (iconPickerEl) { iconPickerEl.remove(); iconPickerEl = null; }
   }
 
@@ -1669,7 +1669,7 @@
   function insertIntoContentEditable(field, html, text) {
     const doc = field.ownerDocument || document;
     const win = doc.defaultView || window;
-    const safeHtml = window.GigaSanitize.sanitizeForInsertion(html);
+    const safeHtml = window.GoSanitize.sanitizeForInsertion(html);
 
     /* Garante foco no campo */
     field.focus();
@@ -1727,7 +1727,7 @@
         dispararEventosDeMudanca(field, text);
         return;
       } catch (e) {
-        console.warn('[GigAtende] Range API fallback falhou:', e);
+        console.warn('[GoAtende] Range API fallback falhou:', e);
       }
     }
 
@@ -1752,11 +1752,11 @@
    * @param {number} duration ms 
    */
   function showPageToast(msg, duration = 3000) {
-    const existing = document.getElementById('giga-toast');
+    const existing = document.getElementById('go-toast');
     if (existing) existing.remove();
     
     const el = document.createElement('div');
-    el.id = 'giga-toast';
+    el.id = 'go-toast';
     el.setAttribute('role', 'status');
     el.setAttribute('aria-live', 'polite');
     el.textContent = msg;

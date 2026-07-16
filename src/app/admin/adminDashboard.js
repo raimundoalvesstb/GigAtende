@@ -1,5 +1,5 @@
 /*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -14,7 +14,7 @@
  */
 /**
  * @file src/app/admin/adminDashboard.js
- * @description Lógica e Gráficos da Dashboard Administrativa do GigAtende
+ * @description Lógica e Gráficos da Dashboard Administrativa do GoAtende
  */
 
 'use strict';
@@ -47,7 +47,7 @@ window.AdminDashboard = (function () {
     const container = document.getElementById('dashSummaryCards');
     if (!container) return;
 
-    const dados = await window.GigaArmazenamento.obterDados();
+    const dados = await window.GoArmazenamento.obterDados();
     const sitesAtivos = dados.siteProfiles.filter(p => p.active).length;
     const totalMsgs = dados.messages.length;
     const totalCats = dados.categories.length;
@@ -94,8 +94,8 @@ window.AdminDashboard = (function () {
   }
 
   async function renderizarGraficos() {
-    const historico = await window.GigaArmazenamento.obterHistoricoFiltrado(dateFilter);
-    const dados = await window.GigaArmazenamento.obterDados();
+    const historico = await window.GoArmazenamento.obterHistoricoFiltrado(dateFilter);
+    const dados = await window.GoArmazenamento.obterDados();
     
     renderizarGraficoSites(historico, dados);
     renderizarGraficoMensagens(historico, dados);
@@ -150,7 +150,7 @@ window.AdminDashboard = (function () {
       legendHtml += `
         <div style="display:flex; align-items:center; gap:8px;">
           <div style="width:12px; height:12px; border-radius:3px; background:${color}; flex-shrink:0;"></div>
-          <div style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${window.GigaSanitize.escapeHtml(label)}</div>
+          <div style="flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${window.GoSanitize.escapeHtml(label)}</div>
           <strong>${item.total}</strong>
         </div>`;
     });
@@ -206,7 +206,7 @@ window.AdminDashboard = (function () {
           <div class="dash-bar-label" style="font-size: 11.5px;">
             <span style="display:flex; align-items:center; gap:6px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
               <svg viewBox="0 0 24 24" class="icon-xs" style="color:var(--c-text-2); flex-shrink:0; width:12px; height:12px;">${iconSvg}</svg>
-              ${window.GigaSanitize.escapeHtml(label)}
+              ${window.GoSanitize.escapeHtml(label)}
             </span> 
             <strong style="font-size: 11.5px;">${item.total}</strong>
           </div>
@@ -335,7 +335,7 @@ window.AdminDashboard = (function () {
       const imgData = canvas.toDataURL('image/png');
       const a = document.createElement('a');
       a.href = imgData;
-      a.download = `gigatende_dashboard_${new Date().toISOString().slice(0, 10)}.png`;
+      a.download = `goatende_dashboard_${new Date().toISOString().slice(0, 10)}.png`;
       a.click();
       window.AdminUI.toast('Dashboard exportada com sucesso!', 'success');
     }).catch(err => {

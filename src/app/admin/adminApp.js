@@ -1,5 +1,5 @@
 /*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -144,7 +144,7 @@
         'Redefinir todos os dados',
         'Esta ação apagará TODAS as mensagens, categorias e configurações. Continuar?',
         async () => {
-          await window.GigaArmazenamento.definirDados(window.GigaArmazenamento.DADOS_PADRAO);
+          await window.GoArmazenamento.definirDados(window.GoArmazenamento.DADOS_PADRAO);
           await window.AdminEstado.carregarTudo();
           renderizarTudo();
           aplicarConfiguracoes();
@@ -182,7 +182,7 @@
     });
 
     if (salvar) {
-      await window.GigaArmazenamento.salvarConfiguracoes({ theme: temaFinal });
+      await window.GoArmazenamento.salvarConfiguracoes({ theme: temaFinal });
       window.AdminUI.toast(`Tema ${nomes[temaFinal]} aplicado.`, 'success');
     }
   }
@@ -199,7 +199,7 @@
       inputName.addEventListener('change', async (e) => {
         const brandName = e.target.value.trim();
         window.AdminEstado.settings.brandName = brandName;
-        await window.GigaArmazenamento.salvarConfiguracoes({ brandName });
+        await window.GoArmazenamento.salvarConfiguracoes({ brandName });
         aplicarMarcaVisualmente();
         window.AdminUI.toast('Nome da marca salvo.', 'success');
       });
@@ -233,7 +233,7 @@
           
           const base64 = canvas.toDataURL('image/png');
           window.AdminEstado.settings.brandLogo = base64;
-          await window.GigaArmazenamento.salvarConfiguracoes({ brandLogo: base64 });
+          await window.GoArmazenamento.salvarConfiguracoes({ brandLogo: base64 });
           aplicarMarcaVisualmente();
           window.AdminUI.toast('Logotipo atualizado.', 'success');
         };
@@ -272,7 +272,7 @@
       btnClear.addEventListener('click', async () => {
         window.AdminEstado.settings.brandName = '';
         window.AdminEstado.settings.brandLogo = '';
-        await window.GigaArmazenamento.salvarConfiguracoes({ brandName: '', brandLogo: '' });
+        await window.GoArmazenamento.salvarConfiguracoes({ brandName: '', brandLogo: '' });
         if (inputName) inputName.value = '';
         if (inputLogo) inputLogo.value = '';
         aplicarMarcaVisualmente();
@@ -315,7 +315,7 @@
     }
     
     if (topnavName) {
-      topnavName.textContent = brandName ? `${brandName} - GigAtende` : 'GigAtende';
+      topnavName.textContent = brandName ? `${brandName} - GoAtende` : 'GoAtende';
     }
   }
 
@@ -329,13 +329,13 @@
      * Inicia o download de todo o banco de dados como arquivo JSON.
      */
     const handleExport = async () => {
-      const json = await window.GigaArmazenamento.exportarDados();
+      const json = await window.GoArmazenamento.exportarDados();
       const blob = new Blob([json], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       
       a.href = url;
-      a.download = `gigatende-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      a.download = `goatende-backup-${new Date().toISOString().slice(0, 10)}.json`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -394,7 +394,7 @@
       if (!importFileData) return;
       const mode = document.querySelector('input[name="importMode"]:checked')?.value || 'replace';
       try {
-        await window.GigaArmazenamento.importarDados(importFileData, mode);
+        await window.GoArmazenamento.importarDados(importFileData, mode);
         await window.AdminEstado.carregarTudo(); // Recarrega do banco para o estado global
         renderizarTudo();
         aplicarConfiguracoes(); // Restaura tema e densidade do backup importado
@@ -416,8 +416,8 @@
    */
   (async function verificarAvisoAtualizacao() {
     try {
-      const resultado = await chrome.storage.local.get('gigaAtende_update');
-      const info = resultado?.gigaAtende_update;
+      const resultado = await chrome.storage.local.get('goAtende_update');
+      const info = resultado?.goAtende_update;
       if (info?.updateAvailable && info?.latestVersion) {
         const el = document.getElementById('avisoAtualizacaoAdmin');
         if (el) {

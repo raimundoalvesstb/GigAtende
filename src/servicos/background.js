@@ -1,5 +1,5 @@
 /*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -14,13 +14,13 @@
  */
 /**
  * @file src/servicos/background.js
- * @description Service Worker (Background) da Extensão GigAtende.
+ * @description Service Worker (Background) da Extensão GoAtende.
  * Gerencia o estado do ícone da extensão baseado no domínio atual da aba,
  * rastreamento de abas e troca de mensagens assíncronas entre os scripts de contexto.
  */
 'use strict';
 
-const CHAVE_ARMAZENAMENTO = 'gigaAtende_data';
+const CHAVE_ARMAZENAMENTO = 'goAtende_data';
 
 /**
  * Atualiza o ícone e o título (tooltip) da extensão na barra do navegador.
@@ -47,13 +47,13 @@ async function atualizarIconeAba(idAba, url) {
         tabId: idAba,
         path: { 16: 'assets/icon16.png', 48: 'assets/icon48.png', 128: 'assets/icon128.png' }
       });
-      await chrome.action.setTitle({ tabId: idAba, title: `GigAtende – Ativo em ${dominioMatch}` });
+      await chrome.action.setTitle({ tabId: idAba, title: `GoAtende – Ativo em ${dominioMatch}` });
     } else {
       await chrome.action.setIcon({
         tabId: idAba,
         path: { 16: 'assets/icon16_gray.png', 48: 'assets/icon48_gray.png', 128: 'assets/icon128_gray.png' }
       });
-      await chrome.action.setTitle({ tabId: idAba, title: 'GigAtende – Desativado neste site' });
+      await chrome.action.setTitle({ tabId: idAba, title: 'GoAtende – Desativado neste site' });
     }
   } catch (e) {
     // Falha silenciosa: a aba pode ter sido fechada antes do ícone ser atualizado
@@ -216,10 +216,10 @@ function encontrarMelhorDominio(urlString, perfis = []) {
 /* ══════════════════════════════════════════════════════════════════════════ */
 
 /** @constant {string} URL da API pública do GitHub para a última release */
-const GITHUB_RELEASES_URL = 'https://api.github.com/repos/raimundoalvesstb/GigAtende/releases/latest';
+const GITHUB_RELEASES_URL = 'https://api.github.com/repos/raimundoalvesstb/GoAtende/releases/latest';
 
 /** @constant {string} Chave usada no chrome.storage.local para armazenar o status de atualização */
-const CHAVE_ATUALIZACAO = 'gigaAtende_update';
+const CHAVE_ATUALIZACAO = 'goAtende_update';
 
 /** @constant {string} Nome do alarme periódico de verificação */
 const ALARME_ATUALIZACAO = 'verificarAtualizacao';

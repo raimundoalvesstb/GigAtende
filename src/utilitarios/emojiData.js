@@ -1,5 +1,5 @@
 ﻿/*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -12,7 +12,7 @@
  * Full license:
  * https://polyformproject.org/licenses/noncommercial/1.0.0/
  */
-window.GigaEmojiData = [
+window.GoEmojiData = [
   {
     id: 'smileys',
     name: 'Smileys e pessoas',
@@ -560,7 +560,7 @@ window.GigaEmojiData = [
       { char: '🏰', k: 'castelo' },
       { char: '🏯', k: 'castelo japones' },
       { char: '🏟️', k: 'estadio arena' },
-      { char: '🎡', k: 'roda gigante parque' },
+      { char: '🎡', k: 'roda gonte parque' },
       { char: '🎢', k: 'montanha russa' },
       { char: '🎠', k: 'carrossel' },
       { char: '⛲', k: 'fonte agua' },

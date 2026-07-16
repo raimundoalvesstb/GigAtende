@@ -1,5 +1,5 @@
 ﻿/*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -12,20 +12,20 @@
  * Full license:
  * https://polyformproject.org/licenses/noncommercial/1.0.0/
  */
-/* content/injector.css – GigAtende Estilos do Content Script
+/* content/injector.css – GoAtende Estilos do Content Script
  * ──────────────────────────────────────────────────────────────────────────
- * Todas as classes usam o prefixo "giga-" para evitar conflitos com o CSS
+ * Todas as classes usam o prefixo "go-" para evitar conflitos com o CSS
  * nativo das plataformas de atendimento onde a extensão é injetada.
  * ──────────────────────────────────────────────────────────────────────────
  */
 
 /* ── Cursor especial no modo seleção de campo ─────────────────────────── */
-body.giga-selecting * {
+body.go-selecting * {
   cursor: crosshair !important;
 }
 
 /* ── Destaque de hover durante seleção de campo ──────────────────────── */
-.giga-highlight {
+.go-highlight {
   outline: 2.5px dashed #1976D2 !important;
   outline-offset: 2px !important;
   background-color: rgba(21, 101, 192, 0.06) !important;
@@ -35,7 +35,7 @@ body.giga-selecting * {
 
 
     /* Oculta tudo que estava no CSS antigo do botão, vamos atualizar o CSS. */
-    #giga-float-widget, #giga-float-widget * {
+    #go-float-widget, #go-float-widget * {
       box-sizing: border-box !important;
       margin: 0 !important;
       padding: 0 !important;
@@ -45,7 +45,7 @@ body.giga-selecting * {
       outline: none !important;
     }
 
-    #giga-float-widget {
+    #go-float-widget {
       position: fixed !important;
       z-index: 2147483645 !important;
       display: flex !important;
@@ -56,11 +56,11 @@ body.giga-selecting * {
       background: transparent !important;
       border: none !important;
     }
-    #giga-float-widget.giga-dragging { opacity: 0.9 !important; transform: scale(1.05) !important; }
+    #go-float-widget.go-dragging { opacity: 0.9 !important; transform: scale(1.05) !important; }
 
 
 
-    #giga-float-base {
+    #go-float-base {
       display: flex !important;
       background: #00BCD4 !important; /* Azul claro estilo pill */
       border-radius: 30px !important;
@@ -75,7 +75,7 @@ body.giga-selecting * {
       z-index: 2 !important; /* Fica acima do flash-container */
     }
 
-    #giga-float-flash-container {
+    #go-float-flash-container {
       display: none !important; /* Visível apenas se houver favoritos */
       flex-direction: column !important;
       background: #00BCD4 !important;
@@ -90,7 +90,7 @@ body.giga-selecting * {
       z-index: -1 !important; /* Fica atrás do base */
     }
 
-    #giga-float-flash-divider {
+    #go-float-flash-divider {
       display: none !important; /* Removido a pedido do usuário */
       height: 1px !important;
       background: rgba(255, 255, 255, 0.4) !important;
@@ -98,14 +98,14 @@ body.giga-selecting * {
       width: auto !important;
     }
 
-    #giga-float-flash-grid {
+    #go-float-flash-grid {
       display: grid !important;
       grid-template-columns: repeat(3, 1fr) !important;
       gap: 6px !important;
       justify-items: center !important;
     }
 
-    .giga-flash-btn {
+    .go-flash-btn {
       width: 28px !important;
       height: 28px !important;
       border-radius: 6px !important;
@@ -120,20 +120,20 @@ body.giga-selecting * {
       padding: 4px !important;
     }
 
-    .giga-flash-btn:hover {
+    .go-flash-btn:hover {
       background: rgba(255,255,255,0.2) !important;
       border-color: rgba(255,255,255,0.8) !important;
       transform: scale(1.1) !important;
     }
 
-    .giga-flash-btn svg {
+    .go-flash-btn svg {
       width: 16px !important;
       height: 16px !important;
       pointer-events: none !important;
       display: block !important;
     }
 
-    #giga-float-logo-btn {
+    #go-float-logo-btn {
       width: 44px !important;
       height: 44px !important;
       border-radius: 50% !important;
@@ -149,11 +149,11 @@ body.giga-selecting * {
       box-shadow: 0 2px 6px rgba(0,0,0,0.2) !important;
       flex-shrink: 0 !important;
     }
-    #giga-float-logo-btn:hover { transform: scale(1.08) !important; background: #1976D2 !important; }
+    #go-float-logo-btn:hover { transform: scale(1.08) !important; background: #1976D2 !important; }
     /* Ajustando o tamanho do logo svg dentro do circulo */
-    #giga-float-logo-btn svg { width: 44px !important; height: 44px !important; pointer-events: none !important; border-radius: 50% !important; display: block !important; margin: 0 !important; }
+    #go-float-logo-btn svg { width: 44px !important; height: 44px !important; pointer-events: none !important; border-radius: 50% !important; display: block !important; margin: 0 !important; }
 
-    #giga-float-drag-handle {
+    #go-float-drag-handle {
       width: 36px !important;
       height: 44px !important;
       display: flex !important;
@@ -168,12 +168,12 @@ body.giga-selecting * {
       flex-shrink: 0 !important;
       border: none !important;
     }
-    #giga-float-drag-handle:hover { background: rgba(255,255,255,0.2) !important; }
-    #giga-float-drag-handle svg { width: 22px !important; height: 22px !important; pointer-events: none !important; display: block !important; margin: 0 !important; }
+    #go-float-drag-handle:hover { background: rgba(255,255,255,0.2) !important; }
+    #go-float-drag-handle svg { width: 22px !important; height: 22px !important; pointer-events: none !important; display: block !important; margin: 0 !important; }
 
 
 /* ── Mini Menu de Ação (Inserir / Nova Mensagem) ─────────────────────── */
-#giga-mini-menu {
+#go-mini-menu {
   position: fixed;
   z-index: 2147483645;
   background: #FFFFFF;
@@ -184,11 +184,11 @@ body.giga-selecting * {
   flex-direction: column;
   gap: 2px;
   min-width: 200px;
-  animation: gigaFadeIn 0.15s ease;
+  animation: goFadeIn 0.15s ease;
   font-family: 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
-.giga-menu-item {
+.go-menu-item {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -206,12 +206,12 @@ body.giga-selecting * {
   transition: background 0.15s;
 }
 
-.giga-menu-item:hover { background: rgba(21,101,192,0.08); color: #1565C0; }
-.giga-menu-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+.go-menu-item:hover { background: rgba(21,101,192,0.08); color: #1565C0; }
+.go-menu-item svg { width: 18px; height: 18px; flex-shrink: 0; }
 
 /* ── Overlay de Mensagens ─────────────────────────────────────────────── */
 /* Cobre toda a tela com fundo escurecido/desfocado */
-#giga-overlay {
+#go-overlay {
   position: fixed;
   inset: 0;
   z-index: 2147483644;
@@ -221,13 +221,13 @@ body.giga-selecting * {
   justify-content: center;
   padding: 16px;
   font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-  animation: gigaFadeIn 0.15s ease;
+  animation: goFadeIn 0.15s ease;
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }
 
 /* Painel central do overlay – mais largo para 2 colunas de mensagens */
-#giga-panel {
+#go-panel {
   background: #FFFFFF;
   border-radius: 14px;
   box-shadow: 0 10px 40px rgba(0,0,0,0.22);
@@ -237,11 +237,11 @@ body.giga-selecting * {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: gigaSlideUp 0.2s ease;
+  animation: goSlideUp 0.2s ease;
 }
 
 /* Cabeçalho do painel */
-#giga-panel-header {
+#go-panel-header {
   padding: 14px 18px 12px;
   border-bottom: 1px solid #E0E0E0;
   display: flex;
@@ -252,7 +252,7 @@ body.giga-selecting * {
   color: #fff;
 }
 
-#giga-panel-title {
+#go-panel-title {
   font-size: 15px;
   font-weight: 700;
   display: flex;
@@ -261,7 +261,7 @@ body.giga-selecting * {
   letter-spacing: 0.2px;
 }
 
-#giga-panel-close {
+#go-panel-close {
   background: rgba(255,255,255,0.15);
   border: none;
   cursor: pointer;
@@ -275,10 +275,10 @@ body.giga-selecting * {
   transition: background 0.15s;
   flex-shrink: 0;
 }
-#giga-panel-close:hover { background: rgba(255,255,255,0.3); }
+#go-panel-close:hover { background: rgba(255,255,255,0.3); }
 
 /* Barra de saudação/assinatura (acima do filtro de categorias) */
-#giga-greet-sig-bar {
+#go-greet-sig-bar {
   padding: 8px 14px;
   border-bottom: 1px solid #E8E8E8;
   background: #F0F4FF;
@@ -290,7 +290,7 @@ body.giga-selecting * {
 }
 
 /* Bloco de saudação ou assinatura com checkbox + select */
-.giga-greet-sig-block {
+.go-greet-sig-block {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -299,7 +299,7 @@ body.giga-selecting * {
   color: #424242;
 }
 
-.giga-greet-sig-block input[type="checkbox"] {
+.go-greet-sig-block input[type="checkbox"] {
   width: 15px;
   height: 15px;
   cursor: pointer;
@@ -307,7 +307,7 @@ body.giga-selecting * {
 }
 
 /* Select de seleção de saudação/assinatura (oculto por padrão) */
-.giga-greet-sig-select {
+.go-greet-sig-select {
   border: 1.5px solid #1565C0;
   border-radius: 6px;
   padding: 3px 8px;
@@ -318,12 +318,12 @@ body.giga-selecting * {
   cursor: pointer;
   max-width: 220px;
   display: none; /* Exibido via JS ao marcar o checkbox */
-  animation: gigaFadeIn 0.15s ease;
+  animation: goFadeIn 0.15s ease;
 }
-.giga-greet-sig-select:focus { outline: none; border-color: #1565C0; }
+.go-greet-sig-select:focus { outline: none; border-color: #1565C0; }
 
 /* Barra de busca e filtro de categorias */
-#giga-panel-toolbar {
+#go-panel-toolbar {
   padding: 10px 14px;
   border-bottom: 1px solid #E0E0E0;
   display: flex;
@@ -333,7 +333,7 @@ body.giga-selecting * {
   flex-shrink: 0;
 }
 
-#giga-search {
+#go-search {
   flex: 1;
   border: 1.5px solid #DEE2E6;
   border-radius: 20px;
@@ -345,9 +345,9 @@ body.giga-selecting * {
   background: #fff;
   min-width: 160px;
 }
-#giga-search:focus { border-color: #1565C0; }
+#go-search:focus { border-color: #1565C0; }
 
-#giga-cat-filter {
+#go-cat-filter {
   display: flex;
   gap: 5px;
   flex-wrap: wrap;
@@ -355,7 +355,7 @@ body.giga-selecting * {
 }
 
 /* Chips de filtro de categoria */
-.giga-chip {
+.go-chip {
   padding: 4px 10px;
   border-radius: 20px;
   border: 1.5px solid #DEE2E6;
@@ -367,11 +367,11 @@ body.giga-selecting * {
   color: #757575;
   transition: all 0.15s;
 }
-.giga-chip:hover { border-color: #1565C0; color: #1565C0; }
-.giga-chip.active { background: #1565C0; border-color: #1565C0; color: #fff; }
+.go-chip:hover { border-color: #1565C0; color: #1565C0; }
+.go-chip.active { background: #1565C0; border-color: #1565C0; color: #fff; }
 
 /* ── Lista de Mensagens – Grid 2 Colunas ──────────────────────────────── */
-#giga-msg-list {
+#go-msg-list {
   overflow-y: auto;
   padding: 12px 14px;
   display: grid;
@@ -382,7 +382,7 @@ body.giga-selecting * {
 }
 
 /* Card de mensagem individual com scrollbar interna */
-.giga-msg-card {
+.go-msg-card {
   border: 1.5px solid #E0E0E0;
   border-radius: 10px;
   padding: 12px 14px;
@@ -397,10 +397,10 @@ body.giga-selecting * {
   overflow: hidden;    /* Overflow controlado abaixo no conteúdo */
   position: relative;
 }
-.giga-msg-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.12); border-color: #BDBDBD; }
+.go-msg-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.12); border-color: #BDBDBD; }
 
 /* Topo do card: título + botão inserir */
-.giga-msg-top {
+.go-msg-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -408,7 +408,7 @@ body.giga-selecting * {
   flex-shrink: 0;
 }
 
-.giga-msg-title {
+.go-msg-title {
   font-size: 12px;
   font-weight: 700;
   color: #212121;
@@ -417,7 +417,7 @@ body.giga-selecting * {
 }
 
 /* Ícone do título da mensagem */
-.giga-msg-icon {
+.go-msg-icon {
   width: 14px;
   height: 14px;
   flex-shrink: 0;
@@ -425,7 +425,7 @@ body.giga-selecting * {
   margin-right: 4px;
 }
 
-.giga-insert-btn {
+.go-insert-btn {
   background: #1565C0;
   color: #fff;
   border: none;
@@ -441,11 +441,11 @@ body.giga-selecting * {
   align-items: center;
   gap: 4px;
 }
-.giga-insert-btn:hover { background: #1976D2; }
-.giga-insert-btn:active { transform: scale(0.96); }
+.go-insert-btn:hover { background: #1976D2; }
+.go-insert-btn:active { transform: scale(0.96); }
 
-.giga-msg-badges { display: flex; gap: 5px; flex-wrap: wrap; flex-shrink: 0; }
-.giga-badge {
+.go-msg-badges { display: flex; gap: 5px; flex-wrap: wrap; flex-shrink: 0; }
+.go-badge {
   font-size: 10px;
   font-weight: 600;
   padding: 2px 7px;
@@ -454,7 +454,7 @@ body.giga-selecting * {
 }
 
 /* Prévia do conteúdo com scrollbar para ver a mensagem completa */
-.giga-msg-preview {
+.go-msg-preview {
   font-size: 11.5px;
   color: #616161;
   line-height: 1.5;
@@ -466,16 +466,16 @@ body.giga-selecting * {
 }
 
 /* Customização da scrollbar interna dos cards */
-.giga-msg-preview::-webkit-scrollbar {
+.go-msg-preview::-webkit-scrollbar {
   width: 3px;
 }
-.giga-msg-preview::-webkit-scrollbar-thumb {
+.go-msg-preview::-webkit-scrollbar-thumb {
   background: #BDBDBD;
   border-radius: 2px;
 }
 
 /* Estado vazio da lista de mensagens */
-.giga-empty {
+.go-empty {
   padding: 36px 20px;
   text-align: center;
   color: #9E9E9E;
@@ -486,10 +486,10 @@ body.giga-selecting * {
   gap: 10px;
   grid-column: 1 / -1; /* Ocupa as 2 colunas no grid */
 }
-.giga-empty svg { width: 44px; height: 44px; opacity: 0.3; }
+.go-empty svg { width: 44px; height: 44px; opacity: 0.3; }
 
 /* ── Formulário de Nova Mensagem no Overlay ──────────────────────────── */
-#giga-new-form {
+#go-new-form {
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -498,14 +498,14 @@ body.giga-selecting * {
 }
 
 /* Linha de seletor de ícone + input de título */
-#giga-title-row {
+#go-title-row {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
 /* Botão para abrir o seletor de ícone */
-#giga-icon-picker-btn {
+#go-icon-picker-btn {
   width: 36px;
   height: 36px;
   border: 1.5px solid #DEE2E6;
@@ -518,11 +518,11 @@ body.giga-selecting * {
   flex-shrink: 0;
   transition: border-color 0.15s;
 }
-#giga-icon-picker-btn:hover { border-color: #1565C0; }
-#giga-icon-picker-btn svg { width: 20px; height: 20px; }
+#go-icon-picker-btn:hover { border-color: #1565C0; }
+#go-icon-picker-btn svg { width: 20px; height: 20px; }
 
 /* Painel flutuante do seletor de ícones */
-#giga-icon-picker-panel {
+#go-icon-picker-panel {
   position: absolute;
   z-index: 2147483647;
   background: #fff;
@@ -532,16 +532,16 @@ body.giga-selecting * {
   width: 300px;
   max-height: 280px;
   overflow-y: auto;
-  animation: gigaFadeIn 0.15s ease;
+  animation: goFadeIn 0.15s ease;
 }
 
-.giga-icon-grid {
+.go-icon-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 4px;
 }
 
-.giga-icon-item {
+.go-icon-item {
   width: 36px;
   height: 36px;
   border: 1.5px solid transparent;
@@ -554,13 +554,13 @@ body.giga-selecting * {
   transition: all 0.1s;
   padding: 4px;
 }
-.giga-icon-item:hover { background: #E3F2FD; border-color: #1565C0; }
-.giga-icon-item.selected { background: #1565C0; border-color: #1565C0; }
-.giga-icon-item.selected svg path,
-.giga-icon-item.selected svg rect,
-.giga-icon-item.selected svg circle { fill: #fff !important; }
+.go-icon-item:hover { background: #E3F2FD; border-color: #1565C0; }
+.go-icon-item.selected { background: #1565C0; border-color: #1565C0; }
+.go-icon-item.selected svg path,
+.go-icon-item.selected svg rect,
+.go-icon-item.selected svg circle { fill: #fff !important; }
 
-.giga-icon-label {
+.go-icon-label {
   font-size: 9px;
   color: #757575;
   text-align: center;
@@ -569,7 +569,7 @@ body.giga-selecting * {
 }
 
 /* Toolbar do formulário de nova mensagem (negrito, itálico, emojis...) */
-.giga-new-toolbar {
+.go-new-toolbar {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -580,7 +580,7 @@ body.giga-selecting * {
   flex-wrap: wrap;
 }
 
-.giga-toolbar-btn {
+.go-toolbar-btn {
   width: 28px;
   height: 28px;
   border: none;
@@ -595,11 +595,11 @@ body.giga-selecting * {
   font-size: 12px;
   font-family: inherit;
 }
-.giga-toolbar-btn:hover { background: rgba(21,101,192,0.1); color: #1565C0; }
-.giga-toolbar-sep { width: 1px; height: 20px; background: #E0E0E0; margin: 0 2px; }
+.go-toolbar-btn:hover { background: rgba(21,101,192,0.1); color: #1565C0; }
+.go-toolbar-sep { width: 1px; height: 20px; background: #E0E0E0; margin: 0 2px; }
 
 /* Botão de emoji na toolbar */
-#giga-emoji-btn {
+#go-emoji-btn {
   font-size: 16px;
   width: 28px;
   height: 28px;
@@ -607,7 +607,7 @@ body.giga-selecting * {
 }
 
 /* Botão de emoji no campo de título */
-#giga-title-emoji-btn {
+#go-title-emoji-btn {
   width: 30px;
   height: 30px;
   border: 1.5px solid #DEE2E6;
@@ -622,10 +622,10 @@ body.giga-selecting * {
   line-height: 1;
   transition: border-color 0.15s;
 }
-#giga-title-emoji-btn:hover { border-color: #1565C0; background: #F0F4FF; }
+#go-title-emoji-btn:hover { border-color: #1565C0; background: #F0F4FF; }
 
 /* ── Emoji Picker ─────────────────────────────────────────────────────── */
-#giga-emoji-picker {
+#go-emoji-picker {
   position: absolute;
   z-index: 2147483647;
   background: #fff;
@@ -635,10 +635,10 @@ body.giga-selecting * {
   width: 300px;
   max-height: 340px;
   overflow-y: auto;
-  animation: gigaFadeIn 0.15s ease;
+  animation: goFadeIn 0.15s ease;
 }
 
-.giga-emoji-section-title {
+.go-emoji-section-title {
   font-size: 10px;
   font-weight: 700;
   color: #9E9E9E;
@@ -647,15 +647,15 @@ body.giga-selecting * {
   margin-bottom: 6px;
   margin-top: 10px;
 }
-.giga-emoji-section-title:first-child { margin-top: 0; }
+.go-emoji-section-title:first-child { margin-top: 0; }
 
-.giga-emoji-grid {
+.go-emoji-grid {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   gap: 2px;
 }
 
-.giga-emoji-btn {
+.go-emoji-btn {
   width: 32px;
   height: 32px;
   border: none;
@@ -669,14 +669,14 @@ body.giga-selecting * {
   transition: background 0.1s;
   line-height: 1;
 }
-.giga-emoji-btn:hover { background: #F0F4FF; }
+.go-emoji-btn:hover { background: #F0F4FF; }
 
 /* Scrollbar customizada do emoji picker */
-#giga-emoji-picker::-webkit-scrollbar { width: 4px; }
-#giga-emoji-picker::-webkit-scrollbar-thumb { background: #BDBDBD; border-radius: 2px; }
+#go-emoji-picker::-webkit-scrollbar { width: 4px; }
+#go-emoji-picker::-webkit-scrollbar-thumb { background: #BDBDBD; border-radius: 2px; }
 
 /* ── Inputs e Controles do Formulário ────────────────────────────────── */
-.giga-form-label {
+.go-form-label {
   font-size: 11px;
   font-weight: 600;
   color: #757575;
@@ -686,7 +686,7 @@ body.giga-selecting * {
   display: block;
 }
 
-.giga-form-input {
+.go-form-input {
   width: 100%;
   border: 1.5px solid #DEE2E6;
   border-radius: 6px;
@@ -698,18 +698,18 @@ body.giga-selecting * {
   outline: none;
   box-sizing: border-box;
 }
-.giga-form-input:focus { border-color: #1565C0; }
+.go-form-input:focus { border-color: #1565C0; }
 
-.giga-form-textarea {
+.go-form-textarea {
   min-height: 90px;
   resize: vertical;
   border-radius: 0 0 6px 6px; /* Conecta visualmente com a toolbar */
   border-top: none;
 }
 
-.giga-form-select { cursor: pointer; }
+.go-form-select { cursor: pointer; }
 
-.giga-form-actions {
+.go-form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 8px;
@@ -717,7 +717,7 @@ body.giga-selecting * {
 }
 
 /* Botões de ação do formulário */
-.giga-btn-cancel {
+.go-btn-cancel {
   background: transparent;
   border: 1.5px solid #DEE2E6;
   color: #757575;
@@ -728,9 +728,9 @@ body.giga-selecting * {
   font-family: inherit;
   transition: background 0.15s;
 }
-.giga-btn-cancel:hover { background: #F5F5F5; }
+.go-btn-cancel:hover { background: #F5F5F5; }
 
-.giga-btn-save {
+.go-btn-save {
   background: #1565C0;
   color: #fff;
   border: none;
@@ -742,10 +742,10 @@ body.giga-selecting * {
   font-family: inherit;
   transition: background 0.15s;
 }
-.giga-btn-save:hover { background: #1976D2; }
+.go-btn-save:hover { background: #1976D2; }
 
 /* ── Toast de Notificação na Página ──────────────────────────────────── */
-#giga-toast {
+#go-toast {
   position: fixed;
   bottom: 24px;
   left: 50%;
@@ -758,24 +758,24 @@ body.giga-selecting * {
   font-family: 'Segoe UI', Roboto, Arial, sans-serif;
   font-size: 13px;
   box-shadow: 0 4px 14px rgba(0,0,0,0.25);
-  animation: gigaFadeIn 0.2s ease;
+  animation: goFadeIn 0.2s ease;
   pointer-events: none;
   white-space: nowrap;
 }
 
 /* ── Animações ────────────────────────────────────────────────────────── */
-@keyframes gigaFadeIn {
+@keyframes goFadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
-@keyframes gigaSlideUp {
+@keyframes goSlideUp {
   from { transform: translateY(12px); opacity: 0; }
   to   { transform: none; opacity: 1; }
 }
 
 /* ── Modal Flutuante de Seleção de Placeholder (Info Selector) ────────────────────────────────────────────────────────── */
-#giga-info-selector-modal {
+#go-info-selector-modal {
   position: absolute;
   background: #FFFFFF;
   border-radius: 8px;
@@ -784,23 +784,23 @@ body.giga-selecting * {
   width: 280px;
   z-index: 2147483647;
   font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-  animation: gigaFadeIn 0.2s ease;
+  animation: goFadeIn 0.2s ease;
   border: 1px solid #E0E0E0;
 }
-#giga-info-selector-modal h3 {
+#go-info-selector-modal h3 {
   margin: 0 0 12px 0;
   font-size: 14px;
   color: #333;
   font-weight: 600;
 }
-.giga-info-selector-list {
+.go-info-selector-list {
   display: flex;
   flex-direction: column;
   gap: 8px;
   max-height: 200px;
   overflow-y: auto;
 }
-.giga-info-selector-btn {
+.go-info-selector-btn {
   background: transparent;
   border: 1px solid #E0E0E0;
   padding: 8px 12px;
@@ -813,17 +813,17 @@ body.giga-selecting * {
   display: flex;
   justify-content: space-between;
 }
-.giga-info-selector-btn:hover {
+.go-info-selector-btn:hover {
   background: #F0F7FF;
   border-color: #1976D2;
   color: #1565C0;
 }
-.giga-info-selector-btn.mapped {
+.go-info-selector-btn.mapped {
   background: #E8F5E9;
   border-color: #4CAF50;
   color: #2E7D32;
 }
-.giga-info-selector-footer {
+.go-info-selector-footer {
   margin-top: 16px;
   display: flex;
   justify-content: flex-end;

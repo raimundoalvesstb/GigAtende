@@ -1,5 +1,5 @@
 ﻿/*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -12,8 +12,8 @@
  * Full license:
  * https://polyformproject.org/licenses/noncommercial/1.0.0/
  */
-/* src/utilitarios/sanitizacao.js â€“ Sanitizador de ConteÃºdo do GigAtende
- * Exposto globalmente como window.GigaSanitize.
+/* src/utilitarios/sanitizacao.js â€“ Sanitizador de ConteÃºdo do GoAtende
+ * Exposto globalmente como window.GoSanitize.
  */
 (function () {
   'use strict';
@@ -164,7 +164,7 @@
       .replace(/'/g, '&#039;');
   }
 
-  window.GigaSanitize = {
+  window.GoSanitize = {
     sanitizeHtml,
     htmlToText,
     sanitizeForInsertion,

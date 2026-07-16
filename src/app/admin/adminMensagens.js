@@ -1,5 +1,5 @@
 ﻿/*
- * Projeto: GigAtende
+ * Projeto: GoAtende
  * Copyright (c) 2026 Raimundo Alves Santa Brigida
  *
  * Licensed under the PolyForm Noncommercial License 1.0.0.
@@ -131,7 +131,7 @@ window.AdminMensagens = {
       htmlIcone = window.AdminUI.getFallbackLogo(iconColor);
     }
 
-    card.innerHTML = `${htmlIcone}<span class="cat-card-name" style="color:${catId === this.filtroMsg.categoryId ? '#fff' : (cat?.color || '#1565C0')}">${window.GigaSanitize.escapeHtml(nome)}</span><span class="cat-card-count">${count}</span>`;
+    card.innerHTML = `${htmlIcone}<span class="cat-card-name" style="color:${catId === this.filtroMsg.categoryId ? '#fff' : (cat?.color || '#1565C0')}">${window.GoSanitize.escapeHtml(nome)}</span><span class="cat-card-count">${count}</span>`;
 
     // Aplica a cor da categoria (se ativa) ao filtro para facilitar identificação visual
     if (catId === this.filtroMsg.categoryId) {
@@ -238,23 +238,23 @@ window.AdminMensagens = {
     card.setAttribute('draggable', 'true');
 
     const cats = (msg.categoryIds || []).map(cid => window.AdminEstado.categories.find(c => c.id === cid)).filter(Boolean);
-    const catBadgesHtml = cats.map(c => `<span class="cat-badge" style="background:${c.color}">${window.GigaSanitize.escapeHtml(c.name)}</span>`).join('');
+    const catBadgesHtml = cats.map(c => `<span class="cat-badge" style="background:${c.color}">${window.GoSanitize.escapeHtml(c.name)}</span>`).join('');
 
-    const tagsHtml = (msg.tags || []).map(t => `<span class="tag">${window.GigaSanitize.escapeHtml(t)}</span>`).join('');
-    const preview = msg.contentText || window.GigaSanitize.htmlToText(msg.contentHtml || '');
+    const tagsHtml = (msg.tags || []).map(t => `<span class="tag">${window.GoSanitize.escapeHtml(t)}</span>`).join('');
+    const preview = msg.contentText || window.GoSanitize.htmlToText(msg.contentHtml || '');
     const updated = msg.updatedAt ? new Date(msg.updatedAt).toLocaleDateString('pt-BR') : '';
 
     const htmlSvgIcone = msg.icon ? `<svg viewBox="0 0 24 24" width="18" height="18" style="vertical-align: middle; margin-right: 4px; color: ${msg.iconColor || '#1565C0'}" xmlns="http://www.w3.org/2000/svg">${((window.AdminIcons || []).find(i => i.id === msg.icon) || { svg: '' }).svg}</svg>` : '';
 
     card.innerHTML = `
       <div class="msg-card-header">
-        <span class="msg-title">${htmlSvgIcone}${window.GigaSanitize.escapeHtml(msg.title)}</span>
+        <span class="msg-title">${htmlSvgIcone}${window.GoSanitize.escapeHtml(msg.title)}</span>
         <button class="msg-favorite ${msg.favorite ? 'active' : ''}" data-action="favorite" title="Favorito">
           <svg viewBox="0 0 24 24" width="18" height="18" xmlns="http://www.w3.org/2000/svg"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="${msg.favorite ? '#FFA000' : 'none'}" stroke="${msg.favorite ? '#FFA000' : '#BDBDBD'}" stroke-width="1.5"/></svg>
         </button>
       </div>
       ${catBadgesHtml ? `<div class="msg-tags">${catBadgesHtml}</div>` : ''}
-      <p class="msg-preview">${window.GigaSanitize.escapeHtml(preview)}</p>
+      <p class="msg-preview">${window.GoSanitize.escapeHtml(preview)}</p>
       ${tagsHtml ? `<div class="msg-tags" style="margin-top:2px">${tagsHtml}</div>` : ''}
       <div class="msg-card-footer">
         <span class="msg-meta">${updated}</span>
@@ -288,7 +288,7 @@ window.AdminMensagens = {
     if (action === 'edit') {
       this.abrirModalMensagem(msg);
     } else if (action === 'copy') {
-      const text = msg.contentText || window.GigaSanitize.htmlToText(msg.contentHtml || '');
+      const text = msg.contentText || window.GoSanitize.htmlToText(msg.contentHtml || '');
       try {
         await navigator.clipboard.writeText(text);
         window.AdminUI.toast('Mensagem copiada para a área de transferência!', 'success');
@@ -296,12 +296,12 @@ window.AdminMensagens = {
         window.AdminUI.toast('Não foi possível copiar.', 'error');
       }
     } else if (action === 'duplicate') {
-      await window.GigaArmazenamento.duplicarMensagem(msg.id);
+      await window.GoArmazenamento.duplicarMensagem(msg.id);
       await this.recarregarMensagens();
       window.AdminUI.toast('Mensagem duplicada!', 'success');
     } else if (action === 'delete') {
       window.AdminUI.mostrarConfirmacao('Excluir mensagem', `Deseja excluir "${msg.title}"?`, async () => {
-        await window.GigaArmazenamento.excluirMensagem(msg.id);
+        await window.GoArmazenamento.excluirMensagem(msg.id);
         await this.recarregarMensagens();
         window.AdminUI.toast('Mensagem excluída.', 'success');
       });
@@ -314,7 +314,7 @@ window.AdminMensagens = {
         }
       }
       const atualizada = { ...msg, favorite: !msg.favorite };
-      await window.GigaArmazenamento.salvarMensagem(atualizada);
+      await window.GoArmazenamento.salvarMensagem(atualizada);
       await this.recarregarMensagens();
     }
   },
@@ -356,7 +356,7 @@ window.AdminMensagens = {
       document.getElementById('msgTags').value = (msg.tags || []).join(', ');
 
       // Insere o HTML sanitizado no div contenteditable
-      document.getElementById('msgEditor').innerHTML = window.GigaSanitize.sanitizeHtml(msg.contentHtml || '');
+      document.getElementById('msgEditor').innerHTML = window.GoSanitize.sanitizeHtml(msg.contentHtml || '');
       document.getElementById('msgFavorite').checked = !!msg.favorite;
 
       if (document.getElementById('msgIcon')) document.getElementById('msgIcon').value = msg.icon || '';
@@ -402,7 +402,7 @@ window.AdminMensagens = {
 
   /** Dispara a atualização visual do card mockado que mostra como a mensagem ficará (Preview). */
   atualizarPrevia: function () {
-    document.getElementById('msgPreview').innerHTML = window.GigaSanitize.sanitizeHtml(document.getElementById('msgEditor').innerHTML);
+    document.getElementById('msgPreview').innerHTML = window.GoSanitize.sanitizeHtml(document.getElementById('msgEditor').innerHTML);
   },
 
   /**
@@ -414,19 +414,19 @@ window.AdminMensagens = {
     const titulo = document.getElementById('msgTitle').value.trim();
     if (!titulo) { window.AdminUI.toast('Título obrigatório.', 'error'); return; }
 
-    const conteudoHtml = window.GigaSanitize.sanitizeHtml(document.getElementById('msgEditor').innerHTML.trim());
+    const conteudoHtml = window.GoSanitize.sanitizeHtml(document.getElementById('msgEditor').innerHTML.trim());
     if (!conteudoHtml || conteudoHtml === '<br>') { window.AdminUI.toast('Conteúdo obrigatório.', 'error'); return; }
 
     const catId = document.getElementById('msgCategory').value;
 
     const isFavoriteNow = document.getElementById('msgFavorite').checked;
     const msgObj = {
-      id: this.msgAtualId || window.GigaArmazenamento.gerarId('msg'),
+      id: this.msgAtualId || window.GoArmazenamento.gerarId('msg'),
       title: titulo,
       icon: (document.getElementById('msgIcon')?.value || '').trim() || null,
       iconColor: (document.getElementById('msgIconColor')?.value || '').trim() || null,
       contentHtml: conteudoHtml,
-      contentText: window.GigaSanitize.htmlToText(conteudoHtml), // Texto plano p/ facilitar a busca e Ctrl+C nativo
+      contentText: window.GoSanitize.htmlToText(conteudoHtml), // Texto plano p/ facilitar a busca e Ctrl+C nativo
       categoryIds: catId ? [catId] : [],
       tags: document.getElementById('msgTags').value.split(',').map(t => t.trim()).filter(Boolean),
       favorite: isFavoriteNow,
@@ -441,7 +441,7 @@ window.AdminMensagens = {
       }
     }
 
-    await window.GigaArmazenamento.salvarMensagem(msgObj);
+    await window.GoArmazenamento.salvarMensagem(msgObj);
     await this.recarregarMensagens();
     this.fecharModalMensagem();
     window.AdminUI.toast(this.msgAtualId ? 'Mensagem atualizada!' : 'Mensagem criada!', 'success');
@@ -527,7 +527,7 @@ window.AdminMensagens = {
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.style.cssText = 'display:block; width:100%; text-align:left; padding:6px 8px; font-size:12px; background:none; border:none; cursor:pointer; color:var(--c-text); border-radius:4px;';
-            btn.innerHTML = `<strong>${window.GigaSanitize.escapeHtml(p.name)}</strong> <span style="color:var(--c-text-2);font-size:10px;">[${p.id}]</span>`;
+            btn.innerHTML = `<strong>${window.GoSanitize.escapeHtml(p.name)}</strong> <span style="color:var(--c-text-2);font-size:10px;">[${p.id}]</span>`;
 
             btn.addEventListener('mouseenter', () => btn.style.background = 'var(--c-bg-subtle)');
             btn.addEventListener('mouseleave', () => btn.style.background = 'none');
@@ -557,22 +557,22 @@ window.AdminMensagens = {
     const btnMsgEmoji = document.getElementById('btnMsgEmoji');
     if (btnMsgEmoji) btnMsgEmoji.addEventListener('click', async e => {
       e.stopPropagation();
-      const pickerExistente = document.getElementById('giga-whatsapp-emoji-picker');
+      const pickerExistente = document.getElementById('go-whatsapp-emoji-picker');
       if (pickerExistente && this.alvoEmoji === 'content') { this.fecharPickerEmoji(); return; }
       this.fecharPickerEmoji();
       this.alvoEmoji = 'content';
-      this.abrirPickerEmoji(btnMsgEmoji, await window.GigaArmazenamento.obterEmojisRecentes());
+      this.abrirPickerEmoji(btnMsgEmoji, await window.GoArmazenamento.obterEmojisRecentes());
     });
 
     // Ouvinte p/ Emoji Picker no Título da Mensagem
     const btnMsgTitleEmoji = document.getElementById('btnMsgTitleEmoji');
     if (btnMsgTitleEmoji) btnMsgTitleEmoji.addEventListener('click', async e => {
       e.stopPropagation();
-      const pickerExistente = document.getElementById('giga-whatsapp-emoji-picker');
+      const pickerExistente = document.getElementById('go-whatsapp-emoji-picker');
       if (pickerExistente && this.alvoEmoji === 'title') { this.fecharPickerEmoji(); return; }
       this.fecharPickerEmoji();
       this.alvoEmoji = 'title';
-      this.abrirPickerEmoji(btnMsgTitleEmoji, await window.GigaArmazenamento.obterEmojisRecentes());
+      this.abrirPickerEmoji(btnMsgTitleEmoji, await window.GoArmazenamento.obterEmojisRecentes());
     });
 
     // Toggle para o Icon Picker Genérico (SVG)
@@ -634,8 +634,8 @@ window.AdminMensagens = {
    * @param {string[]} recentes - Array com os emojis mais recentes salvos.
    */
   abrirPickerEmoji: function (ancora, recentes) {
-    if (window.GigaEmojiPicker) {
-      window.GigaEmojiPicker.abrir(ancora, recentes, async (emoji) => {
+    if (window.GoEmojiPicker) {
+      window.GoEmojiPicker.abrir(ancora, recentes, async (emoji) => {
         // Inserção depende de qual botão engatilhou (title x content)
         if (this.alvoEmoji === 'title') {
           const t = document.getElementById('msgTitle');
@@ -650,7 +650,7 @@ window.AdminMensagens = {
         }
 
         // Adiciona na base de favoritos
-        await window.GigaArmazenamento.adicionarEmojiRecente(emoji);
+        await window.GoArmazenamento.adicionarEmojiRecente(emoji);
         this.fecharPickerEmoji();
       });
     }
@@ -658,8 +658,8 @@ window.AdminMensagens = {
 
   /** Remove o elemento flutuante (Emoji Picker) do DOM. */
   fecharPickerEmoji: function () {
-    if (window.GigaEmojiPicker) {
-      window.GigaEmojiPicker.fechar();
+    if (window.GoEmojiPicker) {
+      window.GoEmojiPicker.fechar();
     }
   },
 
@@ -764,7 +764,7 @@ window.AdminMensagens = {
     }
 
     // Realiza o splice para mover diretamente através da nova API que criamos
-    await window.GigaArmazenamento.moverMensagem(sourceId, toIndex);
+    await window.GoArmazenamento.moverMensagem(sourceId, toIndex);
     
     // Recarrega o estado atualizado para refletir
     await window.AdminEstado.carregarTudo();
